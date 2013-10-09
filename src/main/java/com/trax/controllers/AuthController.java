@@ -34,7 +34,7 @@ public class AuthController {
         String user = validateUser("tonymwinters", "password");
 
 
-        return "Swag";
+        return user;
     }
 
     @PostConstruct
