@@ -15,5 +15,11 @@
         <td>Welcome To Home Page Of Trax - we like you.</td>
     </tr>
 </table>
+
+<p>
+    ${message}<br/>
+    <a href="${pageContext.request.contextPath}/owner/add.html">Add new Owner</a><br/>
+    <a href="${pageContext.request.contextPath}/owner/list.html">Owner list</a><br/>
+</p>
 </body>
 </html>
