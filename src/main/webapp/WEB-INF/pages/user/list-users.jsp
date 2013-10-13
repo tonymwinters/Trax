@@ -32,8 +32,8 @@
             <td>${user.id}</td>
             <td>${user.firstName}</td>
             <td>
-                <a href="${pageContext.request.contextPath}/user/edit/${owner.id}.html">Edit</a><br/>
-                <a href="${pageContext.request.contextPath}/user/delete/${owner.id}.html">Delete</a><br/>
+                <a href="${pageContext.request.contextPath}/user/edit/${user.id}.html">Edit</a><br/>
+                <a href="${pageContext.request.contextPath}/user/delete/${user.id}.html">Delete</a><br/>
             </td>
         </tr>
     </c:forEach>

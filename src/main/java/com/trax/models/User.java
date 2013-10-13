@@ -43,7 +43,7 @@ public class User {
     @Column(name="last_name")
     private String lastName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="swag_id")
     private Role role;
 
@@ -51,7 +51,7 @@ public class User {
     @JoinColumn(name="contact_id")
     private Contact contact;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="owner_id")
     private Owner owner;
 

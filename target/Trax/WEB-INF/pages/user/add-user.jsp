@@ -1,5 +1,5 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -9,11 +9,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-    <title>Add Owner page</title>
+    <title>Add User page</title>
 </head>
 <body>
-<h1>Add A New Owner</h1>
-<p>Here you can add a new owner.</p>
+<h1>Add A New User</h1>
+<p>Here you can add a new User.</p>
 <form:form method="POST" commandName="user" action="${pageContext.request.contextPath}/user/add.html">
     <table>
         <tbody>
@@ -60,9 +60,11 @@
 
         <tr>
             <td>Owner:</td>
-            <td><form:select path="owner">
-                    <form:options items="${owners}" itemLabel="name" itemValue="id" />
-                </form:select></td>
+            <td><select name="ownerId">
+                <c:forEach items="${owners}" var="owner">
+                    <option value="${owner.id}">${owner}</option>
+                </c:forEach>
+            </select></td>
         </tr>
 
 

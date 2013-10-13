@@ -1,9 +1,11 @@
 package com.trax.controllers;
 
+import com.trax.models.Owner;
 import com.trax.models.User;
 import com.trax.services.owner.OwnerService;
 import com.trax.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,9 +39,11 @@ public class UserController {
     }
 
     @RequestMapping(value="/add", method=RequestMethod.POST)
-    public ModelAndView addingUser(@ModelAttribute User user) {
+    public ModelAndView addingUser(@ModelAttribute User user, @RequestParam String ownerId){
 
         ModelAndView modelAndView = new ModelAndView("home");
+        Owner owner = ownerService.getOwner(Integer.parseInt(ownerId));
+        user.setOwner(owner);
         userService.addUser(user);
 
         String message = "User was successfully added.";
@@ -63,6 +67,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("user/edit-user");
         User user = userService.getUser(id);
         modelAndView.addObject("user",user);
+        modelAndView.addObject("owners", ownerService.getOwners());
         return modelAndView;
     }
 
