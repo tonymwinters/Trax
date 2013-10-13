@@ -63,4 +63,8 @@ public class Role {
         this.code = code;
     }
 
+    public String toString(){
+        return this.name;
+    }
+
 }

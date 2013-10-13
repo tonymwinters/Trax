@@ -1,8 +1,10 @@
 package com.trax.controllers;
 
 import com.trax.models.Owner;
+import com.trax.models.Role;
 import com.trax.models.User;
 import com.trax.services.owner.OwnerService;
+import com.trax.services.role.RoleService;
 import com.trax.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -30,19 +32,28 @@ public class UserController {
     @Autowired
     private OwnerService ownerService;
 
+    @Autowired
+    private RoleService roleService;
+
     @RequestMapping(value="/add", method= RequestMethod.GET)
     public ModelAndView addUserPage() {
         ModelAndView modelAndView = new ModelAndView("user/add-user");
+
+        // Send Objects to View
         modelAndView.addObject("user", new User());
         modelAndView.addObject("owners", ownerService.getOwners());
+        modelAndView.addObject("roles", roleService.getRoles());
+
         return modelAndView;
     }
 
     @RequestMapping(value="/add", method=RequestMethod.POST)
-    public ModelAndView addingUser(@ModelAttribute User user, @RequestParam String ownerId){
+    public ModelAndView addingUser(@ModelAttribute User user, @RequestParam String ownerId, @RequestParam String roleId){
 
         ModelAndView modelAndView = new ModelAndView("home");
         Owner owner = ownerService.getOwner(Integer.parseInt(ownerId));
+        Role role = roleService.getRole(Integer.parseInt(roleId));
+        user.setRole(role);
         user.setOwner(owner);
         userService.addUser(user);
 

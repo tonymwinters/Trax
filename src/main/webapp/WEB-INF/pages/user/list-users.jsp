@@ -23,14 +23,19 @@
 <table border="1px" cellpadding="0" cellspacing="0" >
     <thead>
     <tr>
-        <th width="10%">id</th><th width="15%">FirstName</th><th width="10%">actions</th>
+        <th width="10%">id</th><th width="15%">FirstName</th><th width="15%">LastName</th><th width="15%">Email</th><th width="10%">actions</th>
     </tr>
+
+
     </thead>
     <tbody>
     <c:forEach var="user" items="${users}">
         <tr>
             <td>${user.id}</td>
             <td>${user.firstName}</td>
+            <td>${user.lastName}</td>
+            <td>${user.contact.emailAddress}</td>
+
             <td>
                 <a href="${pageContext.request.contextPath}/user/edit/${user.id}.html">Edit</a><br/>
                 <a href="${pageContext.request.contextPath}/user/delete/${user.id}.html">Delete</a><br/>
