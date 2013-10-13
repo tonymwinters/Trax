@@ -1,4 +1,4 @@
-package com.trax.dao;
+package com.trax.dao.owner;
 
 import com.trax.models.Owner;
 

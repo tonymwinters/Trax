@@ -1,4 +1,4 @@
-package com.trax.services;
+package com.trax.services.owner;
 
 import com.trax.models.Owner;
 

@@ -47,9 +47,13 @@ public class User {
     @JoinColumn(name="swag_id")
     private Role role;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="contact_id")
     private Contact contact;
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="owner_id")
+    private Owner owner;
 
 
     public int getId() {
@@ -100,20 +104,28 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Contact getContactId() {
-        return contact;
+    public Contact getContact() {
+        return this.contact;
     }
 
-    public void setContactId(Contact contact) {
+    public void setContact(Contact contact) {
         this.contact = contact;
     }
 
-//    public Role getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(Role role) {
-//        this.role = role;
-//    }
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Owner getOwner(){
+        return this.owner;
+    }
+
+    public void setOwner(Owner owner){
+        this.owner = owner;
+    }
 
 }

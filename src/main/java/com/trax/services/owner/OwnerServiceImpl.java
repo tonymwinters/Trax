@@ -1,8 +1,8 @@
-package com.trax.services;
+package com.trax.services.owner;
 
 import java.util.List;
 
-import com.trax.dao.OwnerDAO;
+import com.trax.dao.owner.OwnerDAO;
 import com.trax.models.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
