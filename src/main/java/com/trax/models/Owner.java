@@ -22,7 +22,6 @@ import java.util.Date;
 @Table(name="owner")
 public class Owner {
 
-    // Property accessors
     @Id
     @GeneratedValue(generator = "Owner_SequenceStyleGenerator")
     @GenericGenerator(name = "Owner_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",

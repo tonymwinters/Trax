@@ -26,7 +26,7 @@ public class OwnerController {
 
     @RequestMapping(value="/add", method=RequestMethod.GET)
     public ModelAndView addOwnerPage() {
-        ModelAndView modelAndView = new ModelAndView("add-owner");
+        ModelAndView modelAndView = new ModelAndView("owner/add-owner");
         modelAndView.addObject("owner", new Owner());
         return modelAndView;
     }
@@ -46,7 +46,7 @@ public class OwnerController {
     @RequestMapping(value="/list")
     @ResponseBody
     public ModelAndView listOfOwners() {
-        ModelAndView modelAndView = new ModelAndView("list-owners");
+        ModelAndView modelAndView = new ModelAndView("owner/list-owners");
 
         List<Owner> owners = ownerService.getOwners();
         modelAndView.addObject("owners", owners);
@@ -56,7 +56,7 @@ public class OwnerController {
 
     @RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
     public ModelAndView editOwnerPage(@PathVariable Integer id) {
-        ModelAndView modelAndView = new ModelAndView("edit-owner");
+        ModelAndView modelAndView = new ModelAndView("owner/edit-owner");
         Owner owner = ownerService.getOwner(id);
         modelAndView.addObject("owner",owner);
         return modelAndView;

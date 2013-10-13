@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>Add A New Owner</h1>
-<p>Here you can add a new team.</p>
+<p>Here you can add a new owner.</p>
 <form:form method="POST" commandName="owner" action="${pageContext.request.contextPath}/owner/add.html">
     <table>
         <tbody>
