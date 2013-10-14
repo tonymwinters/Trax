@@ -18,7 +18,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
  */
 @Configuration
 @ComponentScan("com.trax.controllers")
-@ImportResource("classpath:configs/spring-security.xml")
 @EnableWebMvc
 public class WebAppConfig {
 
