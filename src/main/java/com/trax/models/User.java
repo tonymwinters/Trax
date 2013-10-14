@@ -43,8 +43,11 @@ public class User {
     @Column(name="last_name")
     private String lastName;
 
-    @ManyToOne
-    @JoinColumn(name="swag_id")
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinTable(name="user_roles",
+            joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
+            inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")}
+    )
     private Role role;
 
     @OneToOne(cascade=CascadeType.ALL)

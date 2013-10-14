@@ -3,6 +3,7 @@ package com.trax.models;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Parameter;
 import javax.persistence.Table;
@@ -38,6 +39,21 @@ public class Role {
     @Column(name="code")
     private String code;
 
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="user_roles",
+            joinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")},
+            inverseJoinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")}
+    )
+    private Set<User> userRoles;
+
+
+    public Set<User> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<User> userRoles) {
+        this.userRoles = userRoles;
+    }
 
     public void setId(int id){
         this.id = id;

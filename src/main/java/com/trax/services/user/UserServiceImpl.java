@@ -2,10 +2,12 @@ package com.trax.services.user;
 
 import com.trax.dao.user.UserDAO;
 import com.trax.models.User;
+import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +36,11 @@ public class UserServiceImpl implements UserService{
     public User getUser(int id) {
         return userDAO.getUser(id);
     }
+
+    public User getUser(String username) {
+        return userDAO.getUser(username);
+    }
+
 
     public void deleteUser(int id) {
         userDAO.deleteUser(id);
