@@ -16,7 +16,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Repository
-public class ContactDAOImpl {
+public class ContactDAOImpl implements ContactDAO{
 
     @Autowired
     private SessionFactory sessionFactory;
