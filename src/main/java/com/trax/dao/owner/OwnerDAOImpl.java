@@ -38,8 +38,7 @@ public class OwnerDAOImpl implements OwnerDAO {
     }
 
     public Owner getOwner(int id) {
-        Owner owner = (Owner) getCurrentSession().get(Owner.class, id);
-        return owner;
+        return (Owner) getCurrentSession().get(Owner.class, id);
     }
 
     public void deleteOwner(int id) {
@@ -48,7 +47,6 @@ public class OwnerDAOImpl implements OwnerDAO {
             getCurrentSession().delete(owner);
     }
 
-    @SuppressWarnings("unchecked")
     public List<Owner> getOwners() {
         return getCurrentSession().createQuery("from Owner").list();
     }
