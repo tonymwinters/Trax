@@ -6,6 +6,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -13,6 +14,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@EnableWebMvc
 @ComponentScan("com.trax")
 @PropertySource("classpath:configs/config.properties")
 public class RootConfig {
