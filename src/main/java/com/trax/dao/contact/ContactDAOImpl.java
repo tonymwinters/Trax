@@ -36,11 +36,11 @@ public class ContactDAOImpl {
 
     }
 
-    public Contact getContact(int id){
+    public Contact getContact(Long id){
         return (Contact) getCurrentSession().get(Contact.class, id);
     }
 
-    public void deleteContact(int id){
+    public void deleteContact(Long id){
         Contact contact = getContact(id);
         if(contact != null)
             getCurrentSession().delete(contact);

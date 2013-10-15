@@ -39,12 +39,11 @@ public class RoleDAOImpl implements RoleDAO {
 
     }
 
-    public Role getRole(int id) {
-        Role role = (Role) getCurrentSession().get(Role.class, id);
-        return role;
+    public Role getRole(Long id) {
+        return (Role) getCurrentSession().get(Role.class, id);
     }
 
-    public void deleteRole(int id) {
+    public void deleteRole(Long id) {
         Role role = getRole(id);
         if (role != null)
             getCurrentSession().delete(role);

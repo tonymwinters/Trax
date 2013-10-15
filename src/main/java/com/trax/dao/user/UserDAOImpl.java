@@ -49,7 +49,7 @@ public class UserDAOImpl implements UserDAO{
 
     }
 
-    public User getUser(int id) {
+    public User getUser(Long id) {
         User user = (User) getCurrentSession().get(User.class, id);
         return user;
     }
@@ -67,7 +67,7 @@ public class UserDAOImpl implements UserDAO{
 
     }
 
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         User user = getUser(id);
         if (user != null)
             getCurrentSession().delete(user);

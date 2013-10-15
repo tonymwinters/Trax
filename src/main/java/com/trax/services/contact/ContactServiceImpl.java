@@ -24,11 +24,11 @@ public class ContactServiceImpl {
         contactDAO.updateContact(contact);
     }
 
-    public Contact getContact(int id){
+    public Contact getContact(Long id){
         return contactDAO.getContact(id);
     }
 
-    public void deleteContact(int id){
+    public void deleteContact(Long id){
         contactDAO.deleteContact(id);
     }
 

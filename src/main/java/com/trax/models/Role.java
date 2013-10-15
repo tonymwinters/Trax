@@ -31,7 +31,7 @@ public class Role {
                     @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1") }
     )
-    private int id;
+    private Long id;
 
     @Column(name="name")
     private String name;
@@ -55,11 +55,11 @@ public class Role {
         this.userRoles = userRoles;
     }
 
-    public void setId(int id){
+    public void setId(Long id){
         this.id = id;
     }
 
-    public int getId(){
+    public Long getId(){
         return this.id;
     }
 
@@ -68,6 +68,7 @@ public class Role {
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
@@ -76,8 +77,9 @@ public class Role {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        this.code = code.replaceAll("(\\s+|\\t+|\\r+|\\n+)", "_").toUpperCase();
     }
+
 
     public String toString(){
         return this.name;

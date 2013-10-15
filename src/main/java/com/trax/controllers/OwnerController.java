@@ -55,7 +55,7 @@ public class OwnerController {
     }
 
     @RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
-    public ModelAndView editOwnerPage(@PathVariable Integer id) {
+    public ModelAndView editOwnerPage(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("owner/edit-owner");
         Owner owner = ownerService.getOwner(id);
         modelAndView.addObject("owner",owner);
@@ -63,7 +63,7 @@ public class OwnerController {
     }
 
     @RequestMapping(value="/edit/{id}", method=RequestMethod.POST)
-    public ModelAndView editingOwner(@ModelAttribute Owner owner, @PathVariable Integer id) {
+    public ModelAndView editingOwner(@ModelAttribute Owner owner, @PathVariable Long id) {
 
         ModelAndView modelAndView = new ModelAndView("home");
 
@@ -76,7 +76,7 @@ public class OwnerController {
     }
 
     @RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-    public ModelAndView deleteOwner(@PathVariable Integer id) {
+    public ModelAndView deleteOwner(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("home");
         ownerService.deleteOwner(id);
         String message = "Owner was successfully deleted.";

@@ -37,11 +37,11 @@ public class OwnerDAOImpl implements OwnerDAO {
 
     }
 
-    public Owner getOwner(int id) {
+    public Owner getOwner(Long id) {
         return (Owner) getCurrentSession().get(Owner.class, id);
     }
 
-    public void deleteOwner(int id) {
+    public void deleteOwner(Long id) {
         Owner owner = getOwner(id);
         if (owner != null)
             getCurrentSession().delete(owner);

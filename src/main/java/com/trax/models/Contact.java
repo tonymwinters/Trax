@@ -29,7 +29,7 @@ public class Contact {
                     @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1") }
     )
-    private int id;
+    private Long id;
 
     @Column(name="name")
     private String name;
@@ -40,11 +40,11 @@ public class Contact {
     @Column(name="email_address")
     private String emailAddress;
 
-    public void setId(int id){
+    public void setId(Long id){
         this.id = id;
     }
 
-    public int getId(){
+    public Long getId(){
         return this.id;
     }
 

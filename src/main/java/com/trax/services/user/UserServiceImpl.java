@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
         userDAO.updateUser(user);
     }
 
-    public User getUser(int id) {
+    public User getUser(Long id) {
         return userDAO.getUser(id);
     }
 
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         userDAO.deleteUser(id);
     }
 

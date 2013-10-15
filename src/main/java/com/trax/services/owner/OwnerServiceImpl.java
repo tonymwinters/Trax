@@ -33,11 +33,11 @@ public class OwnerServiceImpl implements OwnerService {
         ownerDAO.updateOwner(owner);
     }
 
-    public Owner getOwner(int id) {
+    public Owner getOwner(Long id) {
         return ownerDAO.getOwner(id);
     }
 
-    public void deleteOwner(int id) {
+    public void deleteOwner(Long id) {
         ownerDAO.deleteOwner(id);
     }
 

@@ -31,11 +31,11 @@ public class RoleServiceImpl implements RoleService{
         roleDAO.updateRole(role);
     }
 
-    public Role getRole(int id) {
+    public Role getRole(Long id) {
         return roleDAO.getRole(id);
     }
 
-    public void deleteRole(int id) {
+    public void deleteRole(Long id) {
         roleDAO.deleteRole(id);
     }
 

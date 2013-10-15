@@ -50,8 +50,8 @@ public class UserController {
     public ModelAndView addingUser(@ModelAttribute User user, @RequestParam String ownerId, @RequestParam String roleId){
 
         ModelAndView modelAndView = new ModelAndView("home");
-        Owner owner = ownerService.getOwner(Integer.parseInt(ownerId));
-        Role role = roleService.getRole(Integer.parseInt(roleId));
+        Owner owner = ownerService.getOwner(Long.parseLong(ownerId));
+        Role role = roleService.getRole(Long.parseLong(roleId));
         user.setRole(role);
         user.setOwner(owner);
         userService.addUser(user);
@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
-    public ModelAndView editUserPage(@PathVariable Integer id) {
+    public ModelAndView editUserPage(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("user/edit-user");
         User user = userService.getUser(id);
         modelAndView.addObject("user",user);
@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/edit/{id}", method=RequestMethod.POST)
-    public ModelAndView editingUser(@ModelAttribute User user, @PathVariable Integer id) {
+    public ModelAndView editingUser(@ModelAttribute User user, @PathVariable Long id) {
 
         ModelAndView modelAndView = new ModelAndView("home");
 
@@ -95,7 +95,7 @@ public class UserController {
     }
 
     @RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-    public ModelAndView deleteUser(@PathVariable Integer id) {
+    public ModelAndView deleteUser(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("home");
         userService.deleteUser(id);
         String message = "User was successfully deleted.";

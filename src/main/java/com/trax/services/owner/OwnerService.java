@@ -15,8 +15,8 @@ public interface OwnerService {
 
     public void addOwner(Owner owner);
     public void updateOwner(Owner owner);
-    public Owner getOwner(int id);
-    public void deleteOwner(int id);
+    public Owner getOwner(Long id);
+    public void deleteOwner(Long id);
     public List<Owner> getOwners();
 
 }
