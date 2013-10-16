@@ -58,7 +58,6 @@ public class User {
     @JoinColumn(name="owner_id")
     private Owner owner;
 
-
     public Long getId() {
         return id;
     }

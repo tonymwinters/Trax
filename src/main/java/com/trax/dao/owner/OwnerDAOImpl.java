@@ -34,7 +34,6 @@ public class OwnerDAOImpl implements OwnerDAO {
         Owner ownerToUpdate = getOwner(owner.getId());
         ownerToUpdate.setName(owner.getName());
         getCurrentSession().update(ownerToUpdate);
-
     }
 
     public Owner getOwner(Long id) {
@@ -50,6 +49,4 @@ public class OwnerDAOImpl implements OwnerDAO {
     public List<Owner> getOwners() {
         return getCurrentSession().createQuery("from Owner").list();
     }
-
-    
 }
