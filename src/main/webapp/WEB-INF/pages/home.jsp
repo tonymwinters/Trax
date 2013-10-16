@@ -1,5 +1,9 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
+<head>
+    <link rel="stylesheet" type="text/css" href='<c:url value="/resources/style.css" />' media="all" />
+</head>
 <body>
 <h3>Swag! You're in!</h3>
 
@@ -16,6 +20,15 @@
 
         <a href="${pageContext.request.contextPath}/user/add.html">Add new User</a><br/>
         <a href="${pageContext.request.contextPath}/user/list.html">User list</a><br/>
+
+
+
+        <c:url value="/logout" var="logoutUrl"/>
+        <form:form name="f" action="${logoutUrl}" method="post">
+    <div class="form-actions">
+        <button type="submit" class="btn">Log Out</button>
+    </div>
+</form:form>
 </p>
 </body>
 </html>

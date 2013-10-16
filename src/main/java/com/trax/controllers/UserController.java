@@ -52,7 +52,6 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("home");
         Owner owner = ownerService.getOwner(Long.parseLong(ownerId));
         Role role = roleService.getRole(Long.parseLong(roleId));
-        user.setRole(role);
         user.setOwner(owner);
         userService.addUser(user);
 

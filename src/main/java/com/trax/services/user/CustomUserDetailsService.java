@@ -3,8 +3,10 @@ package com.trax.services.user;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import com.trax.dao.user.UserDAO;
+import com.trax.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,26 +41,31 @@ public class CustomUserDetailsService implements UserDetailsService {
 				accountNonExpired, 
 				credentialsNonExpired, 
 				accountNonLocked,
-				getAuthorities(domainUser.getRole().getId())
+				getAuthorities(domainUser.getRoles())
 		);
 	}
 	
-	public Collection<? extends GrantedAuthority> getAuthorities(Long role) {
-		List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(role));
+	public Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {
+		List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(roles));
 		return authList;
 	}
 	
-	public List<String> getRoles(Long role) {
+	public List<String> getRoles(Set<Role> roles) {
 
-		List<String> roles = new ArrayList<String>();
+		List<String> allRoles = new ArrayList<String>();
 
-		if (role.intValue() == 9) {
-			roles.add("ROLE_SUPER-USER");
-			roles.add("ROLE_ADMINISTRATOR");
-		} else if (role.intValue() == 2) {
-			roles.add("ROLE_MODERATOR");
-		}
-		return roles;
+        for(Role role: roles){
+            if(role.getCode().equals("SUPER-USER")){
+                allRoles.add("ROLE_SUPER-USER");
+                allRoles.add("ROLE_ADMINISTRATOR");
+            }
+
+            else if(role.getCode().equals("ADMINISTRATOR")){
+                allRoles.add("ROLE_ADMINISTRATOR");
+            }
+        }
+
+		return allRoles;
 	}
 	
 	public static List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
