@@ -1,6 +1,7 @@
 package com.trax.dao.user;
 
 import com.trax.models.User;
+import com.trax.utilities.Alfred;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,19 +34,9 @@ public class UserDAOImpl implements UserDAO{
     }
 
     public void updateUser(User user) {
-        User userToUpdate = getUser(user.getId());
-
-        // Update All Attributes, even if not all changed
-        userToUpdate.setFirstName(user.getFirstName());
-        userToUpdate.setMiddleName(user.getMiddleName());
-        userToUpdate.setLastName(user.getLastName());
-        userToUpdate.setUsername(user.getUsername());
-        userToUpdate.setPassword(user.getPassword());
-        userToUpdate.setContact(user.getContact());
-
-        // Update
-        getCurrentSession().update(userToUpdate);
-
+        if(Alfred.notNull(user.getId())){
+            getCurrentSession().update(user);
+        }
     }
 
     public User getUser(Long id) {
@@ -68,7 +59,7 @@ public class UserDAOImpl implements UserDAO{
 
     public void deleteUser(Long id) {
         User user = getUser(id);
-        if (user != null)
+        if (Alfred.notNull(user))
             getCurrentSession().delete(user);
     }
 

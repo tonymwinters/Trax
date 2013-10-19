@@ -2,6 +2,7 @@ package com.trax.dao.role;
 
 import com.trax.models.Owner;
 import com.trax.models.Role;
+import com.trax.utilities.Alfred;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,9 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     public void updateRole(Role role) {
-        Role roleToUpdate = getRole(role.getId());
-        roleToUpdate.setName(role.getName());
-        roleToUpdate.setCode(role.getCode());
-        getCurrentSession().update(roleToUpdate);
-
+        if(Alfred.notNull(role.getId())){
+            getCurrentSession().update(role);
+        }
     }
 
     public Role getRole(Long id) {
@@ -45,12 +44,11 @@ public class RoleDAOImpl implements RoleDAO {
 
     public void deleteRole(Long id) {
         Role role = getRole(id);
-        if (role != null)
+        if (Alfred.notNull(role))
             getCurrentSession().delete(role);
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Owner> getRoles() {
+    public List<Role> getRoles() {
         return getCurrentSession().createQuery("from Role").list();
     }
 }

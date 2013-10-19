@@ -1,6 +1,7 @@
 package com.trax.dao.venue;
 
 import com.trax.models.Venue;
+import com.trax.utilities.Alfred;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,9 @@ public class VenueDAOImpl implements VenueDAO{
     }
 
     public void updateVenue(Venue venue){
-        Venue venueToUpdate = getVenue(venue.getId());
-        //todo add update stuff
-        getCurrentSession().update(venueToUpdate);
+        if(Alfred.notNull(venue.getId())){
+            getCurrentSession().update(venue);
+        }
     }
 
     public Venue getVenue(Long id){
@@ -42,7 +43,7 @@ public class VenueDAOImpl implements VenueDAO{
 
     public void deleteVenue(Long id){
         Venue venue = getVenue(id);
-        if(venue != null)
+        if(Alfred.notNull(venue))
             getCurrentSession().delete(venue);
     }
 

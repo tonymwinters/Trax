@@ -1,6 +1,7 @@
 package com.trax.dao.owner;
 
 import com.trax.models.Owner;
+import com.trax.utilities.Alfred;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,9 @@ public class OwnerDAOImpl implements OwnerDAO {
     }
 
     public void updateOwner(Owner owner) {
-        Owner ownerToUpdate = getOwner(owner.getId());
-        ownerToUpdate.setName(owner.getName());
-        getCurrentSession().update(ownerToUpdate);
+        if(Alfred.notNull(owner.getId())){
+            getCurrentSession().update(owner);
+        }
     }
 
     public Owner getOwner(Long id) {
@@ -42,7 +43,7 @@ public class OwnerDAOImpl implements OwnerDAO {
 
     public void deleteOwner(Long id) {
         Owner owner = getOwner(id);
-        if (owner != null)
+        if (Alfred.notNull(owner))
             getCurrentSession().delete(owner);
     }
 

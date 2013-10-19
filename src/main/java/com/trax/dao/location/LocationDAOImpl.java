@@ -1,6 +1,7 @@
 package com.trax.dao.location;
 
 import com.trax.models.Location;
+import com.trax.utilities.Alfred;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,9 @@ public class LocationDAOImpl implements LocationDAO{
     }
 
     public void updateLocation(Location location){
-        Location locationToUpdate = getLocation(location.getId());
-        //todo update stuff
-        getCurrentSession().update(locationToUpdate);
+        if(Alfred.notNull(location.getId())){
+            getCurrentSession().update(location);
+        }
     }
 
     public Location getLocation(Long id){
@@ -42,7 +43,7 @@ public class LocationDAOImpl implements LocationDAO{
 
     public void deleteLocation(Long id){
         Location location = getLocation(id);
-        if (location != null)
+        if (Alfred.notNull(location))
             getCurrentSession().delete(location);
     }
 
