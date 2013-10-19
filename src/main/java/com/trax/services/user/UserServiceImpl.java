@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService{
         return userDAO.getUser(username);
     }
 
-
     public void deleteUser(Long id) {
         userDAO.deleteUser(id);
     }

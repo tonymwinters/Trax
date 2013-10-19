@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @Repository
-public class LocationDAOImpl {
+public class LocationDAOImpl implements LocationDAO{
 
     @Autowired
     private SessionFactory sessionFactory;

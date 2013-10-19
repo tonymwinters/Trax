@@ -64,16 +64,12 @@
 
         <tr>
             <td>Role:</td>
-            <td><select name="roleId">
-                <c:forEach items="${roles}" var="role">
-                    <option value="${role.id}">${role}</option>
-                </c:forEach>
-            </select></td>
+            <td><c:forEach items="${roles}" var="role"><input type="checkbox" name="swag" value="${role.id}" />${role.name}</c:forEach></td>
         </tr>
 
 
         <tr>
-            <td><input type="submit" value="Add" /></td>
+            <td><input type="submit" value="Add User" /></td>
             <td></td>
         </tr>
         </tbody>

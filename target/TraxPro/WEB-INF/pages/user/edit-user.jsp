@@ -47,11 +47,6 @@
         </tr>
 
         <tr>
-            <td>Role</td>
-            <td><form:input path="role.name" /><form:hidden path="role.code" value="SWAG" /></td>
-        </tr>
-
-        <tr>
             <td>Username:</td>
             <td><form:input path="username" /></td>
         </tr>
@@ -68,6 +63,11 @@
                     <option value="${owner.id}">${owner}</option>
                 </c:forEach>
             </select></td>
+        </tr>
+
+        <tr>
+            <td>Role:</td>
+            <td><c:forEach items="${roles}" var="role"><input type="checkbox" name="swag" value="${role.id}" />${role.name}</c:forEach></td>
         </tr>
 
 

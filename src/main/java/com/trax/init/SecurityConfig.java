@@ -36,9 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.userDetailsService(customUserDetailsService)
 
                 .authorizeRequests()
+                .antMatchers("/**").authenticated()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/owner/**").hasRole("SUPER-USER")
-                .antMatchers("/user/**").hasRole("ADMINISTRATOR")
+//                .antMatchers("/user/**").hasRole("ADMINISTRATOR")
                 .and()
                 .formLogin()
                 .loginPage("/login")

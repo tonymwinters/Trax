@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @Repository
-public class VenueDAOImpl {
+public class VenueDAOImpl implements VenueDAO{
 
     @Autowired
     private SessionFactory sessionFactory;

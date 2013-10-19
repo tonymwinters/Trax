@@ -29,7 +29,11 @@
         <a href="${pageContext.request.contextPath}/owner/list.html">Owner list</a><br/> <br/><br/>
 
         <a href="${pageContext.request.contextPath}/user/add.html">Add new User</a><br/>
-        <a href="${pageContext.request.contextPath}/user/list.html">User list</a><br/>
+        <a href="${pageContext.request.contextPath}/user/list.html">User list</a><br/><br/>
+
+        <a href="${pageContext.request.contextPath}/user/add.html">Add new Venue</a><br/>
+        <a href="${pageContext.request.contextPath}/user/list.html">Venue list</a><br/>
+
         </p>
 
 </div>

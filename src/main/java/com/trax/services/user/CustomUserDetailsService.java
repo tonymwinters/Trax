@@ -44,6 +44,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 				getAuthorities(domainUser.getRoles())
 		);
 	}
+
+
 	
 	public Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {
 		List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(roles));

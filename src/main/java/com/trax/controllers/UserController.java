@@ -7,11 +7,14 @@ import com.trax.services.owner.OwnerService;
 import com.trax.services.role.RoleService;
 import com.trax.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +37,9 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping(value="/add", method= RequestMethod.GET)
+    ShaPasswordEncoder sha = new ShaPasswordEncoder(512);
+
+    @RequestMapping(value="/add", method=RequestMethod.GET)
     public ModelAndView addUserPage() {
         ModelAndView modelAndView = new ModelAndView("user/add-user");
 
@@ -47,12 +52,18 @@ public class UserController {
     }
 
     @RequestMapping(value="/add", method=RequestMethod.POST)
-    public ModelAndView addingUser(@ModelAttribute User user, @RequestParam String ownerId, @RequestParam String roleId){
+    public ModelAndView addingUser(@ModelAttribute User user, @RequestParam String ownerId, @RequestParam String[] swag){
 
         ModelAndView modelAndView = new ModelAndView("home");
         Owner owner = ownerService.getOwner(Long.parseLong(ownerId));
-        Role role = roleService.getRole(Long.parseLong(roleId));
+        Set<Role> usersRoles = new HashSet<Role>();
+
+        for(int i = 0; i < swag.length; ++i){
+            usersRoles.add(roleService.getRole(Long.parseLong(swag[i])));
+        }
+
         user.setOwner(owner);
+        user.setRoles(usersRoles);
         userService.addUser(user);
 
         String message = "User was successfully added.";

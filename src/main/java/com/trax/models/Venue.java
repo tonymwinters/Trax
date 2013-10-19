@@ -12,6 +12,9 @@ import javax.persistence.*;
  * Time: 7:22 PM
  * To change this template use File | Settings | File Templates.
  */
+
+@Entity
+@Table(name="venue")
 public class Venue {
 
     @Id
