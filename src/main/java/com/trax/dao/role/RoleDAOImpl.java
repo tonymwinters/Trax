@@ -48,7 +48,7 @@ public class RoleDAOImpl implements RoleDAO {
             getCurrentSession().delete(role);
     }
 
-    public List<Owner> getRoles() {
+    public List<Role> getRoles() {
         return getCurrentSession().createQuery("from Role").list();
     }
 }
