@@ -1,6 +1,7 @@
 package com.trax.dao.contact;
 
 import com.trax.models.Contact;
+import com.trax.utilities.Alfred;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,9 @@ public class ContactDAOImpl implements ContactDAO{
     }
 
     public void updateContact(Contact contact){
-        Contact contactToUpdate = getContact(contact.getId());
-        //todo update contact fields
-        getCurrentSession().update(contact);
-
+        if(Alfred.notNull(contact.getId())){
+            getCurrentSession().update(contact);
+        }
     }
 
     public Contact getContact(Long id){
@@ -42,7 +42,7 @@ public class ContactDAOImpl implements ContactDAO{
 
     public void deleteContact(Long id){
         Contact contact = getContact(id);
-        if(contact != null)
+        if(Alfred.notNull(contact))
             getCurrentSession().delete(contact);
     }
 
