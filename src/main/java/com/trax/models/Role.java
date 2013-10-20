@@ -39,7 +39,7 @@ public class Role {
     @Column(name="code")
     private String code;
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name="user_roles",
             joinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")},
             inverseJoinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")}

@@ -1,8 +1,5 @@
 package com.trax.init;
 
-import javax.sql.DataSource;
-
-import com.trax.services.user.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 @Configuration
@@ -21,25 +17,25 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private DataSource dataSource;
+	private CustomAuthenticationProvider customAuthenticationProvider;
 
     @Autowired
     UserDetailsService customUserDetailsService;
 
 	@Override
 	protected void registerAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().dataSource(dataSource);
+		auth.authenticationProvider(customAuthenticationProvider);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.userDetailsService(customUserDetailsService)
+		http.authenticationProvider(customAuthenticationProvider)
 
                 .authorizeRequests()
                 .antMatchers("/**").authenticated()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/owner/**").hasRole("SUPER-USER")
-//                .antMatchers("/user/**").hasRole("ADMINISTRATOR")
+                .antMatchers("/user/**").hasRole("ADMINISTRATOR")
                 .and()
                 .formLogin()
                 .loginPage("/login")

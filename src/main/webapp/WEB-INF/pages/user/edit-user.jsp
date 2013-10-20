@@ -67,7 +67,10 @@
 
         <tr>
             <td>Role:</td>
-            <td><c:forEach items="${roles}" var="role"><input type="checkbox" name="swag" value="${role.id}" />${role.name}</c:forEach></td>
+            <td><c:forEach items="${roles}" var="role">
+                    <input type="checkbox" name="swag" value="${role.id}" <c:if test="${usersRoles.contains(role.id)}">checked</c:if> />${role.name}
+                </c:forEach>
+            </td>
         </tr>
 
 

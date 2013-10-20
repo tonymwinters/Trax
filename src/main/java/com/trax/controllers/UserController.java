@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -62,6 +63,8 @@ public class UserController {
             usersRoles.add(roleService.getRole(Long.parseLong(swag[i])));
         }
 
+        user.setPassword(sha.encodePassword(user.getPassword(), null));
+
         user.setOwner(owner);
         user.setRoles(usersRoles);
         userService.addUser(user);
@@ -86,15 +89,36 @@ public class UserController {
     public ModelAndView editUserPage(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("user/edit-user");
         User user = userService.getUser(id);
+
+        ArrayList<Long> userRoles = new ArrayList<Long>();
+
+        for(Role role: user.getRoles()){
+            userRoles.add(role.getId());
+        }
+
         modelAndView.addObject("user",user);
+        modelAndView.addObject("roles", roleService.getRoles());
         modelAndView.addObject("owners", ownerService.getOwners());
+        modelAndView.addObject("usersRoles", userRoles);
+
         return modelAndView;
     }
 
     @RequestMapping(value="/edit/{id}", method=RequestMethod.POST)
-    public ModelAndView editingUser(@ModelAttribute User user, @PathVariable Long id) {
+    public ModelAndView editingUser(@ModelAttribute User user, @RequestParam String ownerId, @RequestParam String[] swag) {
 
         ModelAndView modelAndView = new ModelAndView("home");
+
+        Owner owner = ownerService.getOwner(Long.parseLong(ownerId));
+        Set<Role> usersRolesToUpdate = new HashSet<Role>();
+
+        for(int i = 0; i < swag.length; ++i){
+            usersRolesToUpdate.add(roleService.getRole(Long.parseLong(swag[i])));
+        }
+
+        user.setPassword(sha.encodePassword(user.getPassword(), null));
+        user.setOwner(owner);
+        user.setRoles(usersRolesToUpdate);
 
         userService.updateUser(user);
 

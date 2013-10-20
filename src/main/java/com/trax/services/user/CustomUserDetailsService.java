@@ -34,15 +34,24 @@ public class CustomUserDetailsService implements UserDetailsService {
 		boolean credentialsNonExpired = true;
 		boolean accountNonLocked = true;
 
-		return new org.springframework.security.core.userdetails.User(
-				domainUser.getUsername(),
-				domainUser.getPassword(), 
-				enabled, 
-				accountNonExpired, 
-				credentialsNonExpired, 
-				accountNonLocked,
-				getAuthorities(domainUser.getRoles())
-		);
+        if(domainUser != null){
+
+            org.springframework.security.core.userdetails.User theUser = new org.springframework.security.core.userdetails.User(
+                    domainUser.getUsername(),
+                    domainUser.getPassword(),
+                    enabled,
+                    accountNonExpired,
+                    credentialsNonExpired,
+                    accountNonLocked,
+                    getAuthorities(domainUser.getRoles())
+            );
+
+            return theUser;
+        }
+
+        else{
+            throw new UsernameNotFoundException("Username Not Found");
+        }
 	}
 
 
