@@ -7,9 +7,6 @@
 
 /Trax.iml
 /.idea/
-/target/.DS_Store
+/target/
 /.DS_Store
 /atlassian-ide-plugin.xml
-target
-
-/target/TraxPro/WEB-INF/pages/user/edit-user.jsp
