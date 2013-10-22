@@ -3,6 +3,7 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href='<c:url value="resources/reset.css" />' media="all" />
+    <link rel="stylesheet" type="text/css" href='<c:url value="resources/bootstrap/css/bootstrap.css" />' media="all" />
     <link rel="stylesheet" type="text/css" href='<c:url value="resources/style.css" />' media="all" />
 </head>
 
@@ -22,8 +23,8 @@
 </div>
 
 <div class="body-wrapper">
+    <div class="container">
 
-        <p>
         ${message}<br/>
         <a href="${pageContext.request.contextPath}/owner/add.html">Add new Owner</a><br/>
         <a href="${pageContext.request.contextPath}/owner/list.html">Owner list</a><br/> <br/><br/>
@@ -31,10 +32,11 @@
         <a href="${pageContext.request.contextPath}/user/add.html">Add new User</a><br/>
         <a href="${pageContext.request.contextPath}/user/list.html">User list</a><br/><br/>
 
-        <a href="${pageContext.request.contextPath}/user/add.html">Add new Venue</a><br/>
-        <a href="${pageContext.request.contextPath}/user/list.html">Venue list</a><br/>
+        <a href="${pageContext.request.contextPath}/venue/add.html">Add new Venue</a><br/>
+        <a href="${pageContext.request.contextPath}/venue/list.html">Venue list</a><br/>
 
-        </p>
+
+    </div>
 
 </div>
 </body>

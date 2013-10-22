@@ -23,7 +23,7 @@ body{
 }
 
 #top-bar{
-    height: 65px;
+    height: 95px;
     padding: 15px;
 }
 
@@ -36,12 +36,11 @@ body{
 #user-actions {
     float: right;
     display: inline-block;
-    margin: 15px;
 }
 
 /* Login Container */
 #login-container{
-    width: 650px;
+    width: 575px;
     margin: 0 auto;
     height: 450px;
     background-color: #FFF;
@@ -49,7 +48,7 @@ body{
 }
 
 #logo-holder{
-    width: 650px;
+    width: 575px;
     margin: 0 auto;
     margin-top: 45px;
 }
@@ -64,4 +63,12 @@ body{
     letter-spacing: -1px;
     display: inline-block;
     margin-right: 25px;
+}
+
+h2{
+    color: #eee;
+}
+
+.checkbox{
+    color: #eee;
 }

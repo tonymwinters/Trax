@@ -13,3 +13,13 @@
 target
 
 /target/TraxPro/WEB-INF/pages/user/edit-user.jsp
+/target/TraxPro/WEB-INF/pages/venue/list-venues.jsp
+/target/TraxPro/WEB-INF/pages/venue/edit-venue.jsp
+/target/TraxPro/WEB-INF/pages/venue/add-venue.jsp
+/target/TraxPro/WEB-INF/pages/user/list-users.jsp
+/target/TraxPro/WEB-INF/pages/user/add-user.jsp
+/target/TraxPro/WEB-INF/pages/owner/list-owners.jsp
+/target/TraxPro/WEB-INF/pages/owner/edit-owner.jsp
+/target/TraxPro/WEB-INF/pages/owner/add-owner.jsp
+/target/TraxPro/WEB-INF/pages/login.jsp
+/target/TraxPro/resources/style.css

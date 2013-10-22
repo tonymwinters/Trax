@@ -10,52 +10,75 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
     <title>Add User page</title>
+
+    <link rel="stylesheet" type="text/css" href='<c:url value="../resources/reset.css" />' media="all" />
+    <link rel="stylesheet" type="text/css" href='<c:url value="../resources/bootstrap/css/bootstrap.css" />' media="all" />
+    <link rel="stylesheet" type="text/css" href='<c:url value="../resources/style.css" />' media="all" />
 </head>
 <body>
+
+<div id="top-strip"></div>
+<div id="top-bar">
+    <div id="logo"><img src="../resources/images/logo-small.png" /></div>
+    <div id="user-actions">
+        <c:url value="/logout" var="logoutUrl"/>
+        <form:form name="f" action="${logoutUrl}" method="post">
+            <div class="form-actions">
+                <h3 id="logged-in-user"><%= (request.getUserPrincipal() != null) ? request.getUserPrincipal().getName() : "" %></h3>
+                <%= (request.getUserPrincipal() != null) ? "<button class='default-button' type='submit'>Log Out</button>": "" %>
+
+            </div>
+        </form:form>
+    </div>
+</div>
+
+<div class="body-wrapper">
+<div class="container">
+
 <h1>Add A New User</h1>
 <p>Here you can add a new User.</p>
 <form:form method="POST" commandName="user" action="${pageContext.request.contextPath}/user/add.html">
     <table>
         <tbody>
         <tr>
-            <td>First Name:</td>
-            <td><form:input path="firstName" /></td>
+            <td class="col-lg-2 control-label">First Name:</td>
+            <td><form:input path="firstName" cssClass="form-control"/></td>
         </tr>
 
         <tr>
-            <td>Middle Name:</td>
-            <td><form:input path="middleName" /></td>
+            <td class="col-lg-2 control-label">Middle Name:</td>
+            <td><form:input path="middleName" cssClass="form-control"/></td>
         </tr>
 
         <tr>
-            <td>Last Name:</td>
-            <td><form:input path="lastName" /></td>
+            <td class="col-lg-2 control-label">Last Name:</td>
+            <td><form:input path="lastName" cssClass="form-control"/></td>
         </tr>
 
 
         <tr>
-            <td>Phone Number</td>
-            <td><form:input path="contact.phoneNumber" /><form:hidden path="contact.name" value="tony"/></td>
+            <td class="col-lg-2 control-label">Phone Number</td>
+            <td><form:input path="contact.phoneNumber" cssClass="form-control"/><form:hidden path="contact.name" value="tony"/></td>
         </tr>
 
         <tr>
-            <td>Email Address</td>
-            <td><form:input path="contact.emailAddress" /></td>
+            <td class="col-lg-2 control-label">Email Address</td>
+            <td><form:input path="contact.emailAddress" cssClass="form-control"/></td>
         </tr>
 
         <tr>
-            <td>Username:</td>
-            <td><form:input path="username" /></td>
+            <td class="col-lg-2 control-label">Username:</td>
+            <td><form:input path="username" cssClass="form-control"/></td>
         </tr>
 
         <tr>
-            <td>Password:</td>
-            <td><form:input path="password" /></td>
+            <td class="col-lg-2 control-label">Password:</td>
+            <td><form:input path="password" cssClass="form-control"/></td>
         </tr>
 
         <tr>
-            <td>Owner:</td>
-            <td><select name="ownerId">
+            <td class="col-lg-2 control-label">Owner:</td>
+            <td><select name="ownerId" class="form-control">
                 <c:forEach items="${owners}" var="owner">
                     <option value="${owner.id}">${owner}</option>
                 </c:forEach>
@@ -63,9 +86,10 @@
         </tr>
 
         <tr>
-            <td>Role:</td>
-            <td><c:forEach items="${roles}" var="role"><input type="checkbox" name="swag" value="${role.id}" />${role.name}</c:forEach></td>
+            <td class="col-lg-2 control-label">Role:</td>
+            <td><c:forEach items="${roles}" var="role"><input type="checkbox" class="checkbox-inline" name="swag" value="${role.id}" />${role.name}</c:forEach></td>
         </tr>
+
 
 
         <tr>
@@ -77,5 +101,7 @@
 </form:form>
 
 <p><a href="${pageContext.request.contextPath}/index.html">Home page</a></p>
+</div>
+</div>
 </body>
 </html>

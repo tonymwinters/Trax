@@ -116,6 +116,7 @@ public class UserController {
             usersRolesToUpdate.add(roleService.getRole(Long.parseLong(swag[i])));
         }
 
+        user.setRoles(null);
         user.setPassword(sha.encodePassword(user.getPassword(), null));
         user.setOwner(owner);
         user.setRoles(usersRolesToUpdate);

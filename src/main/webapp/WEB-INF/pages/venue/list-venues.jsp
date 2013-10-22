@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 
@@ -16,11 +17,33 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
     <title>List of Venues</title>
+
+    <link rel="stylesheet" type="text/css" href='<c:url value="../resources/reset.css" />' media="all" />
+    <link rel="stylesheet" type="text/css" href='<c:url value="../resources/bootstrap/css/bootstrap.css" />' media="all" />
+    <link rel="stylesheet" type="text/css" href='<c:url value="../resources/style.css" />' media="all" />
 </head>
 <body>
-<h1>List of Venues</h1>
-<p>Venues of Bitches and Hoes</p>
-<table border="1px" cellpadding="0" cellspacing="0" >
+
+<div id="top-strip"></div>
+<div id="top-bar">
+    <div id="logo"><img src="../resources/images/logo-small.png" /></div>
+    <div id="user-actions">
+        <c:url value="/logout" var="logoutUrl"/>
+        <form:form name="f" action="${logoutUrl}" method="post">
+            <div class="form-actions">
+                <h3 id="logged-in-user"><%= (request.getUserPrincipal() != null) ? request.getUserPrincipal().getName() : "" %></h3>
+                <%= (request.getUserPrincipal() != null) ? "<button class='default-button' type='submit'>Log Out</button>": "" %>
+
+            </div>
+        </form:form>
+    </div>
+</div>
+
+
+<div class="body-wrapper">
+<div class="container">
+    <h1>List of Venues</h1>
+<table class="table table-hover" >
     <thead>
     <tr>
         <th width="10%">id</th><th width="15%">Name</th><th width="10%">actions</th>
@@ -45,5 +68,7 @@
 
 <p><a href="${pageContext.request.contextPath}/index.html">Home page</a></p>
 
+</div>
+</div>
 </body>
 </html>
