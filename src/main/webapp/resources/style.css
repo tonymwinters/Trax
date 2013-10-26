@@ -3,17 +3,20 @@ body{
 }
 
 .body-wrapper{
-    background-color: #FFF;
+    background-color: #e7e7e7;
     color: #000
 }
 
 .default-button{
-    background-color: #08d1d1;
-    color: #FFF;
-    width: 100px;
+    display: inline-block;
+    min-width: 100px;
     height: 40px;
     border: none;
-    padding: 15px;
+    text-align: center;
+    padding-top: 10px;
+    margin-right: 15px;
+    background-color: #12c2c0;
+    color: #FFF;
 }
 
 .default-button:hover{
@@ -24,7 +27,7 @@ body{
 
 #top-strip{
     height: 6px;
-    background-color: #08d1d1;
+    background-color: #12c2c0;
     margin: 0;
     padding: 0;
 }
@@ -78,4 +81,63 @@ h2{
 
 .checkbox{
     color: #eee;
+}
+
+#app_container{
+    width: 960;
+    margin: 0 auto;
+    margin-bottom: 5%;
+
+}
+
+.app_wrapper{
+    width:200px;
+    display: inline-block;
+    margin-left: 12%;
+    margin-top: 5%;
+}
+
+.app_wrapper span{
+    font-size: 24px;
+    color: #afafaf;
+    font-weight: 200;
+}
+
+.app_box{
+    width: 200px;
+    height: 200px;
+    background: #12c2c0 url('images/apps_sprite.png') no-repeat;
+    -webkit-transition: linear .1s;
+    -moz-transition: linear .1s;
+    -o-transition: linear .1s;
+    transition: linear .1s;
+}
+
+.app_box:hover{
+    text-decoration: none;
+    color: #afafaf;
+    background-color: #038888;
+}
+
+.app_venues{
+    background-position: 0px 0px;
+}
+
+.app_track{
+    background-position: 0px -200px;
+}
+
+.app_sessions{
+    background-position: -200px -200px;
+}
+
+.app_keypad{
+    background-position: -200px 0px;
+}
+
+.app_people{
+    background-position: -400px 0px;
+}
+.app_add{
+    background-position: -400px -200px;
 }

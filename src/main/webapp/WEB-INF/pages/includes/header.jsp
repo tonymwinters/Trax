@@ -14,7 +14,7 @@
         <c:url value="/logout" var="logoutUrl"/>
         <form:form id="logout_form" name="f" action="${logoutUrl}" method="post">
             <div class="form-actions">
-                <h3 id="logged-in-user">Welcome, <%= (request.getUserPrincipal() != null) ? request.getUserPrincipal().getName() : "" %></h3>
+                <h3 id="logged-in-user"><%= (request.getUserPrincipal() != null) ? request.getUserPrincipal().getName() : "" %></h3>
                 <a href="#" class="default-button">Settings</a>
                 <a href="#" class="default-button">Account</a>
                 <a href="#" onclick="document.getElementById('logout_form').submit();" class="default-button">Logout</a>
