@@ -23,6 +23,19 @@
         <c:url value="/login" var="loginUrl"/>
         <form:form name="f" action="${loginUrl}" method="post" cssClass="form-signin">
             <h2 class="form-signin-heading">Please sign in</h2>
+
+
+            <c:if test="${error != null}">
+                <div class="alert alert-error login_error">
+                    Invalid username and password.
+                </div>
+            </c:if>
+            <c:if test="${param.logout != null}">
+                <div class="alert alert-success">
+                    You have been logged out.
+                </div>
+            </c:if>
+
             <input type="text" name="username" id="username" class="form-control" placeholder="Email address" autofocus>
             <input type="password" name="password" id="password" class="form-control" placeholder="Password">
             <label class="checkbox">
@@ -36,6 +49,7 @@
 
 
     <%--<div id='login-container'>--%>
+
         <%--<div id="login-form-holder">--%>
 
         <%----%>
@@ -45,15 +59,3 @@
     <%--</div>--%>
     </body>
 </html>
-
-
-<c:if test="${error != null}">
-    <div class="alert alert-error">
-        Invalid username and password.
-    </div>
-</c:if>
-<c:if test="${param.logout != null}">
-    <div class="alert alert-success">
-        You have been logged out.
-    </div>
-</c:if>
