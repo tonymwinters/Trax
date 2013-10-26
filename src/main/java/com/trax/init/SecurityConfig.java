@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authenticationProvider(customAuthenticationProvider)
 
                 .authorizeRequests()
-                .antMatchers("/**").authenticated()
+                .antMatchers("/").authenticated()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/owner/**").hasRole("SUPER-USER")
                 .antMatchers("/user/**").hasRole("ADMINISTRATOR")
@@ -40,11 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/index.html")
-                .failureUrl("/error-login.html")
                 .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/index.html");
+                .logoutSuccessUrl("/login?logout");
 	}
 
     @Override
