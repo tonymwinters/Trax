@@ -13,6 +13,13 @@ body{
     width: 100px;
     height: 40px;
     border: none;
+    padding: 15px;
+}
+
+.default-button:hover{
+    text-decoration: none;
+    color: #FFF;
+    background-color: #038888;
 }
 
 #top-strip{

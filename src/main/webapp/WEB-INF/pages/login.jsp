@@ -25,7 +25,7 @@
             <h2 class="form-signin-heading">Please sign in</h2>
 
 
-            <c:if test="${error != null}">
+            <c:if test="${param.error != null}">
                 <div class="alert alert-error login_error">
                     Invalid username and password.
                 </div>
@@ -36,8 +36,8 @@
                 </div>
             </c:if>
 
-            <input type="text" name="username" id="username" class="form-control" placeholder="Email address" autofocus>
-            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+            <input type="text" name="username" id="username" class="form-control form_shadow_clear" placeholder="Email address" autofocus>
+            <input type="password" name="password" id="password" class="form-control form_shadow_clear" placeholder="Password">
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> Remember me
             </label>
@@ -45,17 +45,5 @@
         </form:form>
 
     </div>
-
-
-
-    <%--<div id='login-container'>--%>
-
-        <%--<div id="login-form-holder">--%>
-
-        <%----%>
-        <%--</div>--%>
-
-
-    <%--</div>--%>
     </body>
 </html>

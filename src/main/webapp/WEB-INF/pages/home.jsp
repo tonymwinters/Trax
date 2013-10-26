@@ -15,7 +15,11 @@
         <form:form name="f" action="${logoutUrl}" method="post">
             <div class="form-actions">
                 <h3 id="logged-in-user"><%= (request.getUserPrincipal() != null) ? request.getUserPrincipal().getName() : "" %></h3>
-                <%= (request.getUserPrincipal() != null) ? "<button class='default-button' type='submit'>Log Out</button>": "" %>
+                <a href="#" class="default-button">Settings</a>
+                <a href="#" class="default-button">Account</a>
+                <a href="${logoutUrl}" class="default-button">Logout</a>
+
+
 
             </div>
         </form:form>
