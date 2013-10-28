@@ -1,5 +1,6 @@
 package com.trax.models;
 
+import com.google.gson.annotations.Expose;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -31,8 +32,11 @@ public class Owner {
                     @Parameter(name = "initial_value", value = "1"),
                     @Parameter(name = "increment_size", value = "1") }
     )
+
+    @Expose
     private Long id;
 
+    @Expose
     @Column(name="name")
     private String name;
 

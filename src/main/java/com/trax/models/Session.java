@@ -1,10 +1,17 @@
 package com.trax.models;
 
+import com.trax.services.session.SessionService;
+import com.trax.services.venue.VenueService;
+import com.trax.utilities.Alfred;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import com.google.gson.annotations.SerializedName;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.security.Timestamp;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,6 +20,9 @@ import java.security.Timestamp;
  * Time: 5:01 PM
  * To change this template use File | Settings | File Templates.
  */
+
+@Entity
+@Table(name="public.session")
 public class Session {
 
     @Id
@@ -26,21 +36,29 @@ public class Session {
     )
     private Long id;
 
+    @SerializedName("name")
     @Column(name="name")
     private String name;
 
+    @SerializedName("description")
     @Column(name="description")
     private String description;
 
+    @SerializedName("startTime")
     @Column(name="start_time")
-    private Timestamp startTime;
+    private Date startTime;
 
+    @SerializedName("endTime")
     @Column(name="end_time")
-    private Timestamp endTime;
+    private Date endTime;
 
     @ManyToOne
     @JoinColumn(name="venue_id")
     private Venue venue;
+
+    @Transient
+    @SerializedName("venueId")
+    private Long venueId;
 
     public Long getId() {
         return id;
@@ -66,19 +84,40 @@ public class Session {
         this.description = description;
     }
 
-    public Timestamp getStartTime() {
+    public Date getStartTime() {
         return this.startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public Timestamp getEndTime() {
+    public Date getEndTime() {
         return this.endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Venue getVenue(){
+        return this.venue;
+    }
+
+    public void setVenue(Venue venue){
+        this.venue = venue;
+        this.venueId = venue.getId();
+    }
+
+    public Long getVenueId(){
+        if(Alfred.notNull(this.venueId)){
+            return this.venueId;
+        }
+        return this.venue.getId();
+    }
+
+    public void setVenueId(Long venueId){
+        this.venueId = venueId;
+
     }
 }
