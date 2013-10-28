@@ -1,6 +1,7 @@
 package com.trax.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.trax.services.contact.ContactService;
 import com.trax.services.owner.OwnerService;
 import com.trax.services.role.RoleService;
@@ -147,6 +148,7 @@ public class ResourceController {
     public String listOwners(@RequestBody String requestJson, Principal principal){
         String response;
         try{
+            gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
             response = renderSuccess(ownerService.getOwners());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
@@ -196,6 +198,7 @@ public class ResourceController {
     public String listRoles(@RequestBody String requestJson, Principal principal){
         String response;
         try{
+            gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
             response = renderSuccess(roleService.getRoles());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
@@ -294,6 +297,7 @@ public class ResourceController {
     public String listUsers(@RequestBody String requestJson, Principal principal){
         String response;
         try{
+            gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
             response = renderSuccess(userService.getUsers());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
