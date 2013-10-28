@@ -49,7 +49,7 @@ public class ResourceController {
     public String listContacts(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            response = renderSuccess(contactService.getContacts());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
@@ -147,7 +147,7 @@ public class ResourceController {
     public String listOwners(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            response = renderSuccess(ownerService.getOwners());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
@@ -196,7 +196,7 @@ public class ResourceController {
     public String listRoles(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            response = renderSuccess(roleService.getRoles());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
@@ -245,7 +245,7 @@ public class ResourceController {
     public String listSessions(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            response = renderSuccess(sessionService.getSessions());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
@@ -294,7 +294,7 @@ public class ResourceController {
     public String listUsers(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            response = renderSuccess(userService.getUsers());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
@@ -343,7 +343,7 @@ public class ResourceController {
     public String listVenues(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            response = renderSuccess(venueService.getVenues());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
