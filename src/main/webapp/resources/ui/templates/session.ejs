@@ -1,0 +1,21 @@
+<thead>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Start Time</th>
+    <th>End Time</th>
+    <th>Actions</th>
+</thead>
+<tbody>
+    <% for(var i = 0; i < object.length; ++i){ %>
+    <tr>
+        <td><%= object[i].name %></td>
+        <td><%= object[i].description %></td>
+        <td><%= object[i].startTime %></td>
+        <td><%= object[i].endTime %></td>
+        <td>
+            <a href="#">Edit</a><br>
+            <a href="#">Delete</a><br>
+        </td>
+    </tr>
+    <% } %>
+</tbody>

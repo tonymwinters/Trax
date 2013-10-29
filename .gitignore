@@ -23,3 +23,5 @@ target
 /target/TraxPro/WEB-INF/pages/owner/add-owner.jsp
 /target/TraxPro/WEB-INF/pages/login.jsp
 /target/TraxPro/resources/style.css
+
+/src/main/webapp/resources/ui/.DS_Store

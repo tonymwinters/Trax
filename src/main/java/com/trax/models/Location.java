@@ -1,5 +1,6 @@
 package com.trax.models;
 
+import com.google.gson.annotations.Expose;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -31,21 +32,27 @@ public class Location {
     @JoinColumn(name="owner_id")
     private Owner owner;
 
+    @Expose
     @Column(name="name")
     private String name;
 
+    @Expose
     @Column(name="address_line_1")
     private String addressLine1;
 
+    @Expose
     @Column(name="address_line_2")
     private String addressLine2;
 
+    @Expose
     @Column(name="city")
     private String city;
 
+    @Expose
     @Column(name="region_code")
     private String regionCode;
 
+    @Expose
     @Column(name="postal_code")
     private String postalCode;
 

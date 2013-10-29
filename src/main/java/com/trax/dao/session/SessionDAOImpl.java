@@ -46,6 +46,6 @@ public class SessionDAOImpl implements SessionDAO{
     }
 
     public List<Session> getSessions(){
-        return getCurrentSession().createQuery("from Venue").list();
+        return getCurrentSession().createQuery("from Session").list();
     }
 }

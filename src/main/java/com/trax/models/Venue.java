@@ -1,5 +1,6 @@
 package com.trax.models;
 
+import com.google.gson.annotations.Expose;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -28,6 +29,7 @@ public class Venue {
     )
     private Long id;
 
+    @Expose
     @Column(name="name")
     private String name;
 
@@ -35,10 +37,12 @@ public class Venue {
     @JoinColumn(name="owner_id")
     private Owner owner;
 
+    @Expose
     @OneToOne(cascade= CascadeType.ALL)
     @JoinColumn(name="contact_id")
     private Contact contact;
 
+    @Expose
     @OneToOne(cascade= CascadeType.ALL)
     @JoinColumn(name="location_id")
     private Location location;

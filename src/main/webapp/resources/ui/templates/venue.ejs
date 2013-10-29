@@ -1,0 +1,19 @@
+<thead>
+    <th>Name</th>
+    <th>Location</th>
+    <th>Phone</th>
+    <th>Actions</th>
+</thead>
+<tbody>
+    <% for(var i = 0; i < object.length; ++i){ %>
+    <tr>
+        <td><%= object[i].name %></td>
+        <td><%= object[i].location.addressLine1 %></td>
+        <td><%= object[i].contact.phoneNumber %></td>
+        <td>
+            <a href="#">Edit</a><br>
+            <a href="#">Delete</a><br>
+        </td>
+    </tr>
+    <% } %>
+</tbody>

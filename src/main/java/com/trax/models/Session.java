@@ -1,5 +1,6 @@
 package com.trax.models;
 
+import com.google.gson.annotations.Expose;
 import com.trax.services.session.SessionService;
 import com.trax.services.venue.VenueService;
 import com.trax.utilities.Alfred;
@@ -36,22 +37,27 @@ public class Session {
     )
     private Long id;
 
+    @Expose
     @SerializedName("name")
     @Column(name="name")
     private String name;
 
+    @Expose
     @SerializedName("description")
     @Column(name="description")
     private String description;
 
+    @Expose
     @SerializedName("startTime")
     @Column(name="start_time")
     private Date startTime;
 
+    @Expose
     @SerializedName("endTime")
     @Column(name="end_time")
     private Date endTime;
 
+    @Expose
     @ManyToOne
     @JoinColumn(name="venue_id")
     private Venue venue;
