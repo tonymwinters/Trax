@@ -31,6 +31,10 @@ Trax.Model.Venue.VenueTable = Class.create({
     initialize: function(){
         var data = Trax.ajax("resources/venue/list", {});
         var table = $('page-title-header').update("Venues");
+        $('table-title-header').update("Venues");
+        $('table-add-button').update("New Venue");
+        $('table-search').setAttribute("placeholder", "Search Venues");
+        $('table-href').setAttribute("href", "http://venuesURL");
         this.populateTable(data);
 
     },
@@ -58,6 +62,10 @@ Trax.Model.User.UserTable = Class.create({
     initialize: function(){
         var data = Trax.ajax("resources/user/list", {});
         var table = $('page-title-header').update("Users");
+        $('table-title-header').update("Users");
+        $('table-add-button').update("New User");
+        $('table-search').setAttribute("placeholder", "Search Users");
+        $('table-href').setAttribute("href", "http://usersURL");
         this.populateTable(data);
 
     },
@@ -86,6 +94,10 @@ Trax.Model.Session.SessionTable = Class.create({
     initialize: function(){
         var data = Trax.ajax("resources/session/list", {});
         var table = $('page-title-header').update("Sessions");
+        $('table-title-header').update("Sessions");
+        $('table-add-button').update("New Session");
+        $('table-search').setAttribute("placeholder", "Search Sessions");
+        $('table-href').setAttribute("href", "http://sessionsURL");
         this.populateTable(data);
 
     },

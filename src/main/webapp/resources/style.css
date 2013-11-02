@@ -37,6 +37,9 @@ body{
     padding: 15px;
 }
 
+#main-admin-table{
+}
+
 
 #logo{
     float: left;
@@ -141,3 +144,91 @@ h2{
 .app_add{
     background-position: -400px -200px;
 }
+.table_wrapper{
+    display: inline-block;
+    background-color: #50585C;
+}
+
+.trax_table{
+    width: 840px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 30px;
+}
+
+.trax_table thead{
+}
+
+.trax_table thead tr{
+    background-color: lightgrey;
+}
+
+.trax_table tbody{
+}
+
+.trax_table a{
+    color: white;
+}
+
+.trax_table tbody a{
+    dispaly: inline-block;
+}
+
+.trax_table tbody a:hover{
+    text-decoration: none;
+}
+
+.trax_table tbody tr:nth-child(even){
+    background-color: white;
+}
+
+.trax_table tbody tr:nth-child(odd){
+    background-color: #FAFAFA;
+}
+
+.trax_table .edit_button{
+    display: inline-block;
+    padding: 5px;
+    background-color: #12c2c0;
+    width: 50px;
+    text-align: center;
+}
+
+.trax_table .delete_button{
+    display: inline-block;
+    padding: 5px;
+    background-color: #FF6969;
+    width: 50px;
+    text-align: center;
+}
+
+.table_title_h1{
+    display: inline-block;
+    padding-left: 20px;
+    font-weight: 200;
+    color: white;
+}
+
+.table-add-new{
+    display: inline-block;
+    width: 100px;
+    height: 40px;
+    background-color: #12c2c0;
+    float: right;
+    margin-top: 18px;
+    margin-right: 20px;
+    color: white;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.table-search{
+    float: right;
+    display: inline-block;
+    margin-top: 19px;
+    margin-right: 40px;
+    height: 38px;
+    width: 300px;
+    font-weight: 200;
+}
+
