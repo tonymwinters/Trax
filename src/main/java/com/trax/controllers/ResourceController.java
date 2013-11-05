@@ -1,23 +1,24 @@
 package com.trax.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
+import com.trax.models.Owner;
 import com.trax.services.contact.ContactService;
 import com.trax.services.owner.OwnerService;
 import com.trax.services.role.RoleService;
 import com.trax.services.session.SessionService;
 import com.trax.services.user.UserService;
 import com.trax.services.venue.VenueService;
+import com.trax.utilities.Alfred;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Location for the frontend to access crud operations
@@ -26,12 +27,46 @@ import java.util.Map;
 @Controller
 @RequestMapping(value="/resources")
 public class ResourceController {
-    Gson gson = new Gson();
+    Gson gson = new GsonBuilder()
+            .excludeFieldsWithModifiers(Modifier.TRANSIENT)
+            .serializeNulls()
+            .setPrettyPrinting()
+
+            // Serialize Date class
+            .registerTypeAdapter(Date.class, new JsonSerializer<Date>(){
+                public JsonElement serialize(Date date, Type type, JsonSerializationContext context){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+                    return new JsonPrimitive(sdf.format(date.getTime()));
+                }
+            })
+
+            // Serialize Sets
+            .registerTypeAdapter(Set.class, new JsonSerializer<Set>(){
+                public JsonElement serialize(Set set, Type type, JsonSerializationContext context){
+                    JsonArray jsonArray = new JsonArray();
+
+                    for (Object object : set) {
+                        final JsonElement element = context.serialize(object);
+                        jsonArray.add(element);
+                    }
+
+                    return jsonArray;
+                }
+            })
+
+            .create();
+
 
     private String renderSuccess(Object object){
         Map<Object, Object> response =  new HashMap<Object, Object>();
         response.put("success", true);
         response.put("object", object);
+        return gson.toJson(response);
+    }
+
+    private String renderSuccess(){
+        Map<Object, Object> response =  new HashMap<Object, Object>();
+        response.put("success", true);
         return gson.toJson(response);
     }
 
@@ -148,8 +183,23 @@ public class ResourceController {
     public String listOwners(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
             response = renderSuccess(ownerService.getOwners());
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/owner/{id}", method= RequestMethod.GET)
+    public String listOwners(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Owner owner = ownerService.getOwner(id);
+            if(Alfred.isNull(owner)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = renderSuccess(owner);
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
@@ -161,33 +211,62 @@ public class ResourceController {
     public String addOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            Owner newOwner = gson.fromJson(requestJson, Owner.class);
+            ownerService.addOwner(newOwner);
+            response = renderSuccess(newOwner);
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
-        return response;}
+        return response;
+    }
 
     @ResponseBody
-    @RequestMapping(value="/update", method= RequestMethod.POST)
+    @RequestMapping(value="/owner/update", method= RequestMethod.POST)
     public String updateOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            Owner owner = gson.fromJson(requestJson, Owner.class);
+            ownerService.updateOwner(owner);
+            response = renderSuccess(owner);
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
-        return response;}
+        return response;
+    }
 
     @ResponseBody
     @RequestMapping(value="/owner/delete", method= RequestMethod.POST)
     public String deleteOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            Owner owner = gson.fromJson(requestJson, Owner.class);
+            if(Alfred.isNull(owner)){
+                throw new Exception("Object doesn't exist.");
+            }
+            ownerService.deleteOwner(owner.getId());
+            response = renderSuccess();
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
-        return response;}
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/owner/delete/{id}", method= RequestMethod.GET)
+    public String deleteOwner(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Owner owner = ownerService.getOwner(id);
+            if(Alfred.isNull(owner)){
+                throw new Exception("Object doesn't exist.");
+            }
+            ownerService.deleteOwner(id);
+            response = renderSuccess();
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
     //endregion
 
     //region Role
@@ -198,7 +277,12 @@ public class ResourceController {
     public String listRoles(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
+            gson = new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .excludeFieldsWithModifiers(Modifier.TRANSIENT)
+                    .serializeNulls()
+                    .setPrettyPrinting()
+                    .create();
             response = renderSuccess(roleService.getRoles());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
@@ -297,7 +381,6 @@ public class ResourceController {
     public String listUsers(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
             response = renderSuccess(userService.getUsers());
         } catch (Exception ex){
             response = renderError(ex.getMessage());
