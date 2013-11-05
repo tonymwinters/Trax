@@ -2,6 +2,7 @@ package com.trax.controllers;
 
 import com.google.gson.*;
 import com.trax.models.Owner;
+import com.trax.models.Session;
 import com.trax.services.contact.ContactService;
 import com.trax.services.owner.OwnerService;
 import com.trax.services.role.RoleService;
@@ -213,7 +214,7 @@ public class ResourceController {
         try{
             Owner newOwner = gson.fromJson(requestJson, Owner.class);
             ownerService.addOwner(newOwner);
-            response = renderSuccess(newOwner);
+            response = renderSuccess(ownerService.getOwner(newOwner.getId()));
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
@@ -340,37 +341,82 @@ public class ResourceController {
     }
 
     @ResponseBody
+    @RequestMapping(value="/session/{id}", method= RequestMethod.GET)
+    public String listSessions(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Session session = sessionService.getSession(id);
+            if(Alfred.isNull(session)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = renderSuccess(session);
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
     @RequestMapping(value="/session/add", method= RequestMethod.POST)
     public String addSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            Session newSession = gson.fromJson(requestJson, Session.class);
+            sessionService.addSession(newSession);
+            response = renderSuccess(sessionService.getSession(newSession.getId()));
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
-        return response;}
+        return response;
+    }
 
     @ResponseBody
     @RequestMapping(value="/session/update", method= RequestMethod.POST)
     public String updateSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            Session session = gson.fromJson(requestJson, Session.class);
+            sessionService.updateSession(session);
+            response = renderSuccess(session);
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
-        return response;}
+        return response;
+    }
 
     @ResponseBody
     @RequestMapping(value="/session/delete", method= RequestMethod.POST)
     public String deleteSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            Session session = gson.fromJson(requestJson, Session.class);
+            if(Alfred.isNull(session)){
+                throw new Exception("Object doesn't exist.");
+            }
+            sessionService.deleteSession(session.getId());
+            response = renderSuccess();
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
-        return response;}
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/session/delete/{id}", method= RequestMethod.GET)
+    public String deleteSession(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Session session = sessionService.getSession(id);
+            if(Alfred.isNull(session)){
+                throw new Exception("Object doesn't exist.");
+            }
+            sessionService.deleteSession(id);
+            response = renderSuccess();
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
     //endregion
 
     //region User

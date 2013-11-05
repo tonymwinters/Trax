@@ -62,10 +62,6 @@ public class Session {
     @JoinColumn(name="venue_id")
     private Venue venue;
 
-    @Transient
-    @SerializedName("venueId")
-    private Long venueId;
-
     public Long getId() {
         return id;
     }
@@ -112,18 +108,6 @@ public class Session {
 
     public void setVenue(Venue venue){
         this.venue = venue;
-        this.venueId = venue.getId();
     }
 
-    public Long getVenueId(){
-        if(Alfred.notNull(this.venueId)){
-            return this.venueId;
-        }
-        return this.venue.getId();
-    }
-
-    public void setVenueId(Long venueId){
-        this.venueId = venueId;
-
-    }
 }
