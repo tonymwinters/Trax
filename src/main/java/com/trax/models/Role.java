@@ -33,32 +33,14 @@ public class Role {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1") }
     )
 
-    @Expose
     private Long id;
 
-    @Expose
     @Column(name="name")
     private String name;
 
-    @Expose
     @Column(name="code")
     private String code;
 
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name="user_roles",
-            joinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")},
-            inverseJoinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")}
-    )
-    private Set<User> userRoles;
-
-
-    public Set<User> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(Set<User> userRoles) {
-        this.userRoles = userRoles;
-    }
 
     public void setId(Long id){
         this.id = id;

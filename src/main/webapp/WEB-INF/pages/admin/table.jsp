@@ -17,7 +17,7 @@
     <div class="table_wrapper">
         <h1 id="table-title-header" class="table_title_h1"></h1>
         <a id="table-href" href =""><div id="table-add-button" class="table-add-new"></div></a>
-        <input id="table-search" type="text" name="fname" class="table-search">
+        <input id="table-search" type="text" name="fname" class="table-search" />
         <table id="main-admin-table" class="table table-hover trax_table" style="width: 800px;">
         </table>
     </div>

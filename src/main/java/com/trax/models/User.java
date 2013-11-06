@@ -31,26 +31,20 @@ public class User {
                     @Parameter(name = "increment_size", value = "1") }
     )
 
-    @Expose
     private Long id;
 
-    @Expose
     @Column(name="username")
     private String username;
 
-    @Expose
     @Column(name="password")
     private String password;
 
-    @Expose
     @Column(name="first_name")
     private String firstName;
 
-    @Expose
     @Column(name="middle_name")
     private String middleName;
 
-    @Expose
     @Column(name="last_name")
     private String lastName;
 
@@ -61,12 +55,10 @@ public class User {
     )
     private Set<Role> roles;
 
-    @Expose
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="contact_id")
     private Contact contact;
 
-    @Expose
     @ManyToOne
     @JoinColumn(name="owner_id")
     private Owner owner;

@@ -3,6 +3,7 @@ package com.trax.controllers;
 import com.google.gson.*;
 import com.trax.models.Owner;
 import com.trax.models.Session;
+import com.trax.models.User;
 import com.trax.services.contact.ContactService;
 import com.trax.services.owner.OwnerService;
 import com.trax.services.role.RoleService;
@@ -32,26 +33,27 @@ public class ResourceController {
             .excludeFieldsWithModifiers(Modifier.TRANSIENT)
             .serializeNulls()
             .setPrettyPrinting()
-
             // Serialize Date class
-            .registerTypeAdapter(Date.class, new JsonSerializer<Date>(){
-                public JsonElement serialize(Date date, Type type, JsonSerializationContext context){
+            .registerTypeAdapter(Date.class, new JsonSerializer<Date>() {
+                public JsonElement serialize(Date date, Type type, JsonSerializationContext context) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
                     return new JsonPrimitive(sdf.format(date.getTime()));
                 }
             })
 
-            // Serialize Sets
-            .registerTypeAdapter(Set.class, new JsonSerializer<Set>(){
-                public JsonElement serialize(Set set, Type type, JsonSerializationContext context){
+             // Serialize SETS
+            .registerTypeAdapter(Set.class, new JsonSerializer<Set>() {
+                public JsonElement serialize(Set set, Type type, JsonSerializationContext context) {
+
                     JsonArray jsonArray = new JsonArray();
 
-                    for (Object object : set) {
-                        final JsonElement element = context.serialize(object);
+                    for (Object theObject : set) {
+                        final JsonElement element = context.serialize(theObject);
                         jsonArray.add(element);
                     }
 
                     return jsonArray;
+
                 }
             })
 
@@ -458,14 +460,20 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value="/user/delete", method= RequestMethod.POST)
-    public String deleteUser(@RequestBody String requestJson, Principal principal){
+    public String deleteUser(@RequestParam String userId, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            User user = userService.getUser(Long.parseLong(userId));
+            if(Alfred.isNull(user)){
+                throw new Exception("Object doesn't exist.");
+            }
+            userService.deleteUser(user.getId());
+            response = renderSuccess();
         } catch (Exception ex){
             response = renderError(ex.getMessage());
         }
-        return response;}
+        return response;
+    }
     //endregion
 
     //region Venue
