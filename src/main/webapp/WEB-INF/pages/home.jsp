@@ -22,7 +22,7 @@
             </div>
             <div class="app_wrapper">
                 <span>Sessions</span>
-                <div class="app_box app_sessions"></div>
+                <a href="${pageContext.request.contextPath}/session/show"><div class="app_box app_sessions"></div></a>
             </div>
             <div class="app_wrapper">
                 <span>Keypad</span>
