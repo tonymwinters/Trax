@@ -27,8 +27,8 @@ import java.util.Date;
 public class Session {
 
     @Id
-    @GeneratedValue(generator = "User_SequenceStyleGenerator")
-    @GenericGenerator(name = "User_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+    @GeneratedValue(generator = "Session_SequenceStyleGenerator")
+    @GenericGenerator(name = "Session_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
                     @Parameter(name = "sequence_name", value = "session_seq"),
                     @Parameter(name = "optimizer", value = "hilo"),
@@ -59,8 +59,8 @@ public class Session {
 
     @Expose
     @ManyToOne
-    @JoinColumn(name="venue_id")
-    private Venue venue;
+    @JoinColumn(name="room_id")
+    private Room room;
 
     public Long getId() {
         return id;
@@ -102,12 +102,12 @@ public class Session {
         this.endTime = endTime;
     }
 
-    public Venue getVenue(){
-        return this.venue;
+    public Room getRoom(){
+        return this.room;
     }
 
-    public void setVenue(Venue venue){
-        this.venue = venue;
+    public void setRoom(Room room){
+        this.room = room;
     }
 
 }

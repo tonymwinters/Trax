@@ -18,8 +18,8 @@ import javax.persistence.*;
 public class Location {
 
     @Id
-    @GeneratedValue(generator = "Contact_SequenceStyleGenerator")
-    @GenericGenerator(name = "Contact_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+    @GeneratedValue(generator = "Location_SequenceStyleGenerator")
+    @GenericGenerator(name = "Location_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
                     @org.hibernate.annotations.Parameter(name = "sequence_name", value = "location_seq"),
                     @org.hibernate.annotations.Parameter(name = "optimizer", value = "hilo"),

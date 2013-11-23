@@ -19,8 +19,8 @@ import javax.persistence.*;
 public class Venue {
 
     @Id
-    @GeneratedValue(generator = "User_SequenceStyleGenerator")
-    @GenericGenerator(name = "User_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+    @GeneratedValue(generator = "Venue_SequenceStyleGenerator")
+    @GenericGenerator(name = "Venue_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
                     @Parameter(name = "sequence_name", value = "venue_seq"),
                     @Parameter(name = "optimizer", value = "hilo"),
