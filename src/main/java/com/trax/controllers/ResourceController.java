@@ -29,6 +29,25 @@ import java.util.*;
 @Controller
 @RequestMapping(value="/resources")
 public class ResourceController {
+
+    @Autowired
+    ContactService contactService;
+
+    @Autowired
+    OwnerService ownerService;
+
+    @Autowired
+    RoleService roleService;
+
+    @Autowired
+    SessionService sessionService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    VenueService venueService;
+
     Gson gson = new GsonBuilder()
             .excludeFieldsWithModifiers(Modifier.TRANSIENT)
             .serializeNulls()
@@ -40,23 +59,17 @@ public class ResourceController {
                     return new JsonPrimitive(sdf.format(date.getTime()));
                 }
             })
-
              // Serialize SETS
             .registerTypeAdapter(Set.class, new JsonSerializer<Set>() {
                 public JsonElement serialize(Set set, Type type, JsonSerializationContext context) {
-
                     JsonArray jsonArray = new JsonArray();
-
                     for (Object theObject : set) {
                         final JsonElement element = context.serialize(theObject);
                         jsonArray.add(element);
                     }
-
                     return jsonArray;
-
                 }
             })
-
             .create();
 
 
@@ -81,8 +94,6 @@ public class ResourceController {
     }
 
     //region Contact
-    @Autowired
-    ContactService contactService;
     @ResponseBody
     @RequestMapping(value="/contact/list", method= RequestMethod.GET)
     public String listContacts(@RequestBody String requestJson, Principal principal){
@@ -179,8 +190,6 @@ public class ResourceController {
     //endregion
 
     //region Owner
-    @Autowired
-    OwnerService ownerService;
     @ResponseBody
     @RequestMapping(value="/owner/list", method= RequestMethod.GET)
     public String listOwners(@RequestBody String requestJson, Principal principal){
@@ -273,8 +282,6 @@ public class ResourceController {
     //endregion
 
     //region Role
-    @Autowired
-    RoleService roleService;
     @ResponseBody
     @RequestMapping(value="/role/list", method= RequestMethod.GET)
     public String listRoles(@RequestBody String requestJson, Principal principal){
@@ -328,8 +335,6 @@ public class ResourceController {
     //endregion
 
     //region Session
-    @Autowired
-    SessionService sessionService;
     @ResponseBody
     @RequestMapping(value="/session/list", method= RequestMethod.GET)
     public String listSessions(@RequestBody String requestJson, Principal principal){
@@ -422,8 +427,6 @@ public class ResourceController {
     //endregion
 
     //region User
-    @Autowired
-    UserService userService;
     @ResponseBody
     @RequestMapping(value="/user/list", method= RequestMethod.GET)
     public String listUsers(@RequestBody String requestJson, Principal principal){
@@ -477,8 +480,6 @@ public class ResourceController {
     //endregion
 
     //region Venue
-    @Autowired
-    VenueService venueService;
     @ResponseBody
     @RequestMapping(value="/venue/list", method= RequestMethod.GET)
     public String listVenues(@RequestBody String requestJson, Principal principal){
