@@ -96,7 +96,8 @@ h2{
 .app_wrapper{
     width:200px;
     display: inline-block;
-    margin-left: 12%;
+    margin-right: 6%;
+    margin-left: 6%;
     margin-top: 5%;
 }
 

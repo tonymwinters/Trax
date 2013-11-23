@@ -11,8 +11,8 @@
         <td><%= object[i].lastName %></td>
         <td><%= object[i].contact.emailAddress %></td>
         <td>
-            <div class="edit_button"><a href="#">Edit</a></div>
-            <div class="delete_button" id="<%= object[i].id %>"><a href="#">Delete</a></div>
+            <a href="#"><div class="edit_button">Edit</div></a>
+            <a href="#"><div class="delete_button" id="<%= object[i].id %>">Delete</div></a>
         </td>
     </tr>
     <% } %>
