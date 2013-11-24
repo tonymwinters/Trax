@@ -1,6 +1,8 @@
 package com.trax.services.session;
 
+import com.trax.dao.attendee.AttendeeDAO;
 import com.trax.dao.session.SessionDAO;
+import com.trax.models.Attendee;
 import com.trax.models.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class SessionServiceImpl implements SessionService{
     @Autowired
     private SessionDAO sessionDAO;
 
+    @Autowired
+    private AttendeeDAO attendeeDAO;
+
     public void addSession(Session session){
         sessionDAO.addSession(session);
     }
@@ -41,5 +46,9 @@ public class SessionServiceImpl implements SessionService{
 
     public List<Session> getSessions(){
         return sessionDAO.getSessions();
+    }
+
+    public List<Attendee> getAttendees(Long sessionId){
+        return attendeeDAO.getAttendeesBySession(sessionId);
     }
 }

@@ -1,10 +1,8 @@
 package com.trax.controllers;
 
 import com.google.gson.*;
-import com.trax.models.Owner;
-import com.trax.models.Room;
-import com.trax.models.Session;
-import com.trax.models.User;
+import com.trax.models.*;
+import com.trax.services.attendee.AttendeeService;
 import com.trax.services.contact.ContactService;
 import com.trax.services.owner.OwnerService;
 import com.trax.services.role.RoleService;
@@ -52,6 +50,9 @@ public class ResourceController {
 
     @Autowired
     RoomService roomService;
+
+    @Autowired
+    AttendeeService attendeeService;
 
     Gson gson = new GsonBuilder()
             .excludeFieldsWithModifiers(Modifier.TRANSIENT)
@@ -515,6 +516,98 @@ public class ResourceController {
                 throw new Exception("Object doesn't exist.");
             }
             sessionService.deleteSession(id);
+            response = renderSuccess();
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+    //endregion
+
+    //region Attendee
+    @ResponseBody
+    @RequestMapping(value="/attendee/list", method= RequestMethod.GET)
+    public String listAttendees(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            response = renderSuccess(attendeeService.getAttendees());
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/attendee/{id}", method= RequestMethod.GET)
+    public String getAttendee(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Attendee attendee = attendeeService.getAttendee(id);
+            if(Alfred.isNull(attendee)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = renderSuccess(attendee);
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/attendee/add", method= RequestMethod.POST)
+    public String addAttendee(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Attendee newAttendee = gson.fromJson(requestJson, Attendee.class);
+            attendeeService.addAttendee(newAttendee);
+            response = renderSuccess(attendeeService.getAttendee(newAttendee.getId()));
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/attendee/update", method= RequestMethod.POST)
+    public String updateAttendee(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Attendee attendee  = gson.fromJson(requestJson, Attendee.class);
+            attendeeService.updateAttendee(attendee);
+            response = renderSuccess(attendee);
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/attendee/delete", method= RequestMethod.POST)
+    public String deleteAttendee(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Attendee attendee = gson.fromJson(requestJson, Attendee.class);
+            if(Alfred.isNull(attendee)){
+                throw new Exception("Object doesn't exist.");
+            }
+            attendeeService.deleteAttendee(attendee.getId());
+            response = renderSuccess();
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/attendee/delete/{id}", method= RequestMethod.GET)
+    public String deleteAttendee(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Attendee attendee = attendeeService.getAttendee(id);
+            if(Alfred.isNull(attendee)){
+                throw new Exception("Object doesn't exist.");
+            }
+            attendeeService.deleteAttendee(id);
             response = renderSuccess();
         } catch (Exception ex){
             response = renderError(ex.getMessage());

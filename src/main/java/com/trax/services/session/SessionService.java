@@ -1,5 +1,6 @@
 package com.trax.services.session;
 
+import com.trax.models.Attendee;
 import com.trax.models.Session;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface SessionService {
     public Session getSession(Long id);
     public void deleteSession(Long id);
     public List<Session> getSessions();
+    public List<Attendee> getAttendees(Long sessionId);
 }
