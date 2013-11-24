@@ -2,11 +2,13 @@ package com.trax.controllers;
 
 import com.google.gson.*;
 import com.trax.models.Owner;
+import com.trax.models.Room;
 import com.trax.models.Session;
 import com.trax.models.User;
 import com.trax.services.contact.ContactService;
 import com.trax.services.owner.OwnerService;
 import com.trax.services.role.RoleService;
+import com.trax.services.room.RoomService;
 import com.trax.services.session.SessionService;
 import com.trax.services.user.UserService;
 import com.trax.services.venue.VenueService;
@@ -47,6 +49,9 @@ public class ResourceController {
 
     @Autowired
     VenueService venueService;
+
+    @Autowired
+    RoomService roomService;
 
     Gson gson = new GsonBuilder()
             .excludeFieldsWithModifiers(Modifier.TRANSIENT)
@@ -334,6 +339,98 @@ public class ResourceController {
         return response;}
     //endregion
 
+    //region Room
+    @ResponseBody
+    @RequestMapping(value="/room/list", method= RequestMethod.GET)
+    public String listRooms(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            response = renderSuccess(roomService.getRooms());
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/room/{id}", method= RequestMethod.GET)
+    public String getRoom(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Room room = roomService.getRoom(id);
+            if(Alfred.isNull(room)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = renderSuccess(room);
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/room/add", method= RequestMethod.POST)
+    public String addRoom(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Room newRoom = gson.fromJson(requestJson, Room.class);
+            roomService.addRoom(newRoom);
+            response = renderSuccess(roomService.getRoom(newRoom.getId()));
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/room/update", method= RequestMethod.POST)
+    public String updateRoom(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Room room  = gson.fromJson(requestJson, Room.class);
+            roomService.updateRoom(room);
+            response = renderSuccess(room);
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/room/delete", method= RequestMethod.POST)
+    public String deleteRoom(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Room room = gson.fromJson(requestJson, Room.class);
+            if(Alfred.isNull(room)){
+                throw new Exception("Object doesn't exist.");
+            }
+            roomService.deleteRoom(room.getId());
+            response = renderSuccess();
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/room/delete/{id}", method= RequestMethod.GET)
+    public String deleteRoom(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Room room = roomService.getRoom(id);
+            if(Alfred.isNull(room)){
+                throw new Exception("Object doesn't exist.");
+            }
+            roomService.deleteRoom(id);
+            response = renderSuccess();
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+    //endregion
+
     //region Session
     @ResponseBody
     @RequestMapping(value="/session/list", method= RequestMethod.GET)
@@ -349,7 +446,7 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value="/session/{id}", method= RequestMethod.GET)
-    public String listSessions(@PathVariable Long id, Principal principal){
+    public String getSession(@PathVariable Long id, Principal principal){
         String response;
         try{
             Session session = sessionService.getSession(id);
