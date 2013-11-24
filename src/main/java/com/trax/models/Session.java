@@ -59,6 +59,11 @@ public class Session {
 
     @Expose
     @ManyToOne
+    @JoinColumn(name="venue_id")
+    private Venue venue;
+
+    @Expose
+    @ManyToOne
     @JoinColumn(name="room_id")
     private Room room;
 
@@ -100,6 +105,14 @@ public class Session {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Venue getVenue(){
+        return this.venue;
+    }
+
+    public void setVenue(Venue venue){
+        this.venue = venue;
     }
 
     public Room getRoom(){
