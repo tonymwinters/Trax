@@ -17,5 +17,4 @@ public interface AttendeeDAO {
     public Attendee getAttendee(Long id);
     public void deleteAttendee(Long id);
     public List<Attendee> getAttendees();
-    public List<Attendee> getAttendeesBySession(Long sessionId);
 }

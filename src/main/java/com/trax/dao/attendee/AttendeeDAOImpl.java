@@ -49,8 +49,4 @@ public class AttendeeDAOImpl implements AttendeeDAO {
     public List<Attendee> getAttendees(){
         return getCurrentSession().createQuery("from Attendee").list();
     }
-
-    public List<Attendee> getAttendeesBySession(Long sessionId){
-        return getCurrentSession().createQuery("from Attendee where session_id = " + sessionId).list();
-    }
 }
