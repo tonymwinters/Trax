@@ -33,21 +33,26 @@ public class User {
 
     private Long id;
 
+    @Expose
     @Column(name="username")
     private String username;
 
     @Column(name="password")
     private String password;
 
+    @Expose
     @Column(name="first_name")
     private String firstName;
 
+    @Expose
     @Column(name="middle_name")
     private String middleName;
 
+    @Expose
     @Column(name="last_name")
     private String lastName;
 
+    @Expose
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name="user_roles",
             joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
@@ -55,10 +60,12 @@ public class User {
     )
     private Set<Role> roles;
 
+    @Expose
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="contact_id")
     private Contact contact;
 
+    @Expose
     @ManyToOne
     @JoinColumn(name="owner_id")
     private Owner owner;

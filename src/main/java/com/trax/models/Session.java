@@ -13,6 +13,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,15 +59,17 @@ public class Session {
     @Column(name="end_time")
     private Date endTime;
 
-    @Expose
-    @ManyToOne
+    @ManyToOne(cascade= CascadeType.ALL)
     @JoinColumn(name="venue_id")
     private Venue venue;
 
-    @Expose
     @ManyToOne
     @JoinColumn(name="room_id")
     private Room room;
+
+    @Expose
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
+    private Set<Attendee> attendees = new HashSet<Attendee>();
 
     public Long getId() {
         return id;
@@ -121,6 +125,10 @@ public class Session {
 
     public void setRoom(Room room){
         this.room = room;
+    }
+
+    public Set<Attendee> getAttendeess() {
+        return this.attendees;
     }
 
 }

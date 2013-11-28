@@ -52,7 +52,6 @@ public class VenueController {
 
         // Get user and user's owner
         User user = userService.getUser(principal.getName());
-        venue.getLocation().setOwner(user.getOwner());
         venue.getLocation().setName(venue.getName());
         venue.getContact().setName(venue.getName());
         venue.setOwner(user.getOwner());
@@ -89,7 +88,6 @@ public class VenueController {
 
         // Get user and user's owner
         User user = userService.getUser(principal.getName());
-        venue.getLocation().setOwner(user.getOwner());
         venue.getLocation().setName(venue.getName());
         venue.getContact().setName(venue.getName());
         venue.setOwner(user.getOwner());

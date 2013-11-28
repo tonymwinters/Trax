@@ -58,6 +58,7 @@ public class ResourceController {
             .excludeFieldsWithModifiers(Modifier.TRANSIENT)
             .serializeNulls()
             .setPrettyPrinting()
+            .excludeFieldsWithoutExposeAnnotation()
             // Serialize Date class
             .registerTypeAdapter(Date.class, new JsonSerializer<Date>() {
                 public JsonElement serialize(Date date, Type type, JsonSerializationContext context) {

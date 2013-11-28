@@ -28,10 +28,6 @@ public class Location {
     )
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="owner_id")
-    private Owner owner;
-
     @Expose
     @Column(name="name")
     private String name;
@@ -65,14 +61,6 @@ public class Location {
 
     public Long getId(){
         return this.id;
-    }
-
-    public Owner getOwner(){
-        return this.owner;
-    }
-
-    public void setOwner(Owner owner){
-        this.owner = owner;
     }
 
     public String getName() {

@@ -33,11 +33,9 @@ public class Attendee {
     @JoinColumn(name="user_id")
     private User user;
 
-    @Expose
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="session_id")
     private Session session;
-
 
     @Expose
     @Column(name="is_owner")
