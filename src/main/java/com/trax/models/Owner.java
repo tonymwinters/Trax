@@ -7,6 +7,8 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -40,6 +42,24 @@ public class Owner {
     @Column(name="name")
     private String name;
 
+    @Expose
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name="contact_id")
+    private Contact contact;
+
+    @Expose
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name="location_id")
+    private Location location;
+
+    @Expose
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<Venue> venues = new HashSet<Venue>();
+
+
+    @Expose
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner", cascade = CascadeType.ALL)
+    private Set<User> users = new HashSet<User>();
 
     public Long getId() {
         return id;
@@ -55,6 +75,30 @@ public class Owner {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Contact getContact() {
+        return this.contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
+
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Set<Venue> getVenues() {
+        return this.venues;
+    }
+
+    public Set<User> getUsers() {
+        return this.users;
     }
 
     public String toString(){

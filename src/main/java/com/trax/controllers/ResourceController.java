@@ -684,6 +684,22 @@ public class ResourceController {
     }
 
     @ResponseBody
+    @RequestMapping(value="/venue/{id}", method= RequestMethod.GET)
+    public String getVenue(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Venue venue = venueService.getVenue(id);
+            if(Alfred.isNull(venue)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = renderSuccess(venue);
+        } catch (Exception ex){
+            response = renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
     @RequestMapping(value="/venue/add", method= RequestMethod.POST)
     public String addVenue(@RequestBody String requestJson, Principal principal){
         String response;

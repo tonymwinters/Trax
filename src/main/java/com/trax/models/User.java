@@ -52,7 +52,6 @@ public class User {
     @Column(name="last_name")
     private String lastName;
 
-    @Expose
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name="user_roles",
             joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
@@ -65,8 +64,7 @@ public class User {
     @JoinColumn(name="contact_id")
     private Contact contact;
 
-    @Expose
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="owner_id")
     private Owner owner;
 

@@ -5,6 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,9 +35,16 @@ public class Venue {
     @Column(name="name")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="owner_id")
     private Owner owner;
+
+    @Expose
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue", cascade = CascadeType.ALL)
+    private Set<Room> rooms = new HashSet<Room>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue", cascade = CascadeType.ALL)
+    private Set<Session> sessions = new HashSet<Session>();
 
     @Expose
     @OneToOne(cascade= CascadeType.ALL)
@@ -69,6 +78,14 @@ public class Venue {
 
     public void setOwner(Owner owner){
         this.owner = owner;
+    }
+
+    public Set<Room> getRooms() {
+        return this.rooms;
+    }
+
+    public Set<Session> getSessions() {
+        return this.sessions;
     }
 
     public Contact getContact() {
