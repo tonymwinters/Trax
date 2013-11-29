@@ -1,6 +1,5 @@
 package com.trax.controllers;
 
-import com.google.gson.*;
 import com.trax.models.*;
 import com.trax.services.attendee.AttendeeService;
 import com.trax.services.contact.ContactService;
@@ -15,12 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.security.Principal;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * Location for the frontend to access crud operations
@@ -30,6 +24,7 @@ import java.util.*;
 @RequestMapping(value="/resources")
 public class ResourceController {
 
+    //region Object Services
     @Autowired
     ContactService contactService;
 
@@ -53,148 +48,8 @@ public class ResourceController {
 
     @Autowired
     AttendeeService attendeeService;
-
-    Gson gson = new GsonBuilder()
-            .excludeFieldsWithModifiers(Modifier.TRANSIENT)
-            .serializeNulls()
-            .setPrettyPrinting()
-            .excludeFieldsWithoutExposeAnnotation()
-            // Serialize Date class
-            .registerTypeAdapter(Date.class, new JsonSerializer<Date>() {
-                public JsonElement serialize(Date date, Type type, JsonSerializationContext context) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
-                    return new JsonPrimitive(sdf.format(date.getTime()));
-                }
-            })
-             // Serialize SETS
-            .registerTypeAdapter(Set.class, new JsonSerializer<Set>() {
-                public JsonElement serialize(Set set, Type type, JsonSerializationContext context) {
-                    JsonArray jsonArray = new JsonArray();
-                    for (Object theObject : set) {
-                        final JsonElement element = context.serialize(theObject);
-                        jsonArray.add(element);
-                    }
-                    return jsonArray;
-                }
-            })
-            .create();
-
-
-    private String renderSuccess(Object object){
-        Map<Object, Object> response =  new HashMap<Object, Object>();
-        response.put("success", true);
-        response.put("object", object);
-        return gson.toJson(response);
-    }
-
-    private String renderSuccess(){
-        Map<Object, Object> response =  new HashMap<Object, Object>();
-        response.put("success", true);
-        return gson.toJson(response);
-    }
-
-    private String renderError(String message){
-        Map<Object, Object> response =  new HashMap<Object, Object>();
-        response.put("success", false);
-        response.put("message", message);
-        return gson.toJson(response);
-    }
-
-    //region Contact
-    @ResponseBody
-    @RequestMapping(value="/contact/list", method= RequestMethod.GET)
-    public String listContacts(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(contactService.getContacts());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/contact/add", method= RequestMethod.POST)
-    public String addContact(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/contact/update", method= RequestMethod.POST)
-    public String updateContact(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/contact/delete", method= RequestMethod.POST)
-    public String deleteContact(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
     //endregion
 
-    //region Location
-//    @Autowired
-//    LocationService locationService;
-    @ResponseBody
-    @RequestMapping(value="/location/list", method= RequestMethod.GET)
-    public String listLocations(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/location/add", method= RequestMethod.POST)
-    public String addLocation(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/location/update", method= RequestMethod.POST)
-    public String updateLocation(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/location/delete", method= RequestMethod.POST)
-    public String deleteLocation(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-    //endregion
 
     //region Owner
     @ResponseBody
@@ -202,9 +57,9 @@ public class ResourceController {
     public String listOwners(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(ownerService.getOwners());
+            response = Alfred.renderSuccess(ownerService.getOwners());
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -218,9 +73,9 @@ public class ResourceController {
             if(Alfred.isNull(owner)){
                 throw new Exception("Object doesn't exist.");
             }
-            response = renderSuccess(owner);
+            response = Alfred.renderSuccess(owner);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -230,11 +85,11 @@ public class ResourceController {
     public String addOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Owner newOwner = gson.fromJson(requestJson, Owner.class);
+            Owner newOwner = Alfred.gson.fromJson(requestJson, Owner.class);
             ownerService.addOwner(newOwner);
-            response = renderSuccess(ownerService.getOwner(newOwner.getId()));
+            response = Alfred.renderSuccess(ownerService.getOwner(newOwner.getId()));
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -244,11 +99,11 @@ public class ResourceController {
     public String updateOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Owner owner = gson.fromJson(requestJson, Owner.class);
+            Owner owner = Alfred.gson.fromJson(requestJson, Owner.class);
             ownerService.updateOwner(owner);
-            response = renderSuccess(owner);
+            response = Alfred.renderSuccess(owner);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -258,14 +113,14 @@ public class ResourceController {
     public String deleteOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Owner owner = gson.fromJson(requestJson, Owner.class);
+            Owner owner = Alfred.gson.fromJson(requestJson, Owner.class);
             if(Alfred.isNull(owner)){
                 throw new Exception("Object doesn't exist.");
             }
             ownerService.deleteOwner(owner.getId());
-            response = renderSuccess();
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -280,65 +135,12 @@ public class ResourceController {
                 throw new Exception("Object doesn't exist.");
             }
             ownerService.deleteOwner(id);
-            response = renderSuccess();
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
-    //endregion
-
-    //region Role
-    @ResponseBody
-    @RequestMapping(value="/role/list", method= RequestMethod.GET)
-    public String listRoles(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            gson = new GsonBuilder()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .excludeFieldsWithModifiers(Modifier.TRANSIENT)
-                    .serializeNulls()
-                    .setPrettyPrinting()
-                    .create();
-            response = renderSuccess(roleService.getRoles());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/role/add", method= RequestMethod.POST)
-    public String addRole(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/role/update", method= RequestMethod.POST)
-    public String updateRole(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/role/delete", method= RequestMethod.POST)
-    public String deleteRole(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
     //endregion
 
     //region Room
@@ -347,9 +149,9 @@ public class ResourceController {
     public String listRooms(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(roomService.getRooms());
+            response = Alfred.renderSuccess(roomService.getRooms());
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -363,9 +165,9 @@ public class ResourceController {
             if(Alfred.isNull(room)){
                 throw new Exception("Object doesn't exist.");
             }
-            response = renderSuccess(room);
+            response = Alfred.renderSuccess(room);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -375,11 +177,11 @@ public class ResourceController {
     public String addRoom(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Room newRoom = gson.fromJson(requestJson, Room.class);
+            Room newRoom = Alfred.gson.fromJson(requestJson, Room.class);
             roomService.addRoom(newRoom);
-            response = renderSuccess(roomService.getRoom(newRoom.getId()));
+            response = Alfred.renderSuccess(roomService.getRoom(newRoom.getId()));
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -389,11 +191,11 @@ public class ResourceController {
     public String updateRoom(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Room room  = gson.fromJson(requestJson, Room.class);
+            Room room  = Alfred.gson.fromJson(requestJson, Room.class);
             roomService.updateRoom(room);
-            response = renderSuccess(room);
+            response = Alfred.renderSuccess(room);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -403,14 +205,14 @@ public class ResourceController {
     public String deleteRoom(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Room room = gson.fromJson(requestJson, Room.class);
+            Room room = Alfred.gson.fromJson(requestJson, Room.class);
             if(Alfred.isNull(room)){
                 throw new Exception("Object doesn't exist.");
             }
             roomService.deleteRoom(room.getId());
-            response = renderSuccess();
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -425,9 +227,9 @@ public class ResourceController {
                 throw new Exception("Object doesn't exist.");
             }
             roomService.deleteRoom(id);
-            response = renderSuccess();
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -439,9 +241,9 @@ public class ResourceController {
     public String listSessions(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(sessionService.getSessions());
+            response = Alfred.renderSuccess(sessionService.getSessions());
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -455,9 +257,9 @@ public class ResourceController {
             if(Alfred.isNull(session)){
                 throw new Exception("Object doesn't exist.");
             }
-            response = renderSuccess(session);
+            response = Alfred.renderSuccess(session);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -467,11 +269,11 @@ public class ResourceController {
     public String addSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session newSession = gson.fromJson(requestJson, Session.class);
+            Session newSession = Alfred.gson.fromJson(requestJson, Session.class);
             sessionService.addSession(newSession);
-            response = renderSuccess(sessionService.getSession(newSession.getId()));
+            response = Alfred.renderSuccess(sessionService.getSession(newSession.getId()));
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -481,11 +283,11 @@ public class ResourceController {
     public String updateSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session session = gson.fromJson(requestJson, Session.class);
+            Session session = Alfred.gson.fromJson(requestJson, Session.class);
             sessionService.updateSession(session);
-            response = renderSuccess(session);
+            response = Alfred.renderSuccess(session);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -495,14 +297,14 @@ public class ResourceController {
     public String deleteSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session session = gson.fromJson(requestJson, Session.class);
+            Session session = Alfred.gson.fromJson(requestJson, Session.class);
             if(Alfred.isNull(session)){
                 throw new Exception("Object doesn't exist.");
             }
             sessionService.deleteSession(session.getId());
-            response = renderSuccess();
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -517,9 +319,9 @@ public class ResourceController {
                 throw new Exception("Object doesn't exist.");
             }
             sessionService.deleteSession(id);
-            response = renderSuccess();
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -531,9 +333,9 @@ public class ResourceController {
     public String listAttendees(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(attendeeService.getAttendees());
+            response = Alfred.renderSuccess(attendeeService.getAttendees());
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -547,9 +349,9 @@ public class ResourceController {
             if(Alfred.isNull(attendee)){
                 throw new Exception("Object doesn't exist.");
             }
-            response = renderSuccess(attendee);
+            response = Alfred.renderSuccess(attendee);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -559,11 +361,11 @@ public class ResourceController {
     public String addAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Attendee newAttendee = gson.fromJson(requestJson, Attendee.class);
+            Attendee newAttendee = Alfred.gson.fromJson(requestJson, Attendee.class);
             attendeeService.addAttendee(newAttendee);
-            response = renderSuccess(attendeeService.getAttendee(newAttendee.getId()));
+            response = Alfred.renderSuccess(attendeeService.getAttendee(newAttendee.getId()));
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -573,11 +375,11 @@ public class ResourceController {
     public String updateAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Attendee attendee  = gson.fromJson(requestJson, Attendee.class);
+            Attendee attendee  = Alfred.gson.fromJson(requestJson, Attendee.class);
             attendeeService.updateAttendee(attendee);
-            response = renderSuccess(attendee);
+            response = Alfred.renderSuccess(attendee);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -587,14 +389,14 @@ public class ResourceController {
     public String deleteAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Attendee attendee = gson.fromJson(requestJson, Attendee.class);
+            Attendee attendee = Alfred.gson.fromJson(requestJson, Attendee.class);
             if(Alfred.isNull(attendee)){
                 throw new Exception("Object doesn't exist.");
             }
             attendeeService.deleteAttendee(attendee.getId());
-            response = renderSuccess();
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -609,9 +411,9 @@ public class ResourceController {
                 throw new Exception("Object doesn't exist.");
             }
             attendeeService.deleteAttendee(id);
-            response = renderSuccess();
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -623,9 +425,25 @@ public class ResourceController {
     public String listUsers(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(userService.getUsers());
+            response = Alfred.renderSuccess(userService.getUsers());
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/user/{id}", method= RequestMethod.GET)
+    public String getUser(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            User user = userService.getUser(id);
+            if(Alfred.isNull(user)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = Alfred.renderSuccess(user);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -635,9 +453,11 @@ public class ResourceController {
     public String addUser(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            User newUser = Alfred.gson.fromJson(requestJson, User.class);
+            userService.addUser(newUser);
+            response = Alfred.renderSuccess(userService.getUser(newUser.getId()));
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;}
 
@@ -646,25 +466,44 @@ public class ResourceController {
     public String updateUser(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            User newUser = Alfred.gson.fromJson(requestJson, User.class);
+            userService.updateUser(newUser);
+            response = Alfred.renderSuccess(newUser);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;}
 
     @ResponseBody
     @RequestMapping(value="/user/delete", method= RequestMethod.POST)
-    public String deleteUser(@RequestParam String userId, Principal principal){
+    public String deleteUser(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            User user = userService.getUser(Long.parseLong(userId));
+            User user = Alfred.gson.fromJson(requestJson, User.class);
             if(Alfred.isNull(user)){
                 throw new Exception("Object doesn't exist.");
             }
             userService.deleteUser(user.getId());
-            response = renderSuccess();
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/user/delete/{id}", method= RequestMethod.POST)
+    public String deleteUser(@RequestParam Long id, Principal principal){
+        String response;
+        try{
+            User user = userService.getUser(id);
+            if(Alfred.isNull(user)){
+                throw new Exception("Object doesn't exist.");
+            }
+            userService.deleteUser(id);
+            response = Alfred.renderSuccess();
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -676,9 +515,9 @@ public class ResourceController {
     public String listVenues(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(venueService.getVenues());
+            response = Alfred.renderSuccess(venueService.getVenues());
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -692,9 +531,9 @@ public class ResourceController {
             if(Alfred.isNull(venue)){
                 throw new Exception("Object doesn't exist.");
             }
-            response = renderSuccess(venue);
+            response = Alfred.renderSuccess(venue);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;
     }
@@ -704,9 +543,11 @@ public class ResourceController {
     public String addVenue(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            Venue newVenue = Alfred.gson.fromJson(requestJson, Venue.class);
+            venueService.addVenue(newVenue);
+            response = Alfred.renderSuccess(venueService.getVenue(newVenue.getId()));
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;}
 
@@ -715,9 +556,12 @@ public class ResourceController {
     public String updateVenue(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+
+            Venue venue = Alfred.gson.fromJson(requestJson, Venue.class);
+            venueService.updateVenue(venue);
+            response = Alfred.renderSuccess(venue);
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;}
 
@@ -726,9 +570,30 @@ public class ResourceController {
     public String deleteVenue(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            response = renderSuccess(new Object());
+            Venue venue = Alfred.gson.fromJson(requestJson, Venue.class);
+            if(Alfred.isNull(venue)){
+                throw new Exception("Object doesn't exist.");
+            }
+            venueService.deleteVenue(venue.getId());
+            response = Alfred.renderSuccess();
         } catch (Exception ex){
-            response = renderError(ex.getMessage());
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;}
+
+    @ResponseBody
+    @RequestMapping(value="/venue/delete/{id}", method= RequestMethod.POST)
+    public String deleteVenue(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Venue venue = venueService.getVenue(id);
+            if(Alfred.isNull(venue)){
+                throw new Exception("Object doesn't exist.");
+            }
+            venueService.deleteVenue(venue.getId());
+            response = Alfred.renderSuccess();
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
         }
         return response;}
     //endregion
@@ -736,110 +601,62 @@ public class ResourceController {
     //region Activity
 //    @Autowired
 //    ActivityService activityService;
-    @ResponseBody
-    @RequestMapping(value="/activity/list", method= RequestMethod.GET)
-    public String listActivities(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/activity/add", method= RequestMethod.POST)
-    public String addActivity(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/activity/update", method= RequestMethod.POST)
-    public String updateActivity(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/activity/delete", method= RequestMethod.POST)
-    public String deleteActivity(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
+//    @ResponseBody
+//    @RequestMapping(value="/activity/list", method= RequestMethod.GET)
+//    public String listActivities(@RequestBody String requestJson, Principal principal){
+//        String response;
+//        try{
+//            response = Alfred.renderSuccess(new Object());
+//        } catch (Exception ex){
+//            response = Alfred.renderError(ex.getMessage());
+//        }
+//        return response;
+//    }
+//
+//    @ResponseBody
+//    @RequestMapping(value="/activity/add", method= RequestMethod.POST)
+//    public String addActivity(@RequestBody String requestJson, Principal principal){
+//        String response;
+//        try{
+//            response = Alfred.renderSuccess(new Object());
+//        } catch (Exception ex){
+//            response = Alfred.renderError(ex.getMessage());
+//        }
+//        return response;}
+//
+//    @ResponseBody
+//    @RequestMapping(value="/activity/update", method= RequestMethod.POST)
+//    public String updateActivity(@RequestBody String requestJson, Principal principal){
+//        String response;
+//        try{
+//            response = Alfred.renderSuccess(new Object());
+//        } catch (Exception ex){
+//            response = Alfred.renderError(ex.getMessage());
+//        }
+//        return response;}
+//
+//    @ResponseBody
+//    @RequestMapping(value="/activity/delete", method= RequestMethod.POST)
+//    public String deleteActivity(@RequestBody String requestJson, Principal principal){
+//        String response;
+//        try{
+//            response = Alfred.renderSuccess(new Object());
+//        } catch (Exception ex){
+//            response = Alfred.renderError(ex.getMessage());
+//        }
+//        return response;}
     //endregion
 
-    //region Participant
-//    @Autowired
-//    ParticipantService participantService;
-    @ResponseBody
-    @RequestMapping(value="/participant/list", method= RequestMethod.GET)
-    public String listParticipants(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;
-    }
 
-    @ResponseBody
-    @RequestMapping(value="/participant/add", method= RequestMethod.POST)
-    public String addParticipant(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/participant/update", method= RequestMethod.POST)
-    public String updateParticipant(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/participant/delete", method= RequestMethod.POST)
-    public String deleteParticipant(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = renderSuccess(new Object());
-        } catch (Exception ex){
-            response = renderError(ex.getMessage());
-        }
-        return response;}
-    //endregion
-
-//region default Crud Methods
+    //region default Crud Methods
 //    @ResponseBody
 //    @RequestMapping(value="/list", method= RequestMethod.GET)
 //    public String list(@RequestBody String requestJson, Principal principal){
 //        String response;
 //        try{
-//            response = renderSuccess(new Object());
+//            response = Alfred.renderSuccess(new Object());
 //        } catch (Exception ex){
-//            response = renderError(ex.getMessage());
+//            response = Alfred.renderError(ex.getMessage());
 //        }
 //        return response;
 //    }
@@ -849,9 +666,9 @@ public class ResourceController {
 //    public String add(@RequestBody String requestJson, Principal principal){
 //        String response;
 //        try{
-//            response = renderSuccess(new Object());
+//            response = Alfred.renderSuccess(new Object());
 //        } catch (Exception ex){
-//            response = renderError(ex.getMessage());
+//            response = Alfred.renderError(ex.getMessage());
 //        }
 //        return response;}
 //
@@ -860,9 +677,9 @@ public class ResourceController {
 //    public String update(@RequestBody String requestJson, Principal principal){
 //        String response;
 //        try{
-//            response = renderSuccess(new Object());
+//            response = Alfred.renderSuccess(new Object());
 //        } catch (Exception ex){
-//            response = renderError(ex.getMessage());
+//            response = Alfred.renderError(ex.getMessage());
 //        }
 //        return response;}
 //
@@ -871,10 +688,10 @@ public class ResourceController {
 //    public String delete(@RequestBody String requestJson, Principal principal){
 //        String response;
 //        try{
-//            response = renderSuccess(new Object());
+//            response = Alfred.renderSuccess(new Object());
 //        } catch (Exception ex){
-//            response = renderError(ex.getMessage());
+//            response = Alfred.renderError(ex.getMessage());
 //        }
 //        return response;}
-//region
+    //endregion
 }
