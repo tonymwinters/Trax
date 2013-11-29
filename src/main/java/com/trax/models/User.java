@@ -22,6 +22,7 @@ import java.util.Set;
 public class User {
 
     @Id
+    @Expose
     @GeneratedValue(generator = "User_SequenceStyleGenerator")
     @GenericGenerator(name = "User_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {

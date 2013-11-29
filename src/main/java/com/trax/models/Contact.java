@@ -22,6 +22,7 @@ public class Contact {
 
 
     @Id
+    @Expose
     @GeneratedValue(generator = "Contact_SequenceStyleGenerator")
     @GenericGenerator(name = "Contact_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
@@ -31,7 +32,6 @@ public class Contact {
                     @org.hibernate.annotations.Parameter(name = "increment_size", value = "1") }
     )
 
-    @Expose
     private Long id;
 
     @Expose

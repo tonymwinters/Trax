@@ -18,6 +18,7 @@ import javax.persistence.*;
 public class Location {
 
     @Id
+    @Expose
     @GeneratedValue(generator = "Location_SequenceStyleGenerator")
     @GenericGenerator(name = "Location_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {

@@ -21,6 +21,7 @@ import java.util.Set;
 public class Venue {
 
     @Id
+    @Expose
     @GeneratedValue(generator = "Venue_SequenceStyleGenerator")
     @GenericGenerator(name = "Venue_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {

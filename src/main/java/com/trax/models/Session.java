@@ -29,6 +29,7 @@ import java.util.Set;
 public class Session {
 
     @Id
+    @Expose
     @GeneratedValue(generator = "Session_SequenceStyleGenerator")
     @GenericGenerator(name = "Session_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {

@@ -17,7 +17,9 @@ import javax.persistence.*;
 @Entity
 @Table(name="public.attendee")
 public class Attendee {
+
     @Id
+    @Expose
     @GeneratedValue(generator = "Attendee_SequenceStyleGenerator")
     @GenericGenerator(name = "Attendee_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {

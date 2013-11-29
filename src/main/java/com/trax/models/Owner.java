@@ -26,6 +26,7 @@ import java.util.Set;
 public class Owner {
 
     @Id
+    @Expose
     @GeneratedValue(generator = "Owner_SequenceStyleGenerator")
     @GenericGenerator(name = "Owner_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
@@ -34,8 +35,6 @@ public class Owner {
                     @Parameter(name = "initial_value", value = "1"),
                     @Parameter(name = "increment_size", value = "1") }
     )
-
-    @Expose
     private Long id;
 
     @Expose

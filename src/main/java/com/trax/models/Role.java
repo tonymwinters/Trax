@@ -24,6 +24,7 @@ import java.util.Set;
 public class Role {
 
     @Id
+    @Expose
     @GeneratedValue(generator = "Role_SequenceStyleGenerator")
     @GenericGenerator(name = "Role_SequenceStyleGenerator", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
             parameters = {
