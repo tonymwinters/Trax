@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Time: 6:48 PM
  * To change this template use File | Settings | File Templates.
  */
-public class CommentDAOImpl {
+public class CommentDAOImpl implements CommentDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
