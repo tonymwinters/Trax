@@ -37,6 +37,11 @@ public class Comment {
     private String content;
 
     @Expose
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
+
+    @Expose
     @SerializedName("dateCreated")
     @Column(name="date_created")
     private Date dateCreated;
@@ -66,6 +71,14 @@ public class Comment {
         this.content = content;
     }
 
+    public User getUser(){
+        return this.user;
+    }
+
+    public void setUser(User user){
+        this.user = user;
+    }
+
     public Date getDateCreated() {
         return this.dateCreated;
     }
@@ -80,5 +93,13 @@ public class Comment {
 
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Session getSession(){
+        return this.session;
+    }
+
+    public void setSession(Session session){
+        this.session = session;
     }
 }
