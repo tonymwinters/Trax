@@ -16,6 +16,6 @@ public interface AttendeeDAO {
     public void updateAttendee(Attendee attendee);
     public Attendee getAttendee(Long id);
     public void deleteAttendee(Long id);
-    public List<Attendee> getAttendees();
-    public List<Attendee> bySessionAndFullName(Long id, String query);
+    public List getAttendees();
+    public List bySessionAndFullName(Long id, String query);
 }

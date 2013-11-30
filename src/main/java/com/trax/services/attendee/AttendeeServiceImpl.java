@@ -38,11 +38,11 @@ public class AttendeeServiceImpl implements AttendeeService {
         attendeeDAO.deleteAttendee(id);
     }
 
-    public List<Attendee> getAttendees(){
+    public List getAttendees(){
         return attendeeDAO.getAttendees();
     }
 
-    public List<Attendee> bySessionAndFullName(Long id, String query){
+    public List bySessionAndFullName(Long id, String query){
         return attendeeDAO.bySessionAndFullName(id, query);
     }
 }

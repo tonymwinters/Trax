@@ -1,5 +1,6 @@
 package com.trax.controllers;
 
+import com.google.gson.*;
 import com.trax.models.*;
 import com.trax.services.attendee.AttendeeService;
 import com.trax.services.contact.ContactService;
@@ -14,7 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.security.Principal;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Location for the frontend to access crud operations
@@ -49,6 +54,48 @@ public class ResourceController {
     @Autowired
     AttendeeService attendeeService;
     //endregion
+
+    private Gson gsonDeserializer = new GsonBuilder()
+            .excludeFieldsWithModifiers(Modifier.TRANSIENT)
+            .setPrettyPrinting()
+                    //deserialize dates
+            .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                @Override
+                public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    try {
+                        return json == null ? null : Alfred.dateFormat.parse(json.getAsString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    throw new JsonParseException("Could not parse date.");
+                }
+            })
+                    //deserialize Users
+            .registerTypeAdapter(User.class, new JsonDeserializer<User>() {
+                @Override
+                public User deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    try {
+                        Long id = json.getAsJsonObject().get("id").getAsLong();
+                        return userService.getUser(id);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    throw new JsonParseException("Could not deserialize User.");
+                }
+            })
+                    //deserialize Sessions
+            .registerTypeAdapter(Session.class, new JsonDeserializer<Session>() {
+                @Override
+                public Session deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    try{
+                        return json == null ? null : sessionService.getSession(json.getAsJsonObject().get("id").getAsLong());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    throw new JsonParseException("Could not deserialize Session.");
+                }
+            })
+            .create();
 
 
     //region Owner
@@ -85,7 +132,7 @@ public class ResourceController {
     public String addOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Owner newOwner = Alfred.gson.fromJson(requestJson, Owner.class);
+            Owner newOwner = gsonDeserializer.fromJson(requestJson, Owner.class);
             ownerService.addOwner(newOwner);
             response = Alfred.renderSuccess(ownerService.getOwner(newOwner.getId()));
         } catch (Exception ex){
@@ -99,7 +146,7 @@ public class ResourceController {
     public String updateOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Owner owner = Alfred.gson.fromJson(requestJson, Owner.class);
+            Owner owner = gsonDeserializer.fromJson(requestJson, Owner.class);
             ownerService.updateOwner(owner);
             response = Alfred.renderSuccess(owner);
         } catch (Exception ex){
@@ -113,7 +160,7 @@ public class ResourceController {
     public String deleteOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Owner owner = Alfred.gson.fromJson(requestJson, Owner.class);
+            Owner owner = gsonDeserializer.fromJson(requestJson, Owner.class);
             if(Alfred.isNull(owner)){
                 throw new Exception("Object doesn't exist.");
             }
@@ -177,7 +224,7 @@ public class ResourceController {
     public String addRoom(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Room newRoom = Alfred.gson.fromJson(requestJson, Room.class);
+            Room newRoom = gsonDeserializer.fromJson(requestJson, Room.class);
             roomService.addRoom(newRoom);
             response = Alfred.renderSuccess(roomService.getRoom(newRoom.getId()));
         } catch (Exception ex){
@@ -191,7 +238,7 @@ public class ResourceController {
     public String updateRoom(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Room room  = Alfred.gson.fromJson(requestJson, Room.class);
+            Room room  = gsonDeserializer.fromJson(requestJson, Room.class);
             roomService.updateRoom(room);
             response = Alfred.renderSuccess(room);
         } catch (Exception ex){
@@ -205,7 +252,7 @@ public class ResourceController {
     public String deleteRoom(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Room room = Alfred.gson.fromJson(requestJson, Room.class);
+            Room room = gsonDeserializer.fromJson(requestJson, Room.class);
             if(Alfred.isNull(room)){
                 throw new Exception("Object doesn't exist.");
             }
@@ -269,7 +316,7 @@ public class ResourceController {
     public String addSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session newSession = Alfred.gson.fromJson(requestJson, Session.class);
+            Session newSession = gsonDeserializer.fromJson(requestJson, Session.class);
             sessionService.addSession(newSession);
             response = Alfred.renderSuccess(sessionService.getSession(newSession.getId()));
         } catch (Exception ex){
@@ -283,7 +330,7 @@ public class ResourceController {
     public String updateSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session session = Alfred.gson.fromJson(requestJson, Session.class);
+            Session session = gsonDeserializer.fromJson(requestJson, Session.class);
             sessionService.updateSession(session);
             response = Alfred.renderSuccess(session);
         } catch (Exception ex){
@@ -297,7 +344,7 @@ public class ResourceController {
     public String deleteSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session session = Alfred.gson.fromJson(requestJson, Session.class);
+            Session session = gsonDeserializer.fromJson(requestJson, Session.class);
             if(Alfred.isNull(session)){
                 throw new Exception("Object doesn't exist.");
             }
@@ -361,7 +408,7 @@ public class ResourceController {
     public String addAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Attendee newAttendee = Alfred.gson.fromJson(requestJson, Attendee.class);
+            Attendee newAttendee = gsonDeserializer.fromJson(requestJson, Attendee.class);
             attendeeService.addAttendee(newAttendee);
             response = Alfred.renderSuccess(attendeeService.getAttendee(newAttendee.getId()));
         } catch (Exception ex){
@@ -375,7 +422,10 @@ public class ResourceController {
     public String updateAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Attendee attendee  = Alfred.gson.fromJson(requestJson, Attendee.class);
+            Attendee attendee  = gsonDeserializer.fromJson(requestJson, Attendee.class);
+            if(Alfred.isNull(attendee.getId()))
+                throw new Exception("Object doesn't exist. Add it first.");
+
             attendeeService.updateAttendee(attendee);
             response = Alfred.renderSuccess(attendee);
         } catch (Exception ex){
@@ -389,7 +439,7 @@ public class ResourceController {
     public String deleteAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Attendee attendee = Alfred.gson.fromJson(requestJson, Attendee.class);
+            Attendee attendee = gsonDeserializer.fromJson(requestJson, Attendee.class);
             if(Alfred.isNull(attendee)){
                 throw new Exception("Object doesn't exist.");
             }
@@ -453,7 +503,7 @@ public class ResourceController {
     public String addUser(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            User newUser = Alfred.gson.fromJson(requestJson, User.class);
+            User newUser = gsonDeserializer.fromJson(requestJson, User.class);
             userService.addUser(newUser);
             response = Alfred.renderSuccess(userService.getUser(newUser.getId()));
         } catch (Exception ex){
@@ -466,7 +516,7 @@ public class ResourceController {
     public String updateUser(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            User newUser = Alfred.gson.fromJson(requestJson, User.class);
+            User newUser = gsonDeserializer.fromJson(requestJson, User.class);
             userService.updateUser(newUser);
             response = Alfred.renderSuccess(newUser);
         } catch (Exception ex){
@@ -479,7 +529,7 @@ public class ResourceController {
     public String deleteUser(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            User user = Alfred.gson.fromJson(requestJson, User.class);
+            User user = gsonDeserializer.fromJson(requestJson, User.class);
             if(Alfred.isNull(user)){
                 throw new Exception("Object doesn't exist.");
             }
@@ -543,7 +593,7 @@ public class ResourceController {
     public String addVenue(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Venue newVenue = Alfred.gson.fromJson(requestJson, Venue.class);
+            Venue newVenue = gsonDeserializer.fromJson(requestJson, Venue.class);
             venueService.addVenue(newVenue);
             response = Alfred.renderSuccess(venueService.getVenue(newVenue.getId()));
         } catch (Exception ex){
@@ -557,7 +607,7 @@ public class ResourceController {
         String response;
         try{
 
-            Venue venue = Alfred.gson.fromJson(requestJson, Venue.class);
+            Venue venue = gsonDeserializer.fromJson(requestJson, Venue.class);
             venueService.updateVenue(venue);
             response = Alfred.renderSuccess(venue);
         } catch (Exception ex){
@@ -570,7 +620,7 @@ public class ResourceController {
     public String deleteVenue(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Venue venue = Alfred.gson.fromJson(requestJson, Venue.class);
+            Venue venue = gsonDeserializer.fromJson(requestJson, Venue.class);
             if(Alfred.isNull(venue)){
                 throw new Exception("Object doesn't exist.");
             }

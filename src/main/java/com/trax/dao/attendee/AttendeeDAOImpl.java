@@ -32,8 +32,7 @@ public class AttendeeDAOImpl implements AttendeeDAO {
     }
 
     public void updateAttendee(Attendee attendee){
-        if(Alfred.notNull(attendee.getId()))
-            getCurrentSession().update(attendee);
+        getCurrentSession().update(attendee);
     }
 
     public Attendee getAttendee(Long id){
@@ -46,11 +45,11 @@ public class AttendeeDAOImpl implements AttendeeDAO {
             getCurrentSession().delete(attendee);
     }
 
-    public List<Attendee> getAttendees(){
+    public List getAttendees(){
         return getCurrentSession().createQuery("from Attendee").list();
     }
 
-    public List<Attendee> bySessionAndFullName(Long id, String query){
+    public List bySessionAndFullName(Long id, String query){
         return getCurrentSession().createQuery("from Attendee a " +
                 "where (lower(a.user.firstName) like '%"+query+"%' " +
                 "or lower(a.user.lastName) like '%"+query+"%') " +
