@@ -42,4 +42,8 @@ public class SessionServiceImpl implements SessionService{
     public List<Session> getSessions(){
         return sessionDAO.getSessions();
     }
+
+    public List<Session> byName(String query){
+        return sessionDAO.byName(query);
+    }
 }

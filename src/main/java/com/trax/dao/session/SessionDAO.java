@@ -18,4 +18,5 @@ public interface SessionDAO {
     public Session getSession(Long id);
     public void deleteSession(Long id);
     public List<Session> getSessions();
+    public List<Session> byName(String query);
 }

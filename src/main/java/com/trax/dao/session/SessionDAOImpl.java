@@ -48,4 +48,8 @@ public class SessionDAOImpl implements SessionDAO{
     public List<Session> getSessions(){
         return getCurrentSession().createQuery("from Session").list();
     }
+
+    public List<Session> byName(String query){
+        return getCurrentSession().createQuery("from Session where lower(name) like '%"+query+"%'").list();
+    }
 }

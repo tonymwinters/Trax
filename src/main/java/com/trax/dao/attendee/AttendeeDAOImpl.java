@@ -49,4 +49,11 @@ public class AttendeeDAOImpl implements AttendeeDAO {
     public List<Attendee> getAttendees(){
         return getCurrentSession().createQuery("from Attendee").list();
     }
+
+    public List<Attendee> bySessionAndFullName(Long id, String query){
+        return getCurrentSession().createQuery("from Attendee a " +
+                "where (lower(a.user.firstName) like '%"+query+"%' " +
+                "or lower(a.user.lastName) like '%"+query+"%') " +
+                "and a.session.id = " + id).list();
+    }
 }
