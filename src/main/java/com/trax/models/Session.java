@@ -72,6 +72,14 @@ public class Session {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
     private Set<Attendee> attendees = new HashSet<Attendee>();
 
+    @Expose
+    @Column(name="capacity")
+    private Integer capacity;
+
+    @Expose
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
+    private Set<Comment> comments = new HashSet<Comment>();
+
     public Long getId() {
         return id;
     }
@@ -132,4 +140,15 @@ public class Session {
         return this.attendees;
     }
 
+    public void setCapacity(Integer capacity){
+        this.capacity = capacity;
+    }
+
+    public Integer getCapacity(){
+        return this.capacity;
+    }
+
+    public Set<Comment> getComments() {
+        return this.comments;
+    }
 }

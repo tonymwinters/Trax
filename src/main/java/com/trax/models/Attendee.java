@@ -1,10 +1,12 @@
 package com.trax.models;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,6 +42,10 @@ public class Attendee {
     private Session session;
 
     @Expose
+    @Column(name="arrival")
+    private Date arrival;
+
+    @Expose
     @Column(name="is_owner")
     private Boolean isOwner;
 
@@ -73,5 +79,13 @@ public class Attendee {
 
     public void setIsOwner(Boolean isOwner){
         this.isOwner = isOwner;
+    }
+
+    public Date getArrival(){
+        return this.arrival;
+    }
+
+    public void setArrival(Date arrival){
+        this.arrival = arrival;
     }
 }
