@@ -7,6 +7,8 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -53,12 +55,13 @@ public class User {
     @Column(name="last_name")
     private String lastName;
 
+    @Expose
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="user_roles",
             joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
             inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")}
     )
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @Expose
     @OneToOne(cascade=CascadeType.ALL)
@@ -125,11 +128,11 @@ public class User {
         this.contact = contact;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List roles) {
         this.roles = roles;
     }
 

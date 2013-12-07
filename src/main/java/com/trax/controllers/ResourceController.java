@@ -61,128 +61,6 @@ public class ResourceController {
             .create();
 
     private Gson gsonDeserializer = new GsonBuilder()
-            //Date
-            .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-                @Override
-                public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                    try {
-                        return json == null ? null : Alfred.dateFormat.parse(json.getAsString());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    throw new JsonParseException("Could not parse date.");
-                }
-            })
-
-                    //Attendee
-            .registerTypeAdapter(Attendee.class, new JsonDeserializer<Attendee>() {
-                @Override
-                public Attendee deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                    try {
-                        JsonElement id = json.getAsJsonObject().get("id");
-                        if (Alfred.isNull(id)) {
-                            return gson.fromJson(json, Attendee.class);
-                        } else {
-                            return attendeeService.getAttendee(id.getAsLong());
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    throw new JsonParseException("Could not deserialize User.");
-                }
-            })
-
-                    //Room
-            .registerTypeAdapter(Room.class, new JsonDeserializer<Room>() {
-                @Override
-                public Room deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                    try {
-                        JsonElement id = json.getAsJsonObject().get("id");
-                        if (Alfred.isNull(id)) {
-                            return gson.fromJson(json, Room.class);
-                        } else {
-                            return roomService.getRoom(id.getAsLong());
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    throw new JsonParseException("Could not deserialize User.");
-                }
-            })
-
-                    //Venue
-            .registerTypeAdapter(Venue.class, new JsonDeserializer<Venue>() {
-                @Override
-                public Venue deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                    try {
-                        JsonElement id = json.getAsJsonObject().get("id");
-                        if (Alfred.isNull(id)) {
-                            return gson.fromJson(json, Venue.class);
-                        } else {
-                            return venueService.getVenue(id.getAsLong());
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    throw new JsonParseException("Could not deserialize User.");
-                }
-            })
-
-                    //Owner
-            .registerTypeAdapter(Owner.class, new JsonDeserializer<Owner>() {
-                @Override
-                public Owner deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                    try {
-                        JsonElement id = json.getAsJsonObject().get("id");
-                        if (Alfred.isNull(id)) {
-                            return gson.fromJson(json, Owner.class);
-                        } else {
-                            return ownerService.getOwner(id.getAsLong());
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    throw new JsonParseException("Could not deserialize User.");
-                }
-            })
-
-                    //Users
-            .registerTypeAdapter(User.class, new JsonDeserializer<User>() {
-                @Override
-                public User deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                    try {
-                        JsonElement id = json.getAsJsonObject().get("id");
-                        if (Alfred.isNull(id)) {
-                            return gson.fromJson(json, User.class);
-                        } else {
-                            return userService.getUser(id.getAsLong());
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    throw new JsonParseException("Could not deserialize User.");
-                }
-            })
-
-                    //Session
-            .registerTypeAdapter(Session.class, new JsonDeserializer<Session>() {
-                @Override
-                public Session deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                    try {
-                        JsonElement id = json.getAsJsonObject().get("id");
-                        if (Alfred.isNull(id)) {
-                            return gsonDeserializer.fromJson(json, Session.class);
-                        } else {
-                            return sessionService.getSession(id.getAsLong());
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    throw new JsonParseException("Could not deserialize Session.");
-                }
-            })
-            .excludeFieldsWithModifiers(Modifier.TRANSIENT)
-            .setPrettyPrinting()
             .create();
 
     //region Owner
@@ -275,6 +153,185 @@ public class ResourceController {
         }
         return response;
     }
+    //endregion
+
+    //region User
+    @ResponseBody
+    @RequestMapping(value="/user/list", method= RequestMethod.GET)
+    public String listUsers(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(userService.getUsers());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/user/{id}", method= RequestMethod.GET)
+    public String getUser(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            User user = userService.getUser(id);
+            if(Alfred.isNull(user)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = Alfred.renderSuccess(user);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/user/add", method= RequestMethod.POST)
+    public String addUser(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            User newUser = userService.deserializeUser(requestJson);
+            userService.addUser(newUser);
+            response = Alfred.renderSuccess(userService.getUser(newUser.getId()));
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;}
+
+    @ResponseBody
+    @RequestMapping(value="/user/update", method= RequestMethod.POST)
+    public String updateUser(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            User newUser = userService.deserializeUser(requestJson);
+            userService.updateUser(newUser);
+            response = Alfred.renderSuccess(newUser);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;}
+
+    @ResponseBody
+    @RequestMapping(value="/user/delete", method= RequestMethod.POST)
+    public String deleteUser(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            User user = gsonDeserializer.fromJson(requestJson, User.class);
+            if(Alfred.isNull(user)){
+                throw new Exception("Object doesn't exist.");
+            }
+            userService.deleteUser(user.getId());
+            response = Alfred.renderSuccess();
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/user/delete/{id}", method= RequestMethod.POST)
+    public String deleteUser(@RequestParam Long id, Principal principal){
+        String response;
+        try{
+            User user = userService.getUser(id);
+            if(Alfred.isNull(user)){
+                throw new Exception("Object doesn't exist.");
+            }
+            userService.deleteUser(id);
+            response = Alfred.renderSuccess();
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+    //endregion
+
+    //region Venue
+    @ResponseBody
+    @RequestMapping(value="/venue/list", method= RequestMethod.GET)
+    public String listVenues(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(venueService.getVenues());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/venue/{id}", method= RequestMethod.GET)
+    public String getVenue(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Venue venue = venueService.getVenue(id);
+            if(Alfred.isNull(venue)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = Alfred.renderSuccess(venue);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/venue/add", method= RequestMethod.POST)
+    public String addVenue(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Venue newVenue = gsonDeserializer.fromJson(requestJson, Venue.class);
+            venueService.addVenue(newVenue);
+            response = Alfred.renderSuccess(venueService.getVenue(newVenue.getId()));
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;}
+
+    @ResponseBody
+    @RequestMapping(value="/venue/update", method= RequestMethod.POST)
+    public String updateVenue(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+
+            Venue venue = gsonDeserializer.fromJson(requestJson, Venue.class);
+            venueService.updateVenue(venue);
+            response = Alfred.renderSuccess(venue);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;}
+
+    @ResponseBody
+    @RequestMapping(value="/venue/delete", method= RequestMethod.POST)
+    public String deleteVenue(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Venue venue = gsonDeserializer.fromJson(requestJson, Venue.class);
+            if(Alfred.isNull(venue)){
+                throw new Exception("Object doesn't exist.");
+            }
+            venueService.deleteVenue(venue.getId());
+            response = Alfred.renderSuccess();
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;}
+
+    @ResponseBody
+    @RequestMapping(value="/venue/delete/{id}", method= RequestMethod.POST)
+    public String deleteVenue(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Venue venue = venueService.getVenue(id);
+            if(Alfred.isNull(venue)){
+                throw new Exception("Object doesn't exist.");
+            }
+            venueService.deleteVenue(venue.getId());
+            response = Alfred.renderSuccess();
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;}
     //endregion
 
     //region Room
@@ -495,7 +552,7 @@ public class ResourceController {
     public String addAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Attendee newAttendee = gsonDeserializer.fromJson(requestJson, Attendee.class);
+            Attendee newAttendee = attendeeService.deserializeAttendee(requestJson);
             attendeeService.addAttendee(newAttendee);
             response = Alfred.renderSuccess(attendeeService.getAttendee(newAttendee.getId()));
         } catch (Exception ex){
@@ -554,185 +611,6 @@ public class ResourceController {
         }
         return response;
     }
-    //endregion
-
-    //region User
-    @ResponseBody
-    @RequestMapping(value="/user/list", method= RequestMethod.GET)
-    public String listUsers(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = Alfred.renderSuccess(userService.getUsers());
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/user/{id}", method= RequestMethod.GET)
-    public String getUser(@PathVariable Long id, Principal principal){
-        String response;
-        try{
-            User user = userService.getUser(id);
-            if(Alfred.isNull(user)){
-                throw new Exception("Object doesn't exist.");
-            }
-            response = Alfred.renderSuccess(user);
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/user/add", method= RequestMethod.POST)
-    public String addUser(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            User newUser = gsonDeserializer.fromJson(requestJson, User.class);
-            userService.addUser(newUser);
-            response = Alfred.renderSuccess(userService.getUser(newUser.getId()));
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/user/update", method= RequestMethod.POST)
-    public String updateUser(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            User newUser = gsonDeserializer.fromJson(requestJson, User.class);
-            userService.updateUser(newUser);
-            response = Alfred.renderSuccess(newUser);
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/user/delete", method= RequestMethod.POST)
-    public String deleteUser(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            User user = gsonDeserializer.fromJson(requestJson, User.class);
-            if(Alfred.isNull(user)){
-                throw new Exception("Object doesn't exist.");
-            }
-            userService.deleteUser(user.getId());
-            response = Alfred.renderSuccess();
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/user/delete/{id}", method= RequestMethod.POST)
-    public String deleteUser(@RequestParam Long id, Principal principal){
-        String response;
-        try{
-            User user = userService.getUser(id);
-            if(Alfred.isNull(user)){
-                throw new Exception("Object doesn't exist.");
-            }
-            userService.deleteUser(id);
-            response = Alfred.renderSuccess();
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-    //endregion
-
-    //region Venue
-    @ResponseBody
-    @RequestMapping(value="/venue/list", method= RequestMethod.GET)
-    public String listVenues(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            response = Alfred.renderSuccess(venueService.getVenues());
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/venue/{id}", method= RequestMethod.GET)
-    public String getVenue(@PathVariable Long id, Principal principal){
-        String response;
-        try{
-            Venue venue = venueService.getVenue(id);
-            if(Alfred.isNull(venue)){
-                throw new Exception("Object doesn't exist.");
-            }
-            response = Alfred.renderSuccess(venue);
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/venue/add", method= RequestMethod.POST)
-    public String addVenue(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Venue newVenue = gsonDeserializer.fromJson(requestJson, Venue.class);
-            venueService.addVenue(newVenue);
-            response = Alfred.renderSuccess(venueService.getVenue(newVenue.getId()));
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/venue/update", method= RequestMethod.POST)
-    public String updateVenue(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-
-            Venue venue = gsonDeserializer.fromJson(requestJson, Venue.class);
-            venueService.updateVenue(venue);
-            response = Alfred.renderSuccess(venue);
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/venue/delete", method= RequestMethod.POST)
-    public String deleteVenue(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Venue venue = gsonDeserializer.fromJson(requestJson, Venue.class);
-            if(Alfred.isNull(venue)){
-                throw new Exception("Object doesn't exist.");
-            }
-            venueService.deleteVenue(venue.getId());
-            response = Alfred.renderSuccess();
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/venue/delete/{id}", method= RequestMethod.POST)
-    public String deleteVenue(@PathVariable Long id, Principal principal){
-        String response;
-        try{
-            Venue venue = venueService.getVenue(id);
-            if(Alfred.isNull(venue)){
-                throw new Exception("Object doesn't exist.");
-            }
-            venueService.deleteVenue(venue.getId());
-            response = Alfred.renderSuccess();
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;}
     //endregion
 
     //region Activity

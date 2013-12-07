@@ -63,6 +63,21 @@ import java.util.Set;
             })
             .create();
 
+    public static Gson gsonDeserializer = new GsonBuilder()
+            //Date
+            .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                @Override
+                public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    try {
+                        return json == null ? null : Alfred.dateFormat.parse(json.getAsString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    throw new JsonParseException("Could not parse date.");
+                }
+            })
+            .create();
+
     /**
      * Evaluates if an object is null
      * @param obj: to be evaluated
