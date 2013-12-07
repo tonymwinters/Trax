@@ -74,10 +74,6 @@
             <td><form:input path="username" cssClass="form-control"/></td>
         </tr>
 
-        <tr>
-            <td class="col-lg-2 control-label">Password:</td>
-            <td><form:input path="password" cssClass="form-control"/></td>
-        </tr>
 
         <tr>
             <td class="col-lg-2 control-label">Owner:</td>

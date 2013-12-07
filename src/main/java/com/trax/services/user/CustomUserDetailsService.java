@@ -66,7 +66,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		List<String> allRoles = new ArrayList<String>();
 
         for(Role role: roles){
-            if(role.getCode().equals("SUPER-USER")){
+            if(role.getCode().equals("OWNER")){
+                allRoles.add("ROLE_OWNER");
                 allRoles.add("ROLE_SUPER-USER");
                 allRoles.add("ROLE_ADMINISTRATOR");
             }

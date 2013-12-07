@@ -36,7 +36,7 @@ public class Venue {
     @Column(name="name")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="owner_id", updatable = false)
     private Owner owner;
 

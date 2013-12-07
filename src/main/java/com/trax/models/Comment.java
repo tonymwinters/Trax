@@ -51,7 +51,7 @@ public class Comment {
     @Column(name="last_updated")
     private Date lastUpdated;
 
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="session_id", updatable = false)
     private Session session;
 

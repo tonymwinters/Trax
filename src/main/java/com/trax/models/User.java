@@ -53,7 +53,7 @@ public class User {
     @Column(name="last_name")
     private String lastName;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="user_roles",
             joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
             inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")}
@@ -65,8 +65,8 @@ public class User {
     @JoinColumn(name="contact_id")
     private Contact contact;
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="owner_id", updatable = false)
+    @ManyToOne
+    @JoinColumn(name="owner_id")
     private Owner owner;
 
     public Long getId() {

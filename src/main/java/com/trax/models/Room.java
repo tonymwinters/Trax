@@ -42,12 +42,12 @@ public class Room {
     @Column(name="description")
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="venue_id", updatable = false)
     private Venue venue;
 
     @Expose
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
     private Set<Session> sessions = new HashSet<Session>();
 
     public Long getId() {

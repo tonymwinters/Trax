@@ -60,7 +60,7 @@ public class Session {
     @Column(name="end_time")
     private Date endTime;
 
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="venue_id", updatable = false)
     private Venue venue;
 

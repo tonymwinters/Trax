@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO{
 
     public void updateUser(User user) {
         if(Alfred.notNull(user.getId())){
-            getCurrentSession().update(user);
+            getCurrentSession();
         }
     }
 
@@ -60,7 +60,9 @@ public class UserDAOImpl implements UserDAO{
     public void deleteUser(Long id) {
         User user = getUser(id);
         if (Alfred.notNull(user))
+            user.setRoles(null);
             getCurrentSession().delete(user);
+
     }
 
     @SuppressWarnings("unchecked")

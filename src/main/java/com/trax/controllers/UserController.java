@@ -105,11 +105,11 @@ public class UserController {
     }
 
     @RequestMapping(value="/edit/{id}", method=RequestMethod.POST)
-    public ModelAndView editingUser(@ModelAttribute User user, @RequestParam String ownerId, @RequestParam String[] swag) {
+    public ModelAndView editingUser(@ModelAttribute User theUser, @RequestParam String ownerId, @RequestParam String[] swag) {
 
         ModelAndView modelAndView = new ModelAndView("home");
 
-        Owner owner = ownerService.getOwner(Long.parseLong(ownerId));
+        User user = userService.getUser(theUser.getId());
         Set<Role> usersRolesToUpdate = new HashSet<Role>();
 
         for(int i = 0; i < swag.length; ++i){
@@ -117,8 +117,6 @@ public class UserController {
         }
 
         user.setRoles(null);
-        user.setPassword(sha.encodePassword(user.getPassword(), null));
-        user.setOwner(owner);
         user.setRoles(usersRolesToUpdate);
 
         userService.updateUser(user);
