@@ -1,4 +1,5 @@
 <jsp:include page="../includes/header.jsp" />
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="session_page_header">
     Sessions >> Crossfit Spartanburg
@@ -13,17 +14,8 @@
         </div>
     </div>
     <input type="text" name="sessions_search" id="session_search" class="form-control form_shadow_clear" placeholder="Search Sessions">
-    <div class="single_session_container">
-        <h2>Yoga Class</h2>
-        <h3>1:00PM to 2:00PM</h3>
-    </div>
-    <div class="single_session_container active_session">
-        <h2>Aerobics</h2>
-        <h3>2:00PM to 3:00PM</h3>
-    </div>
-    <div class="single_session_container">
-        <h2>Crossfit</h2>
-        <h3>5:00PM to 6:00PM</h3>
+    <div class="all_sessions_container" id="all_sessions_container">
+
     </div>
 </div>
 
@@ -123,4 +115,6 @@
     </div>
 </div>
 
+<script src="<c:url value='/resources/ui/trax_app.js'/>" type="text/javascript"></script>
+<script src="<c:url value='/resources/ui/session/session.js'/>" type="text/javascript"></script>
 <jsp:include page="../includes/footer.jsp" />

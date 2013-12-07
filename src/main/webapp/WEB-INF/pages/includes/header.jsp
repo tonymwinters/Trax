@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href='<c:url value="/resources/reset.css" />' media="all" />
     <link rel="stylesheet" type="text/css" href='<c:url value="/resources/bootstrap/css/bootstrap.css" />' media="all" />
     <link rel="stylesheet" type="text/css" href='<c:url value="/resources/style.css" />' media="all" />
+    <script type="text/javascript">var contextPath = "<%= request.getContextPath() %>"</script>
 
     <script src="//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js" type="text/javascript"></script>
     <script type="text/javascript" src="<c:url value='/resources/ui/ejs/ejs_production.js' />"></script>

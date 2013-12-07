@@ -117,7 +117,7 @@ Trax.Model.Session.SessionTable = Class.create({
         console.log(json);
 
         var table = $('main-admin-table');
-        var template = new EJS({url: 'resources/ui/templates/session.ejs'}).update(table, json);
+        var template = new EJS({url: contextPath + '/resources/ui/templates/session.ejs'}).update(table, json);
 
 
 
@@ -125,3 +125,23 @@ Trax.Model.Session.SessionTable = Class.create({
 
 });
 
+
+
+Trax.Model.Session.List= Class.create({
+
+    initialize: function(venueId){
+        var data = Trax.ajax(contextPath + "/resources/venue/"+venueId,'get', {});
+        this.populateTable(data);
+
+    },
+
+    populateTable: function(data){
+        var json = JSON.parse(data);
+
+        var target = $('all_sessions_container');
+        var template = new EJS({url: contextPath + '/resources/ui/templates/session-item.ejs'}).update(target, json);
+
+
+
+    }
+});
