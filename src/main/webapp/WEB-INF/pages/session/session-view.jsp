@@ -7,8 +7,10 @@
 <div class="sessions_left">
     <div class="sessions_column_header">Current Sessions</div>
     <div class="new_session">
-        <div class="icon icon_calendar_plus"></div>
-        <span>New Session</span>
+        <div class="new_session_contents">
+            <div class="icon icon_calendar_plus"></div>
+            <span>New Session</span>
+        </div>
     </div>
     <input type="text" name="sessions_search" id="session_search" class="form-control form_shadow_clear" placeholder="Search Sessions">
     <div class="single_session_container">
@@ -25,11 +27,23 @@
     </div>
 </div>
 
+
+<div class="session_info_container">
+    <div class="session_info_header">
+        <div class="name_and_time_container">
+            <div class="name">Aerobics</div>
+            <div class="time">3:00PM - 4:00PM</div>
+        </div>
+    </div>
+</div>
+
 <div class="users_right">
     <div class="attendees_column_header">Attendees</div>
     <div class="new_attendee">
-        <div class="icon icon_person_plus"></div>
-        <span>New Attendee</span>
+        <div class="new_attendee_contents">
+            <div class="icon icon_person_plus"></div>
+            <span>New Attendee</span>
+        </div>
     </div>
     <input type="text" name="attendees_search" id="attendees_search" class="form-control form_shadow_clear" placeholder="Search Attendees">
     <div class="single_attendee_container">

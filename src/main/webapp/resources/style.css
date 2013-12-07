@@ -236,6 +236,7 @@ h2{
 
 .sessions_left{
     display: inline-block;
+    float: left;
     width: 23%;
     height: 80%;
     background-color: #dbdbdb;
@@ -245,7 +246,6 @@ h2{
 
 .users_right{
     display: inline-block;
-    float: right;
     width: 25%;
     height: 80%;
     border-left: 1px solid grey;
@@ -294,6 +294,7 @@ h2{
 
 .single_session_container{
     padding: 10px;
+    padding-left: 20px;
     border-bottom: 1px solid grey;
 }
 
@@ -326,7 +327,6 @@ h2{
 
 .icon_calendar_plus{
     background-position: 0px 0px;
-    margin-left: 34px;
     margin-top: 5px;
 }
 
@@ -397,13 +397,6 @@ h2{
 
 .icon_person_plus{
     background-position: -80px 0px;
-    margin-left: 34px;
-    margin-top: 5px;
-}
-
-.icon_person_plus{
-    background-position: -80px 0px;
-    margin-left: 34px;
     margin-top: 5px;
 }
 
@@ -434,4 +427,44 @@ h2{
 .attendee_text_container{
     display: inline-block;
     margin-left: 25px;
+}
+
+.new_attendee_contents{
+    text-align: left;
+    margin-left: 20px;
+}
+
+.new_session_contents{
+    text-align: left;
+    margin-left: 20px;
+}
+
+.session_info_container{
+    min-width: 594px;
+    float: left;
+    height: 200px;
+    vertical-align: top;
+    display: inline-block;
+    width: 52%;
+    height: 21%;
+    padding: 30px;
+    border-bottom: 1px solid lightgrey;
+}
+
+.session_info_header{
+
+}
+.session_info_header .name_and_time_container{
+
+}
+.session_info_header .name{
+    font-size: 64px;
+    font-weight: 200;
+    color: grey;
+}
+
+.session_info_header .time{
+    font-size: 32px;
+    font-weight: 200;
+    color: lightgrey;
 }
