@@ -1,4 +1,6 @@
-<div class="single_session_container">
-       <h2>Yoga Class</h2>
-       <h3>1:00PM to 2:00PM</h3>
-</div>
+<% for(var i = 0; i < object.sessions.length; ++i){ %>
+    <div class="single_session_container">
+           <h2><%=object.sessions[i].name%></h2>
+           <h3><%=object.sessions[i].startTime%> - <%=object.sessions[i].endTime%> /h3>
+    </div>
+<% } %>
