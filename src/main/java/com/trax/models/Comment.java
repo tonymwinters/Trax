@@ -52,7 +52,7 @@ public class Comment {
     private Date lastUpdated;
 
     @ManyToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name="session_id")
+    @JoinColumn(name="session_id", updatable = false)
     private Session session;
 
     public Long getId() {

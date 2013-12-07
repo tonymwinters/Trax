@@ -43,7 +43,7 @@ public class Room {
     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="venue_id")
+    @JoinColumn(name="venue_id", updatable = false)
     private Venue venue;
 
     @Expose

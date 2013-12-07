@@ -1,5 +1,6 @@
 package com.trax.services.user;
 
+import com.google.gson.JsonDeserializer;
 import com.trax.models.Owner;
 import com.trax.models.User;
 
@@ -18,6 +19,8 @@ public interface UserService {
     public void updateUser(User user);
     public User getUser(Long id);
     public User getUser(String username);
+    public User deserializeUser(String json);
+    public JsonDeserializer<User> getUserJsonDeserializer();
     public void deleteUser(Long id);
     public List getUsers();
 

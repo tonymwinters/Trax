@@ -66,7 +66,7 @@ public class User {
     private Contact contact;
 
     @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="owner_id")
+    @JoinColumn(name="owner_id", updatable = false)
     private Owner owner;
 
     public Long getId() {

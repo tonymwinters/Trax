@@ -55,10 +55,13 @@ public class ResourceController {
     AttendeeService attendeeService;
     //endregion
 
-    private Gson gsonDeserializer = new GsonBuilder()
+    private Gson gson = new GsonBuilder()
             .excludeFieldsWithModifiers(Modifier.TRANSIENT)
             .setPrettyPrinting()
-                    //deserialize dates
+            .create();
+
+    private Gson gsonDeserializer = new GsonBuilder()
+            //Date
             .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                 @Override
                 public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -70,33 +73,117 @@ public class ResourceController {
                     throw new JsonParseException("Could not parse date.");
                 }
             })
-                    //deserialize Users
-            .registerTypeAdapter(User.class, new JsonDeserializer<User>() {
+
+                    //Attendee
+            .registerTypeAdapter(Attendee.class, new JsonDeserializer<Attendee>() {
                 @Override
-                public User deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                public Attendee deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                     try {
-                        Long id = json.getAsJsonObject().get("id").getAsLong();
-                        return userService.getUser(id);
+                        JsonElement id = json.getAsJsonObject().get("id");
+                        if (Alfred.isNull(id)) {
+                            return gson.fromJson(json, Attendee.class);
+                        } else {
+                            return attendeeService.getAttendee(id.getAsLong());
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                     throw new JsonParseException("Could not deserialize User.");
                 }
             })
-                    //deserialize Sessions
+
+                    //Room
+            .registerTypeAdapter(Room.class, new JsonDeserializer<Room>() {
+                @Override
+                public Room deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    try {
+                        JsonElement id = json.getAsJsonObject().get("id");
+                        if (Alfred.isNull(id)) {
+                            return gson.fromJson(json, Room.class);
+                        } else {
+                            return roomService.getRoom(id.getAsLong());
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    throw new JsonParseException("Could not deserialize User.");
+                }
+            })
+
+                    //Venue
+            .registerTypeAdapter(Venue.class, new JsonDeserializer<Venue>() {
+                @Override
+                public Venue deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    try {
+                        JsonElement id = json.getAsJsonObject().get("id");
+                        if (Alfred.isNull(id)) {
+                            return gson.fromJson(json, Venue.class);
+                        } else {
+                            return venueService.getVenue(id.getAsLong());
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    throw new JsonParseException("Could not deserialize User.");
+                }
+            })
+
+                    //Owner
+            .registerTypeAdapter(Owner.class, new JsonDeserializer<Owner>() {
+                @Override
+                public Owner deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    try {
+                        JsonElement id = json.getAsJsonObject().get("id");
+                        if (Alfred.isNull(id)) {
+                            return gson.fromJson(json, Owner.class);
+                        } else {
+                            return ownerService.getOwner(id.getAsLong());
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    throw new JsonParseException("Could not deserialize User.");
+                }
+            })
+
+                    //Users
+            .registerTypeAdapter(User.class, new JsonDeserializer<User>() {
+                @Override
+                public User deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    try {
+                        JsonElement id = json.getAsJsonObject().get("id");
+                        if (Alfred.isNull(id)) {
+                            return gson.fromJson(json, User.class);
+                        } else {
+                            return userService.getUser(id.getAsLong());
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    throw new JsonParseException("Could not deserialize User.");
+                }
+            })
+
+                    //Session
             .registerTypeAdapter(Session.class, new JsonDeserializer<Session>() {
                 @Override
                 public Session deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                    try{
-                        return json == null ? null : sessionService.getSession(json.getAsJsonObject().get("id").getAsLong());
+                    try {
+                        JsonElement id = json.getAsJsonObject().get("id");
+                        if (Alfred.isNull(id)) {
+                            return gsonDeserializer.fromJson(json, Session.class);
+                        } else {
+                            return sessionService.getSession(id.getAsLong());
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                     throw new JsonParseException("Could not deserialize Session.");
                 }
             })
+            .excludeFieldsWithModifiers(Modifier.TRANSIENT)
+            .setPrettyPrinting()
             .create();
-
 
     //region Owner
     @ResponseBody
@@ -132,7 +219,7 @@ public class ResourceController {
     public String addOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Owner newOwner = gsonDeserializer.fromJson(requestJson, Owner.class);
+            Owner newOwner = ownerService.deserializeOwner(requestJson);
             ownerService.addOwner(newOwner);
             response = Alfred.renderSuccess(ownerService.getOwner(newOwner.getId()));
         } catch (Exception ex){
@@ -316,7 +403,7 @@ public class ResourceController {
     public String addSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session newSession = gsonDeserializer.fromJson(requestJson, Session.class);
+            Session newSession = sessionService.deserializeSession(requestJson);
             sessionService.addSession(newSession);
             response = Alfred.renderSuccess(sessionService.getSession(newSession.getId()));
         } catch (Exception ex){
@@ -330,7 +417,7 @@ public class ResourceController {
     public String updateSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session session = gsonDeserializer.fromJson(requestJson, Session.class);
+            Session session = sessionService.deserializeSession(requestJson);
             sessionService.updateSession(session);
             response = Alfred.renderSuccess(session);
         } catch (Exception ex){

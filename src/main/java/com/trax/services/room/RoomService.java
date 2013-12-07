@@ -1,5 +1,6 @@
 package com.trax.services.room;
 
+import com.google.gson.JsonDeserializer;
 import com.trax.models.Room;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface RoomService {
     public void addRoom(Room room);
     public void updateRoom(Room room);
     public Room getRoom(Long id);
+    public Room deserializeRoom(String json);
+    public JsonDeserializer<Room> getRoomJsonDeserializer();
     public void deleteRoom(Long id);
     public List<Room> getRooms();
 }
