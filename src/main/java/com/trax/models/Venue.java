@@ -44,6 +44,7 @@ public class Venue {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue", cascade = CascadeType.ALL)
     private Set<Room> rooms = new HashSet<Room>();
 
+    @Expose
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue", cascade = CascadeType.ALL)
     private Set<Session> sessions = new HashSet<Session>();
 

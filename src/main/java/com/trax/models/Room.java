@@ -46,7 +46,6 @@ public class Room {
     @JoinColumn(name="venue_id", updatable = false)
     private Venue venue;
 
-    @Expose
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
     private Set<Session> sessions = new HashSet<Session>();
 
