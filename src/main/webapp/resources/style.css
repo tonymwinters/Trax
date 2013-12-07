@@ -446,25 +446,77 @@ h2{
     vertical-align: top;
     display: inline-block;
     width: 52%;
-    height: 21%;
-    padding: 30px;
-    border-bottom: 1px solid lightgrey;
+    padding: .5%;
 }
 
 .session_info_header{
-
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 10px;
 }
 .session_info_header .name_and_time_container{
-
 }
 .session_info_header .name{
+    display: inline-block;
     font-size: 64px;
     font-weight: 200;
     color: grey;
 }
 
 .session_info_header .time{
+    display: inline-block;
     font-size: 32px;
     font-weight: 200;
     color: lightgrey;
+    float: right;
+    padding-top: 10px;
 }
+
+.session_info_header .description{
+    font-size: 19px;
+    vertical-align: top;
+    font-weight: 200;
+    color: grey;
+    display: inline-block;
+    width: 667px;
+    padding-top: 3%;
+}
+
+.session_info_mainarea{
+    height: 350px;
+}
+
+.session_info_comments{
+    border-top: 1px solid lightgrey;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.comment_container{
+
+}
+
+.comment_contents{
+}
+
+.comment_picture{
+    width: 40px;
+    height: 40px;
+    background: no-repeat -200px 0px url('images/icons.png');
+    display: inline-block;
+}
+
+.comment_text{
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.comment_user{
+    font-size: 32px;
+    color: darkgrey;
+    font-weight: 200;
+}
+
+.comment_comment{
+    color: grey;
+}
+
