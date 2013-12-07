@@ -35,6 +35,7 @@ body{
 #top-bar{
     height: 95px;
     padding: 15px;
+    min-width: 800px;
 }
 
 #main-admin-table{
@@ -235,17 +236,20 @@ h2{
 
 .sessions_left{
     display: inline-block;
-    width: 300px;
+    width: 23%;
     height: 80%;
     background-color: #dbdbdb;
+    border-right: 1px solid grey;
+    min-width: 270px;
 }
 
 .users_right{
     display: inline-block;
     float: right;
-    width: 600px;
+    width: 25%;
     height: 80%;
     border-left: 1px solid grey;
+    min-width: 295px;
 }
 
 .session_page_header{
@@ -262,6 +266,8 @@ h2{
     height: 20px;
     background-color: #707070;
     color: white;
+    padding-left: 10px;
+    font-weight: 100;
 }
 
 .new_session{
@@ -271,6 +277,15 @@ h2{
     font-family: "Helvetica";
     font-size: 31px;
     font-weight: 100;
+    -webkit-transition: background-color 100ms ease-out;
+    -moz-transition: background-color 100ms ease-out;
+    -o-transition: background-color 100ms ease-out;
+    transition: background-color 100ms ease-out;
+}
+
+.new_session:hover{
+    cursor: pointer;
+    background-color: #6ab880;
 }
 
 .new_session span{
@@ -315,3 +330,108 @@ h2{
     margin-top: 5px;
 }
 
+.new_attendee {
+    height: 50px;
+    background-color: #7ed797;
+    color: white;
+    font-family: "Helvetica";
+    font-size: 31px;
+    font-weight: 100;
+    text-align: center;
+    -webkit-transition: background-color 200ms ease-out;
+    -moz-transition: background-color 200ms ease-out;
+    -o-transition: background-color 200ms ease-out;
+    transition: background-color 200ms ease-out;
+}
+
+.attendee_page_header{
+    height: 70px;
+    background-color: #8f8f8f;
+    font-family: "Helvetica";
+    font-size: 49px;
+    font-weight: 100;
+    color: white;
+
+}
+
+.attendees_column_header{
+    height: 20px;
+    background-color: #707070;
+    color: white;
+    padding-left: 10px;
+    font-weight: 100;
+}
+
+.new_attendee:hover{
+    cursor: pointer;
+    background-color: #6ab880;
+}
+
+.new_attendee span{
+    vertical-align: text-bottom;
+}
+
+.single_attendee_container{
+    padding: 10px;
+    border-bottom: 1px solid grey;
+}
+
+.active_attendee{
+    background-color: #a7d7d6;
+    color: white;
+}
+
+.single_attendee_container h2{
+    margin: 0;
+    font-size: 24px;
+    font-weight: 300;
+    color: darkslategray;
+}
+
+.single_attendee_container h3{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 200;
+    color: darkgrey;
+}
+
+.icon_person_plus{
+    background-position: -80px 0px;
+    margin-left: 34px;
+    margin-top: 5px;
+}
+
+.icon_person_plus{
+    background-position: -80px 0px;
+    margin-left: 34px;
+    margin-top: 5px;
+}
+
+.icon_person_check{
+    background-position: -160px 0px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.icon_person_x{
+    background-position: -120px 0px;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.single_attendee_container .on_time{
+    color: #00CC00;
+}
+
+.single_attendee_container .late{
+    color: orange;
+}
+
+.single_attendee_container .absent{
+    color: red;
+}
+
+.attendee_text_container{
+    display: inline-block;
+    margin-left: 25px;
+}
