@@ -6,9 +6,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 /**

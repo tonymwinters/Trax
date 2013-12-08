@@ -21,9 +21,9 @@ public interface RoleService {
     public void updateRole(Role role);
     public Role getRole(Long id);
     public JsonDeserializer<Role> getRoleJsonDeserializer();
-    public JsonDeserializer<ArrayList<Role>> getRolesJsonDeserializer();
+    public JsonDeserializer<Set<Role>> getRolesJsonDeserializer();
     public Role deserializeRole(JsonElement json);
-    public List deserializeRoles(JsonElement json);
+    public Set deserializeRoles(JsonElement json);
     public void deleteRole(Long id);
     public List<Role> getRoles();
 }

@@ -5,6 +5,8 @@ import com.trax.services.session.SessionService;
 import com.trax.services.venue.VenueService;
 import com.trax.utilities.Alfred;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Parameter;
 import com.google.gson.annotations.SerializedName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,24 +61,24 @@ public class Session {
     private Date endTime;
 
     @ManyToOne
-    @JoinColumn(name="venue_id", updatable = false)
+    @JoinColumn(name="venue_id")
     private Venue venue;
 
     @ManyToOne
-    @JoinColumn(name="room_id", updatable = false)
+    @JoinColumn(name="room_id")
     private Room room;
 
-//    @Expose
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
-//    private List<Attendee> attendees = new ArrayList<Attendee>();
+    @Expose
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
+    private Set<Attendee> attendees = new HashSet<Attendee>();
 
     @Expose
     @Column(name="capacity")
     private Integer capacity;
 
-//    @Expose
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
-//    private List<Comment> comments = new ArrayList<Comment>();
+    @Expose
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
+    private Set<Comment> comments = new HashSet<Comment>();
 
     public Long getId() {
         return id;
@@ -134,13 +136,13 @@ public class Session {
         this.room = room;
     }
 
-//    public List<Attendee> getAttendeess() {
-//        return this.attendees;
-//    }
-//
-//    public void setAttendees(List attendees){
-//        this.attendees = attendees;
-//    }
+    public Set<Attendee> getAttendeess() {
+        return this.attendees;
+    }
+
+    public void setAttendees(Set attendees){
+        this.attendees = attendees;
+    }
 
     public void setCapacity(Integer capacity){
         this.capacity = capacity;
@@ -150,11 +152,11 @@ public class Session {
         return this.capacity;
     }
 
-//    public List<Comment> getComments() {
-//        return this.comments;
-//    }
-//
-//    public void setComments(List comments){
-//        this.comments = comments;
-//    }
+    public Set<Comment> getComments() {
+        return this.comments;
+    }
+
+    public void setComments(Set comments){
+        this.comments = comments;
+    }
 }

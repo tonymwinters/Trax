@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,8 +27,11 @@ public class AttendeeServiceImpl implements AttendeeService {
     @Autowired
     private AttendeeDAO attendeeDAO;
 
-//    @Autowired
-//    private SessionService sessionService;
+    @Autowired
+    private SessionService sessionService;
+
+    @Autowired
+    private UserService userService;
 
     private JsonDeserializer<Attendee> attendeeJsonDeserializer = new JsonDeserializer<Attendee>() {
         @Override
@@ -45,9 +46,12 @@ public class AttendeeServiceImpl implements AttendeeService {
                 if (Alfred.notNull(id)) {
                     attendee = getAttendee(id.getAsLong());
                 }
-//                if (Alfred.notNull(session)) {
-//                    attendee.setSession(sessionService.deserializeSession(session.getAsString()));
-//                }
+                if (Alfred.notNull(user)) {
+                    attendee.setUser(userService.deserializeUser(session.getAsString()));
+                }
+                if (Alfred.notNull(session)) {
+                    attendee.setSession(sessionService.deserializeSession(session.getAsString()));
+                }
                 if (Alfred.notNull(arrival)) {
                     attendee.setArrival(Alfred.gsonDeserializer.fromJson(arrival, Date.class));
                 }
@@ -63,14 +67,13 @@ public class AttendeeServiceImpl implements AttendeeService {
         }
     };
 
-    private JsonDeserializer<ArrayList<Attendee>> attendeesJsonDeserializer = new JsonDeserializer<ArrayList<Attendee>>() {
+    private JsonDeserializer<Set<Attendee>> attendeesJsonDeserializer = new JsonDeserializer<Set<Attendee>>() {
         @Override
-        public ArrayList<Attendee> deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+        public Set<Attendee> deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             try {
-                ArrayList<Attendee> attendees = new ArrayList<Attendee>();
+                Set<Attendee> attendees = new HashSet<Attendee>();
                 for (JsonElement jsonAttendee : jsonElement.getAsJsonArray()) {
-                    final Attendee attendee = deserializeAttendee(jsonAttendee.getAsString());
-                    attendees.add(attendee);
+                    attendees.add(deserializeAttendee(jsonAttendee.getAsString()));
                 }
                 return attendees;
             } catch (Exception ex) {
@@ -93,7 +96,11 @@ public class AttendeeServiceImpl implements AttendeeService {
         return attendeeDAO.getAttendee(id);
     }
 
-    public Attendee deserializeAttendee(String json){
+    public Attendee deserializeAttendee(String json) {
+        return deserializeAttendee(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Attendee deserializeAttendee(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Attendee.class, getAttendeeJsonDeserializer())
                 .create();
@@ -101,21 +108,23 @@ public class AttendeeServiceImpl implements AttendeeService {
         return gson.fromJson(json, Attendee.class);
     }
 
-    @Override
-    public ArrayList deserializeAttendees(String json) {
+    public Set deserializeAttendees(String json) {
+        return deserializeAttendees(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Set deserializeAttendees(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
-                .registerTypeAdapter(ArrayList.class, getAttendeesJsonDeserializer())
+                .registerTypeAdapter(Set.class, getAttendeesJsonDeserializer())
                 .create();
 
-        return gson.fromJson(json, ArrayList.class);
+        return gson.fromJson(json, Set.class);
     }
 
     public JsonDeserializer<Attendee> getAttendeeJsonDeserializer(){
         return attendeeJsonDeserializer;
     }
 
-    @Override
-    public JsonDeserializer<ArrayList<Attendee>> getAttendeesJsonDeserializer() {
+    public JsonDeserializer<Set<Attendee>> getAttendeesJsonDeserializer() {
         return attendeesJsonDeserializer;
     }
 

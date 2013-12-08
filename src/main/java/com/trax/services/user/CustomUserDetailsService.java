@@ -56,12 +56,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
 	
-	public Collection<? extends GrantedAuthority> getAuthorities(List<Role> roles) {
+	public Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {
 		List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(roles));
 		return authList;
 	}
 	
-	public List<String> getRoles(List<Role> roles) {
+	public List<String> getRoles(Set<Role> roles) {
 
 		List<String> allRoles = new ArrayList<String>();
 

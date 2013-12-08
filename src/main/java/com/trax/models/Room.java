@@ -6,7 +6,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -43,7 +45,7 @@ public class Room {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="venue_id", updatable = false)
+    @JoinColumn(name="venue_id")
     private Venue venue;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
@@ -75,6 +77,10 @@ public class Room {
 
     public Set<Session> getSessions() {
         return this.sessions;
+    }
+
+    public void setSessions(Set sessions){
+        this.sessions = sessions;
     }
 
     public Venue getVenue(){

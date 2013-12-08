@@ -44,7 +44,6 @@ public class UserDAOImpl implements UserDAO{
         return user;
     }
 
-    @SuppressWarnings("unchecked")
     public User getUser(String username){
             List<User> userList = new ArrayList<User>();
             Query query = getCurrentSession().createQuery("from User u where u.username = :username");
@@ -65,8 +64,7 @@ public class UserDAOImpl implements UserDAO{
 
     }
 
-    @SuppressWarnings("unchecked")
-    public List<User> getUsers() {
+    public List getUsers() {
         return getCurrentSession().createQuery("from User").list();
     }
 }

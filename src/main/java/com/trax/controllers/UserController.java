@@ -57,7 +57,7 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView("home");
         Owner owner = ownerService.getOwner(Long.parseLong(ownerId));
-        List<Role> usersRoles = new ArrayList<Role>();
+        Set<Role> usersRoles = new HashSet<Role>();
 
         for(int i = 0; i < swag.length; ++i){
             usersRoles.add(roleService.getRole(Long.parseLong(swag[i])));
@@ -110,7 +110,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("home");
 
         User user = userService.getUser(theUser.getId());
-        List<Role> usersRolesToUpdate = new ArrayList<Role>();
+        Set<Role> usersRolesToUpdate = new HashSet<Role>();
 
         for(int i = 0; i < swag.length; ++i){
             usersRolesToUpdate.add(roleService.getRole(Long.parseLong(swag[i])));

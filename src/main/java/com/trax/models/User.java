@@ -1,14 +1,10 @@
 package com.trax.models;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -61,7 +57,7 @@ public class User {
             joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
             inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")}
     )
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @Expose
     @OneToOne(cascade=CascadeType.ALL)
@@ -128,11 +124,11 @@ public class User {
         this.contact = contact;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List roles) {
+    public void setRoles(Set roles) {
         this.roles = roles;
     }
 

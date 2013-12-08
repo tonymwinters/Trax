@@ -34,11 +34,11 @@ public class Attendee {
 
     @Expose
     @ManyToOne
-    @JoinColumn(name="user_id", updatable = false)
+    @JoinColumn(name="user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="session_id", updatable = false)
+    @JoinColumn(name="session_id")
     private Session session;
 
     @Expose

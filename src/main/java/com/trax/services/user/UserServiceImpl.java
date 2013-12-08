@@ -3,23 +3,16 @@ package com.trax.services.user;
 import com.google.gson.*;
 import com.trax.dao.user.UserDAO;
 import com.trax.models.Contact;
-import com.trax.models.Owner;
-import com.trax.models.Role;
 import com.trax.models.User;
-import com.trax.services.owner.OwnerService;
 import com.trax.services.role.RoleService;
 import com.trax.utilities.Alfred;
-import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -118,7 +111,7 @@ public class UserServiceImpl implements UserService{
         userDAO.deleteUser(id);
     }
 
-    public List<User> getUsers() {
+    public List getUsers() {
         return userDAO.getUsers();
     }
 }

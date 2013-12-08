@@ -4,7 +4,6 @@ import com.google.gson.*;
 import com.trax.dao.session.SessionDAO;
 import com.trax.models.*;
 import com.trax.services.attendee.AttendeeService;
-import com.trax.services.room.RoomService;
 import com.trax.services.venue.VenueService;
 import com.trax.utilities.Alfred;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Type;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,8 +28,8 @@ public class SessionServiceImpl implements SessionService{
     @Autowired
     private SessionDAO sessionDAO;
 
-//    @Autowired
-//    private AttendeeService attendeeService;
+    @Autowired
+    private AttendeeService attendeeService;
 
     @Autowired
     private VenueService venueService;
@@ -68,20 +66,36 @@ public class SessionServiceImpl implements SessionService{
                 if (Alfred.notNull(venue)) {
                     session.setVenue(venueService.deserializeVenue(venue.toString()));
                 }
-//                if (Alfred.notNull(attendees)) {
-//                    session.setAttendees(attendeeService.deserializeAttendees(attendees.getAsString()));
-//                }
+                if (Alfred.notNull(attendees)) {
+                    session.setAttendees(attendeeService.deserializeAttendees(attendees.getAsString()));
+                }
                 if (Alfred.notNull(capacity)) {
                     session.setCapacity(capacity.getAsInt());
                 }
-//                if (Alfred.notNull(comments)) {
-//                    session.setComments(Alfred.gsonDeserializer.fromJson(comments, List.class));
-//                }
+                if (Alfred.notNull(comments)) {
+                    session.setComments(Alfred.gsonDeserializer.fromJson(comments, Set.class));
+                }
                 return session;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             throw new JsonParseException("Could not deserialize Session.");
+        }
+    };
+
+    private JsonDeserializer<Set<Session>> sessionsJsonDeserializer = new JsonDeserializer<Set<Session>>() {
+        @Override
+        public Set<Session> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            try {
+                Set<Session> sessions = new HashSet<Session>();
+                for (JsonElement jsonAttendee : jsonElement.getAsJsonArray()) {
+                    sessions.add(deserializeSession(jsonAttendee));
+                }
+                return sessions;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            throw new JsonParseException("Could not deserialize Rooms.");
         }
     };
 
@@ -98,6 +112,10 @@ public class SessionServiceImpl implements SessionService{
     }
 
     public Session deserializeSession(String json){
+        return deserializeSession(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Session deserializeSession(JsonElement json){
 
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Session.class, getSessionJsonDeserializer())
@@ -106,8 +124,25 @@ public class SessionServiceImpl implements SessionService{
         return gson.fromJson(json, Session.class);
     }
 
+    public Set deserializeSessions(String json){
+        return deserializeSessions(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Set deserializeSessions(JsonElement json){
+
+        Gson gson = Alfred.gsonBuilder
+                .registerTypeAdapter(Set.class, getSessionsJsonDeserializer())
+                .create();
+
+        return gson.fromJson(json, Set.class);
+    }
+
     public JsonDeserializer<Session> getSessionJsonDeserializer(){
         return sessionJsonDeserializer;
+    }
+
+    public JsonDeserializer<Set<Session>> getSessionsJsonDeserializer(){
+        return sessionsJsonDeserializer;
     }
 
     public void deleteSession(Long id){

@@ -3,8 +3,6 @@ package com.trax.services.room;
 import com.google.gson.*;
 import com.trax.dao.room.RoomDAO;
 import com.trax.models.Room;
-import com.trax.models.Session;
-import com.trax.models.Venue;
 import com.trax.services.session.SessionService;
 import com.trax.services.venue.VenueService;
 import com.trax.utilities.Alfred;
@@ -13,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Type;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,15 +40,47 @@ public class RoomServiceImpl implements RoomService {
         public Room deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
                 JsonElement id = json.getAsJsonObject().get("id");
-                if (Alfred.isNull(id)) {
+                JsonElement name = json.getAsJsonObject().get("name");
+                JsonElement description = json.getAsJsonObject().get("description");
+                JsonElement venue = json.getAsJsonObject().get("venue");
+                JsonElement sessions = json.getAsJsonObject().get("sessions");
+                Room room = new Room();
+                if (Alfred.notNull(id)) {
                     return deserializeRoom(json.toString());
-                } else {
-                    return getRoom(id.getAsLong());
                 }
+                if (Alfred.notNull(name)) {
+                    room.setName(name.getAsString());
+                }
+                if (Alfred.notNull(description)) {
+                    room.setDescription(description.getAsString());
+                }
+                if (Alfred.notNull(venue)) {
+                    room.setVenue(venueService.deserializeVenue(venue.getAsString()));
+                }
+                if (Alfred.notNull(sessions)) {
+                    room.setSessions(sessionService.deserializeSessions(sessions));
+                }
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             throw new JsonParseException("Could not deserialize Room.");
+        }
+    };
+
+    private JsonDeserializer<Set<Room>> roomsJsonDeserializer = new JsonDeserializer<Set<Room>>() {
+        @Override
+        public Set<Room> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            try {
+                Set<Room> rooms = new HashSet<Room>();
+                for (JsonElement jsonAttendee : jsonElement.getAsJsonArray()) {
+                    rooms.add(deserializeRoom(jsonAttendee.getAsString()));
+                }
+                return rooms;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            throw new JsonParseException("Could not deserialize Rooms.");
         }
     };
 
@@ -65,16 +97,35 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public Room deserializeRoom(String json){
+        return deserializeRoom(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Room deserializeRoom(JsonElement json){
         Gson gson = Alfred.gsonBuilder
-                .registerTypeAdapter(Session.class, sessionService.getSessionJsonDeserializer())
-                .registerTypeAdapter(Venue.class, venueService.getVenueJsonDeserializer())
+                .registerTypeAdapter(Room.class, getRoomJsonDeserializer())
                 .create();
 
         return gson.fromJson(json, Room.class);
     }
 
+    public Set deserializeRooms(String json) {
+        return deserializeRooms(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Set deserializeRooms(JsonElement json) {
+        Gson gson = Alfred.gsonBuilder
+                .registerTypeAdapter(Set.class, getRoomsJsonDeserializer())
+                .create();
+
+        return gson.fromJson(json, Set.class);
+    }
+
     public JsonDeserializer<Room> getRoomJsonDeserializer(){
         return roomJsonDeserializer;
+    }
+
+    public JsonDeserializer<Set<Room>> getRoomsJsonDeserializer() {
+        return roomsJsonDeserializer;
     }
 
     public void deleteRoom(Long id){

@@ -5,7 +5,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,7 +39,7 @@ public class Venue {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name="owner_id", updatable = false)
+    @JoinColumn(name="owner_id")
     private Owner owner;
 
     @Expose

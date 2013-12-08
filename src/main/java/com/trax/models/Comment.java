@@ -52,7 +52,7 @@ public class Comment {
     private Date lastUpdated;
 
     @ManyToOne
-    @JoinColumn(name="session_id", updatable = false)
+    @JoinColumn(name="session_id")
     private Session session;
 
     public Long getId() {

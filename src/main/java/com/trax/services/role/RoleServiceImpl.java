@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,11 +53,11 @@ public class RoleServiceImpl implements RoleService{
         }
     };
 
-    private JsonDeserializer<ArrayList<Role>> rolesJsonDeserializer = new JsonDeserializer<ArrayList<Role>>() {
+    private JsonDeserializer<Set<Role>> rolesJsonDeserializer = new JsonDeserializer<Set<Role>>() {
         @Override
-        public ArrayList<Role> deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+        public Set<Role> deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             try {
-                ArrayList<Role> roles = new ArrayList<Role>();
+                Set<Role> roles = new HashSet<Role>();
                 for (JsonElement jsonRole : jsonElement.getAsJsonArray()) {
                     final Role role = deserializeRole(jsonRole);
                     roles.add(role);
@@ -86,7 +87,7 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public JsonDeserializer<ArrayList<Role>> getRolesJsonDeserializer() {
+    public JsonDeserializer<Set<Role>> getRolesJsonDeserializer() {
         return rolesJsonDeserializer;
     }
 
@@ -98,11 +99,11 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public List deserializeRoles(JsonElement json) {
+    public Set deserializeRoles(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
-                .registerTypeAdapter(ArrayList.class, getRolesJsonDeserializer())
+                .registerTypeAdapter(Set.class, getRolesJsonDeserializer())
                 .create();
-        return gson.fromJson(json, ArrayList.class);
+        return gson.fromJson(json, Set.class);
 
     }
 
