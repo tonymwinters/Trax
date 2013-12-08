@@ -21,65 +21,8 @@
 
 
 <div class="session_info_container">
-    <div class="session_info_header">
-        <div class="name_and_time_container">
-            <div class="name">Aerobics</div>
-            <div class="time">3:00PM - 4:00PM</div>
-        </div>
 
-    </div>
 
-    <div class="session_info_mainarea">
-        <div class="description">This is a session. I love this session. In fact, if I could put this session in my will, I probably would. I probably will. Get it?</div>
-    </div>
-
-    <div class="session_info_comments">
-        <div class="comment_container">
-            <div class="comment_contents">
-                <div class="comment_picture"></div>
-                <div class="comment_text">
-                    <div class="comment_user">Tony Winters</div>
-                    <div class="comment_comment">I really like this session.</div>
-                </div>
-            </div>
-        </div>
-        <div class="comment_container">
-            <div class="comment_contents">
-                <div class="comment_picture"></div>
-                <div class="comment_text">
-                    <div class="comment_user">Matt Garkusha</div>
-                    <div class="comment_comment">Yea its pretty sweet. I especially like the sessiony part.</div>
-                </div>
-            </div>
-        </div>
-        <div class="comment_container">
-            <div class="comment_contents">
-                <div class="comment_picture"></div>
-                <div class="comment_text">
-                    <div class="comment_user">Holden Cribb</div>
-                    <div class="comment_comment">I like soccer. It is soooooo cool. </div>
-                </div>
-            </div>
-        </div>
-        <div class="comment_container">
-            <div class="comment_contents">
-                <div class="comment_picture"></div>
-                <div class="comment_text">
-                    <div class="comment_user">Teduardo</div>
-                    <div class="comment_comment">Ruff ruff, bark bark! I like food. ok bye.</div>
-                </div>
-            </div>
-        </div>
-        <div class="comment_container">
-            <div class="comment_contents">
-                <div class="comment_picture"></div>
-                <div class="comment_text">
-                    <div class="comment_user">Billy Cringolaction</div>
-                    <div class="comment_comment">That is so crazy; I too love to work out!</div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 
@@ -115,6 +58,7 @@
     </div>
 </div>
 
+<script src="<c:url value='/resources/date.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/ui/trax_app.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/ui/session/session.js'/>" type="text/javascript"></script>
 <jsp:include page="../includes/footer.jsp" />

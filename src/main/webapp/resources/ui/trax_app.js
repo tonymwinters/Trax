@@ -44,7 +44,7 @@ Trax.Model.Venue.VenueTable = Class.create({
         console.log(json);
 
         var table = $('main-admin-table');
-        var template = new EJS({url: 'resources/ui/templates/venue.ejs'}).update(table, json);
+        var template = new EJS({url: contextPath + '/resources/ui/templates/admin/venue.ejs'}).update(table, json);
 
 
 
@@ -83,7 +83,7 @@ Trax.Model.User.UserTable = Class.create({
         console.log(json);
         EJS.config({cache: false});
         var table = $('main-admin-table');
-        var template = new EJS({url: 'resources/ui/templates/user.ejs'}).update(table, json);
+        var template = new EJS({url: contextPath + '/resources/ui/templates/admin/user.ejs'}).update(table, json);
 
     },
 
@@ -117,7 +117,7 @@ Trax.Model.Session.SessionTable = Class.create({
         console.log(json);
 
         var table = $('main-admin-table');
-        var template = new EJS({url: contextPath + '/resources/ui/templates/session.ejs'}).update(table, json);
+        var template = new EJS({url: contextPath + '/resources/ui/templates/admin/session.ejs'}).update(table, json);
 
 
 
@@ -127,21 +127,44 @@ Trax.Model.Session.SessionTable = Class.create({
 
 
 
-Trax.Model.Session.List= Class.create({
+Trax.Model.Session.Page = Class.create({
 
     initialize: function(venueId){
+        console.log("initializing session page");
+        var self = this;
         var data = Trax.ajax(contextPath + "/resources/venue/"+venueId,'get', {});
-        this.populateTable(data);
+        this.populateSessionList(data);
+        this.populateInitialSession(data);
+
+        $$('.single_session_container').each(function(element){
+            element.observe("click", function(){
+                console.log("swag, clicked a new session");
+                var id = element.readAttribute('id');
+                console.log("sessionId is: " + id);
+                self.populateSessionDetail(id);
+            });
+        });
 
     },
 
-    populateTable: function(data){
+    populateSessionList: function(data){
         var json = JSON.parse(data);
-
         var target = $('all_sessions_container');
-        var template = new EJS({url: contextPath + '/resources/ui/templates/session-item.ejs'}).update(target, json);
+        var template = new EJS({url: contextPath + '/resources/ui/templates/session/session-item.ejs'}).update(target, json);
+    },
 
+    populateInitialSession: function(data){
+        var json = JSON.parse(data);
+        var target = $$('div.session_info_container')[0];
+        new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, json.object.sessions[0]);
 
+    },
+
+    populateSessionDetail: function(sessionId){
+        var data = Trax.ajax(contextPath + "/resources/session/" + sessionId,'get', {});
+        var json = JSON.parse(data);
+        var target = $$('div.session_info_container')[0];
+        new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, json.object);
 
     }
 });

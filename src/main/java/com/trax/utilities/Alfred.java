@@ -33,7 +33,7 @@ import java.util.Set;
  */
  public class Alfred {
 
-    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
     public static GsonBuilder gsonBuilder = new GsonBuilder()
             .excludeFieldsWithModifiers(Modifier.TRANSIENT)
