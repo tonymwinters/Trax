@@ -2,9 +2,8 @@ package com.trax.services.session;
 
 import com.google.gson.*;
 import com.trax.dao.session.SessionDAO;
-import com.trax.models.Room;
-import com.trax.models.Session;
-import com.trax.models.Venue;
+import com.trax.models.*;
+import com.trax.services.attendee.AttendeeService;
 import com.trax.services.room.RoomService;
 import com.trax.services.venue.VenueService;
 import com.trax.utilities.Alfred;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,8 +30,8 @@ public class SessionServiceImpl implements SessionService{
     @Autowired
     private SessionDAO sessionDAO;
 
-    @Autowired
-    private RoomService roomService;
+//    @Autowired
+//    private AttendeeService attendeeService;
 
     @Autowired
     private VenueService venueService;
@@ -41,11 +41,43 @@ public class SessionServiceImpl implements SessionService{
         public Session deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
                 JsonElement id = json.getAsJsonObject().get("id");
-                if (Alfred.isNull(id)) {
-                    return deserializeSession(json.toString());
-                } else {
-                    return getSession(id.getAsLong());
+                JsonElement name = json.getAsJsonObject().get("name");
+                JsonElement description = json.getAsJsonObject().get("description");
+                JsonElement startTime = json.getAsJsonObject().get("startTime");
+                JsonElement endTime = json.getAsJsonObject().get("endTime");
+                JsonElement venue = json.getAsJsonObject().get("venue");
+                JsonElement attendees = json.getAsJsonObject().get("attendees");
+                JsonElement capacity = json.getAsJsonObject().get("capacity");
+                JsonElement comments = json.getAsJsonObject().get("comments");
+                Session session = new Session();
+                if (Alfred.notNull(id)) {
+                    session = getSession(id.getAsLong());
                 }
+                if (Alfred.notNull(name)) {
+                    session.setName(name.getAsString());
+                }
+                if (Alfred.notNull(description)) {
+                    session.setDescription(description.getAsString());
+                }
+                if (Alfred.notNull(startTime)) {
+                    session.setStartTime(Alfred.gsonDeserializer.fromJson(startTime, Date.class));
+                }
+                if (Alfred.notNull(endTime)) {
+                    session.setEndTime(Alfred.gsonDeserializer.fromJson(endTime, Date.class));
+                }
+                if (Alfred.notNull(venue)) {
+                    session.setVenue(venueService.deserializeVenue(venue.toString()));
+                }
+//                if (Alfred.notNull(attendees)) {
+//                    session.setAttendees(attendeeService.deserializeAttendees(attendees.getAsString()));
+//                }
+                if (Alfred.notNull(capacity)) {
+                    session.setCapacity(capacity.getAsInt());
+                }
+//                if (Alfred.notNull(comments)) {
+//                    session.setComments(Alfred.gsonDeserializer.fromJson(comments, List.class));
+//                }
+                return session;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -68,9 +100,8 @@ public class SessionServiceImpl implements SessionService{
     public Session deserializeSession(String json){
 
         Gson gson = Alfred.gsonBuilder
-        .registerTypeAdapter(Room.class, roomService.getRoomJsonDeserializer())
-        .registerTypeAdapter(Venue.class, venueService.getVenueJsonDeserializer())
-        .create();
+                .registerTypeAdapter(Session.class, getSessionJsonDeserializer())
+                .create();
 
         return gson.fromJson(json, Session.class);
     }

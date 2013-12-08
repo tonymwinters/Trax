@@ -67,8 +67,7 @@ public class VenueServiceImpl implements VenueService{
 
     public Venue deserializeVenue(String json){
         Gson gson = Alfred.gsonBuilder
-                .registerTypeAdapter(Room.class, roomService.getRoomJsonDeserializer())
-                .registerTypeAdapter(Session.class, sessionService.getSessionJsonDeserializer())
+                .registerTypeAdapter(Venue.class, getVenueJsonDeserializer())
                 .create();
 
         return gson.fromJson(json, Venue.class);

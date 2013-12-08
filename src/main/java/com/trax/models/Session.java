@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -68,17 +66,17 @@ public class Session {
     @JoinColumn(name="room_id", updatable = false)
     private Room room;
 
-    @Expose
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
-    private Set<Attendee> attendees = new HashSet<Attendee>();
+//    @Expose
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
+//    private List<Attendee> attendees = new ArrayList<Attendee>();
 
     @Expose
     @Column(name="capacity")
     private Integer capacity;
 
-    @Expose
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
-    private Set<Comment> comments = new HashSet<Comment>();
+//    @Expose
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
+//    private List<Comment> comments = new ArrayList<Comment>();
 
     public Long getId() {
         return id;
@@ -136,9 +134,13 @@ public class Session {
         this.room = room;
     }
 
-    public Set<Attendee> getAttendeess() {
-        return this.attendees;
-    }
+//    public List<Attendee> getAttendeess() {
+//        return this.attendees;
+//    }
+//
+//    public void setAttendees(List attendees){
+//        this.attendees = attendees;
+//    }
 
     public void setCapacity(Integer capacity){
         this.capacity = capacity;
@@ -148,7 +150,11 @@ public class Session {
         return this.capacity;
     }
 
-    public Set<Comment> getComments() {
-        return this.comments;
-    }
+//    public List<Comment> getComments() {
+//        return this.comments;
+//    }
+//
+//    public void setComments(List comments){
+//        this.comments = comments;
+//    }
 }

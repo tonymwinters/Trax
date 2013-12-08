@@ -3,8 +3,6 @@ package com.trax.services.attendee;
 import com.google.gson.*;
 import com.trax.dao.attendee.AttendeeDAO;
 import com.trax.models.Attendee;
-import com.trax.models.Session;
-import com.trax.models.User;
 import com.trax.services.session.SessionService;
 import com.trax.services.user.UserService;
 import com.trax.utilities.Alfred;
@@ -13,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,26 +29,54 @@ public class AttendeeServiceImpl implements AttendeeService {
     @Autowired
     private AttendeeDAO attendeeDAO;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private SessionService sessionService;
+//    @Autowired
+//    private SessionService sessionService;
 
     private JsonDeserializer<Attendee> attendeeJsonDeserializer = new JsonDeserializer<Attendee>() {
         @Override
         public Attendee deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
                 JsonElement id = json.getAsJsonObject().get("id");
-                if (Alfred.isNull(id)) {
-                    return deserializeAttendee(json.toString());
-                } else {
-                    return getAttendee(id.getAsLong());
+                JsonElement user = json.getAsJsonObject().get("user");
+                JsonElement session = json.getAsJsonObject().get("session");
+                JsonElement arrival = json.getAsJsonObject().get("arrival");
+                JsonElement isOwner = json.getAsJsonObject().get("isOwner");
+                Attendee attendee = new Attendee();
+                if (Alfred.notNull(id)) {
+                    attendee = getAttendee(id.getAsLong());
                 }
+//                if (Alfred.notNull(session)) {
+//                    attendee.setSession(sessionService.deserializeSession(session.getAsString()));
+//                }
+                if (Alfred.notNull(arrival)) {
+                    attendee.setArrival(Alfred.gsonDeserializer.fromJson(arrival, Date.class));
+                }
+                if (Alfred.notNull(id)) {
+                    attendee.setIsOwner(Alfred.gsonDeserializer.fromJson(isOwner, Boolean.class));
+                }
+
+                return attendee;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             throw new JsonParseException("Could not deserialize Attendee.");
+        }
+    };
+
+    private JsonDeserializer<ArrayList<Attendee>> attendeesJsonDeserializer = new JsonDeserializer<ArrayList<Attendee>>() {
+        @Override
+        public ArrayList<Attendee> deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            try {
+                ArrayList<Attendee> attendees = new ArrayList<Attendee>();
+                for (JsonElement jsonAttendee : jsonElement.getAsJsonArray()) {
+                    final Attendee attendee = deserializeAttendee(jsonAttendee.getAsString());
+                    attendees.add(attendee);
+                }
+                return attendees;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            throw new JsonParseException("Could not deserialize Attendees.");
         }
     };
 
@@ -67,15 +95,28 @@ public class AttendeeServiceImpl implements AttendeeService {
 
     public Attendee deserializeAttendee(String json){
         Gson gson = Alfred.gsonBuilder
-                .registerTypeAdapter(Session.class, sessionService.getSessionJsonDeserializer())
-                .registerTypeAdapter(User.class, userService.getUserJsonDeserializer())
+                .registerTypeAdapter(Attendee.class, getAttendeeJsonDeserializer())
                 .create();
 
         return gson.fromJson(json, Attendee.class);
     }
 
+    @Override
+    public ArrayList deserializeAttendees(String json) {
+        Gson gson = Alfred.gsonBuilder
+                .registerTypeAdapter(ArrayList.class, getAttendeesJsonDeserializer())
+                .create();
+
+        return gson.fromJson(json, ArrayList.class);
+    }
+
     public JsonDeserializer<Attendee> getAttendeeJsonDeserializer(){
         return attendeeJsonDeserializer;
+    }
+
+    @Override
+    public JsonDeserializer<ArrayList<Attendee>> getAttendeesJsonDeserializer() {
+        return attendeesJsonDeserializer;
     }
 
     public void deleteAttendee(Long id){

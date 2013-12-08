@@ -3,6 +3,7 @@ package com.trax.services.attendee;
 import com.google.gson.JsonDeserializer;
 import com.trax.models.Attendee;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,9 @@ public interface AttendeeService {
     public void updateAttendee(Attendee attendee);
     public Attendee getAttendee(Long id);
     public Attendee deserializeAttendee(String json);
+    public ArrayList deserializeAttendees(String json);
     public JsonDeserializer<Attendee> getAttendeeJsonDeserializer();
+    public JsonDeserializer<ArrayList<Attendee>> getAttendeesJsonDeserializer();
     public void deleteAttendee(Long id);
     public List getAttendees();
     public List bySessionAndFullName(Long id, String query);
