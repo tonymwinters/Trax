@@ -59,8 +59,7 @@ public class RoleServiceImpl implements RoleService{
             try {
                 Set<Role> roles = new HashSet<Role>();
                 for (JsonElement jsonRole : jsonElement.getAsJsonArray()) {
-                    final Role role = deserializeRole(jsonRole);
-                    roles.add(role);
+                    roles.add(deserializeRole(jsonRole));
                 }
                 return roles;
             } catch (Exception ex) {

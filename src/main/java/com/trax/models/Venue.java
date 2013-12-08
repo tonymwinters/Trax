@@ -88,8 +88,16 @@ public class Venue {
         return this.rooms;
     }
 
+    public void setRooms(Set rooms){
+        this.rooms = rooms;
+    }
+
     public Set<Session> getSessions() {
         return this.sessions;
+    }
+
+    public void setSessions(Set sessions){
+        this.sessions = sessions;
     }
 
     public Contact getContact() {

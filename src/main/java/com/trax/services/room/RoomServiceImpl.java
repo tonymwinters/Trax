@@ -46,7 +46,7 @@ public class RoomServiceImpl implements RoomService {
                 JsonElement sessions = json.getAsJsonObject().get("sessions");
                 Room room = new Room();
                 if (Alfred.notNull(id)) {
-                    return deserializeRoom(json.toString());
+                    room = getRoom(id.getAsLong());
                 }
                 if (Alfred.notNull(name)) {
                     room.setName(name.getAsString());
@@ -55,12 +55,13 @@ public class RoomServiceImpl implements RoomService {
                     room.setDescription(description.getAsString());
                 }
                 if (Alfred.notNull(venue)) {
-                    room.setVenue(venueService.deserializeVenue(venue.getAsString()));
+                    room.setVenue(venueService.deserializeVenue(venue));
                 }
                 if (Alfred.notNull(sessions)) {
                     room.setSessions(sessionService.deserializeSessions(sessions));
                 }
 
+                return room;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -73,8 +74,8 @@ public class RoomServiceImpl implements RoomService {
         public Set<Room> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
                 Set<Room> rooms = new HashSet<Room>();
-                for (JsonElement jsonAttendee : jsonElement.getAsJsonArray()) {
-                    rooms.add(deserializeRoom(jsonAttendee.getAsString()));
+                for (JsonElement jsonRoom : jsonElement.getAsJsonArray()) {
+                    rooms.add(deserializeRoom(jsonRoom));
                 }
                 return rooms;
             } catch (Exception ex) {

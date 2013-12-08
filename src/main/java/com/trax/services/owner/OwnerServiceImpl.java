@@ -5,9 +5,7 @@ import java.util.List;
 
 import com.google.gson.*;
 import com.trax.dao.owner.OwnerDAO;
-import com.trax.models.Owner;
-import com.trax.models.User;
-import com.trax.models.Venue;
+import com.trax.models.*;
 import com.trax.services.user.UserService;
 import com.trax.services.venue.VenueService;
 import com.trax.utilities.Alfred;
@@ -43,11 +41,31 @@ public class OwnerServiceImpl implements OwnerService {
         public Owner deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
                 JsonElement id = json.getAsJsonObject().get("id");
-                if (Alfred.isNull(id)) {
-                    return deserializeOwner(json.toString());
-                } else {
-                    return getOwner(id.getAsLong());
+                JsonElement name = json.getAsJsonObject().get("id");
+                JsonElement contact = json.getAsJsonObject().get("id");
+                JsonElement location = json.getAsJsonObject().get("id");
+                JsonElement venues = json.getAsJsonObject().get("id");
+                JsonElement users = json.getAsJsonObject().get("id");
+                Owner owner = new Owner();
+                if (Alfred.notNull(id)) {
+                    owner = getOwner(id.getAsLong());
                 }
+                if (Alfred.notNull(name)) {
+                    owner.setName(name.getAsString());
+                }
+                if (Alfred.notNull(contact)) {
+                    owner.setContact(Alfred.gsonDeserializer.fromJson(contact, Contact.class));
+                }
+                if (Alfred.notNull(location)) {
+                    owner.setLocation(Alfred.gsonDeserializer.fromJson(location, Location.class));
+                }
+                if (Alfred.notNull(venues)) {
+                    owner.setVenues(venueService.deserializeVenues(venues));
+                }
+                if (Alfred.notNull(users)) {
+                    owner.setUsers(userService.deserializeUsers(users));
+                }
+                return owner;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -68,9 +86,12 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     public Owner deserializeOwner(String json) {
+        return deserializeOwner(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Owner deserializeOwner(JsonElement json){
         Gson gson = Alfred.gsonBuilder
-                .registerTypeAdapter(Venue.class, venueService.getVenueJsonDeserializer())
-                .registerTypeAdapter(User.class, userService.getUserJsonDeserializer())
+                .registerTypeAdapter(Owner.class, getOwnerJsonDeserializer())
                 .create();
         return gson.fromJson(json, Owner.class);
     }

@@ -94,8 +94,16 @@ public class Owner {
         return this.venues;
     }
 
+    public void setVenues(Set venues){
+        this.venues = venues;
+    }
+
     public Set<User> getUsers() {
         return this.users;
+    }
+
+    public void setUsers(Set users){
+        this.users = users;
     }
 
     public String toString(){

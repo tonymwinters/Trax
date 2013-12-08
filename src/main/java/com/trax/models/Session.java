@@ -64,6 +64,7 @@ public class Session {
     @JoinColumn(name="venue_id")
     private Venue venue;
 
+    @Expose
     @ManyToOne
     @JoinColumn(name="room_id")
     private Room room;

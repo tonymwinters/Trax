@@ -1,10 +1,12 @@
 package com.trax.services.user;
 
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import com.trax.models.Owner;
 import com.trax.models.User;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +22,11 @@ public interface UserService {
     public User getUser(Long id);
     public User getUser(String username);
     public User deserializeUser(String json);
+    public User deserializeUser(JsonElement json);
+    public Set deserializeUsers(String json);
+    public Set deserializeUsers(JsonElement json);
     public JsonDeserializer<User> getUserJsonDeserializer();
+    public JsonDeserializer<Set<User>> getUsersJsonDeserializer();
     public void deleteUser(Long id);
     public List getUsers();
 

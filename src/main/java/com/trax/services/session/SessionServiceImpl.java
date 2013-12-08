@@ -34,6 +34,10 @@ public class SessionServiceImpl implements SessionService{
     @Autowired
     private VenueService venueService;
 
+    Gson gson = Alfred.gsonBuilder
+            .registerTypeAdapter(Session.class, getSessionJsonDeserializer())
+            .create();
+
     private JsonDeserializer<Session> sessionJsonDeserializer = new JsonDeserializer<Session>() {
         @Override
         public Session deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -64,10 +68,10 @@ public class SessionServiceImpl implements SessionService{
                     session.setEndTime(Alfred.gsonDeserializer.fromJson(endTime, Date.class));
                 }
                 if (Alfred.notNull(venue)) {
-                    session.setVenue(venueService.deserializeVenue(venue.toString()));
+                    session.setVenue(venueService.deserializeVenue(venue));
                 }
                 if (Alfred.notNull(attendees)) {
-                    session.setAttendees(attendeeService.deserializeAttendees(attendees.getAsString()));
+                    session.setAttendees(attendeeService.deserializeAttendees(attendees));
                 }
                 if (Alfred.notNull(capacity)) {
                     session.setCapacity(capacity.getAsInt());
@@ -88,8 +92,8 @@ public class SessionServiceImpl implements SessionService{
         public Set<Session> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
                 Set<Session> sessions = new HashSet<Session>();
-                for (JsonElement jsonAttendee : jsonElement.getAsJsonArray()) {
-                    sessions.add(deserializeSession(jsonAttendee));
+                for (JsonElement jsonSession : jsonElement.getAsJsonArray()) {
+                    sessions.add(deserializeSession(jsonSession));
                 }
                 return sessions;
             } catch (Exception ex) {
@@ -116,11 +120,6 @@ public class SessionServiceImpl implements SessionService{
     }
 
     public Session deserializeSession(JsonElement json){
-
-        Gson gson = Alfred.gsonBuilder
-                .registerTypeAdapter(Session.class, getSessionJsonDeserializer())
-                .create();
-
         return gson.fromJson(json, Session.class);
     }
 

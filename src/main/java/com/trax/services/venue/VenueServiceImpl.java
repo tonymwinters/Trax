@@ -2,9 +2,8 @@ package com.trax.services.venue;
 
 import com.google.gson.*;
 import com.trax.dao.venue.VenueDAO;
-import com.trax.models.Room;
-import com.trax.models.Session;
-import com.trax.models.Venue;
+import com.trax.models.*;
+import com.trax.services.owner.OwnerService;
 import com.trax.services.room.RoomService;
 import com.trax.services.session.SessionService;
 import com.trax.utilities.Alfred;
@@ -13,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Type;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,25 +32,68 @@ public class VenueServiceImpl implements VenueService{
     private VenueDAO venueDAO;
 
     @Autowired
-    SessionService sessionService;
+    private SessionService sessionService;
 
     @Autowired
-    RoomService roomService;
+    private RoomService roomService;
+
+    @Autowired
+    private OwnerService ownerService;
 
     private JsonDeserializer<Venue> venueJsonDeserializer = new JsonDeserializer<Venue>() {
         @Override
         public Venue deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
                 JsonElement id = json.getAsJsonObject().get("id");
-                if (Alfred.isNull(id)) {
-                    return deserializeVenue(json.toString());
-                } else {
-                    return getVenue(id.getAsLong());
+                JsonElement name = json.getAsJsonObject().get("name");
+                JsonElement owner = json.getAsJsonObject().get("owner");
+                JsonElement rooms = json.getAsJsonObject().get("rooms");
+                JsonElement sessions = json.getAsJsonObject().get("sessions");
+                JsonElement contact = json.getAsJsonObject().get("contact");
+                JsonElement location = json.getAsJsonObject().get("location");
+                Venue venue = new Venue();
+                if (Alfred.notNull(id)) {
+                    venue = getVenue(id.getAsLong());
                 }
+                if (Alfred.notNull(name)) {
+                    venue.setName(name.getAsString());
+                }
+                if (Alfred.notNull(owner)) {
+                    venue.setOwner(ownerService.deserializeOwner(owner));
+                }
+                if (Alfred.notNull(rooms)) {
+                    venue.setRooms(roomService.deserializeRooms(rooms));
+                }
+                if (Alfred.notNull(sessions)) {
+                    venue.setSessions(sessionService.deserializeSessions(sessions));
+                }
+                if (Alfred.notNull(contact)) {
+                    venue.setContact(Alfred.gsonDeserializer.fromJson(contact, Contact.class));
+                }
+                if (Alfred.notNull(location)) {
+                    venue.setLocation(Alfred.gsonDeserializer.fromJson(location, Location.class));
+                }
+                return venue;
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             throw new JsonParseException("Could not deserialize Venue.");
+        }
+    };
+
+    private JsonDeserializer<Set<Venue>> venuesJsonDeserializer = new JsonDeserializer<Set<Venue>>() {
+        @Override
+        public Set<Venue> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            try {
+                Set<Venue> sessions = new HashSet<Venue>();
+                for (JsonElement jsonVenue : jsonElement.getAsJsonArray()) {
+                    sessions.add(deserializeVenue(jsonVenue));
+                }
+                return sessions;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            throw new JsonParseException("Could not deserialize Venues.");
         }
     };
 
@@ -66,6 +110,10 @@ public class VenueServiceImpl implements VenueService{
     }
 
     public Venue deserializeVenue(String json){
+        return deserializeVenue(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Venue deserializeVenue(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Venue.class, getVenueJsonDeserializer())
                 .create();
@@ -73,8 +121,24 @@ public class VenueServiceImpl implements VenueService{
         return gson.fromJson(json, Venue.class);
     }
 
+    public Set deserializeVenues(String json){
+        return deserializeVenues(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Set deserializeVenues(JsonElement json){
+        Gson gson = Alfred.gsonBuilder
+                .registerTypeAdapter(Set.class, getVenueJsonDeserializer())
+                .create();
+
+        return gson.fromJson(json, Set.class);
+    }
+
     public JsonDeserializer<Venue> getVenueJsonDeserializer(){
         return venueJsonDeserializer;
+    }
+
+    public JsonDeserializer<Set<Venue>> getVenuesJsonDeserializer(){
+        return venuesJsonDeserializer;
     }
 
     public void deleteVenue(Long id) {

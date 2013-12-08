@@ -47,16 +47,16 @@ public class AttendeeServiceImpl implements AttendeeService {
                     attendee = getAttendee(id.getAsLong());
                 }
                 if (Alfred.notNull(user)) {
-                    attendee.setUser(userService.deserializeUser(session.getAsString()));
+                    attendee.setUser(userService.deserializeUser(user));
                 }
                 if (Alfred.notNull(session)) {
-                    attendee.setSession(sessionService.deserializeSession(session.getAsString()));
+                    attendee.setSession(sessionService.deserializeSession(session));
                 }
                 if (Alfred.notNull(arrival)) {
                     attendee.setArrival(Alfred.gsonDeserializer.fromJson(arrival, Date.class));
                 }
-                if (Alfred.notNull(id)) {
-                    attendee.setIsOwner(Alfred.gsonDeserializer.fromJson(isOwner, Boolean.class));
+                if (Alfred.notNull(isOwner)) {
+                    attendee.setIsOwner(isOwner.getAsBoolean());
                 }
 
                 return attendee;
@@ -73,7 +73,7 @@ public class AttendeeServiceImpl implements AttendeeService {
             try {
                 Set<Attendee> attendees = new HashSet<Attendee>();
                 for (JsonElement jsonAttendee : jsonElement.getAsJsonArray()) {
-                    attendees.add(deserializeAttendee(jsonAttendee.getAsString()));
+                    attendees.add(deserializeAttendee(jsonAttendee));
                 }
                 return attendees;
             } catch (Exception ex) {

@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Type;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -79,6 +81,22 @@ public class UserServiceImpl implements UserService{
         }
     };
 
+    private JsonDeserializer<Set<User>> usersJsonDeserializer = new JsonDeserializer<Set<User>>() {
+        @Override
+        public Set<User> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            try {
+                Set<User> users = new HashSet<User>();
+                for (JsonElement jsonUser : jsonElement.getAsJsonArray()) {
+                    users.add(deserializeUser(jsonUser));
+                }
+                return users;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            throw new JsonParseException("Could not deserialize Rooms.");
+        }
+    };
+
     public void addUser(User user) {
         userDAO.addUser(user);
     }
@@ -96,6 +114,10 @@ public class UserServiceImpl implements UserService{
     }
 
     public User deserializeUser(String json){
+        return deserializeUser(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public User deserializeUser(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(User.class, getUserJsonDeserializer())
                 .create();
@@ -103,8 +125,24 @@ public class UserServiceImpl implements UserService{
         return gson.fromJson(json, User.class);
     }
 
+    public Set deserializeUsers(String json){
+        return deserializeUsers(new Gson().fromJson(json, JsonElement.class));
+    }
+
+    public Set deserializeUsers(JsonElement json){
+        Gson gson = Alfred.gsonBuilder
+                .registerTypeAdapter(Set.class, getUsersJsonDeserializer())
+                .create();
+
+        return gson.fromJson(json, Set.class);
+    }
+
     public JsonDeserializer<User> getUserJsonDeserializer(){
         return userJsonDeserializer;
+    }
+
+    public JsonDeserializer<Set<User>> getUsersJsonDeserializer(){
+        return usersJsonDeserializer;
     }
 
     public void deleteUser(Long id) {
