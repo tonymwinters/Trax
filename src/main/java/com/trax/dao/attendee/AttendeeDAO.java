@@ -12,8 +12,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface AttendeeDAO {
-    public void addAttendee(Attendee attendee);
-    public void updateAttendee(Attendee attendee);
+
+    public void saveAttendee(Attendee attendee);
     public Attendee getAttendee(Long id);
     public void deleteAttendee(Long id);
     public List getAttendees();

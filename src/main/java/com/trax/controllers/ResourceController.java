@@ -462,29 +462,11 @@ public class ResourceController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/attendee/add", method= RequestMethod.POST)
-    public String addAttendee(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Attendee newAttendee = attendeeService.deserializeAttendee(requestJson);
-            attendeeService.addAttendee(newAttendee);
-            response = Alfred.renderSuccess(attendeeService.getAttendee(newAttendee.getId()));
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/attendee/update", method= RequestMethod.POST)
+    @RequestMapping(value="/attendee/save", method= RequestMethod.POST)
     public String updateAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Attendee attendee  = attendeeService.deserializeAttendee(requestJson);
-            if(Alfred.isNull(attendee.getId()))
-                throw new Exception("Object doesn't exist. Add it first.");
-
-            attendeeService.updateAttendee(attendee);
+            Attendee attendee  = attendeeService.saveAttendee(requestJson);
             response = Alfred.renderSuccess(attendee);
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
@@ -497,7 +479,7 @@ public class ResourceController {
     public String deleteAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Attendee attendee = attendeeService.deserializeAttendee(requestJson);
+            Attendee attendee = attendeeService.saveAttendee(requestJson);
             if(Alfred.isNull(attendee)){
                 throw new Exception("Object doesn't exist.");
             }

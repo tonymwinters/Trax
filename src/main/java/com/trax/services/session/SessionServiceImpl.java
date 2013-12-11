@@ -71,7 +71,7 @@ public class SessionServiceImpl implements SessionService{
                     session.setVenue(venueService.saveVenue(venue));
                 }
                 if (Alfred.notNull(attendees)) {
-                    session.setAttendees(attendeeService.deserializeAttendees(attendees));
+                    session.setAttendees(attendeeService.saveAttendees(attendees));
                 }
                 if (Alfred.notNull(capacity)) {
                     session.setCapacity(capacity.getAsInt());

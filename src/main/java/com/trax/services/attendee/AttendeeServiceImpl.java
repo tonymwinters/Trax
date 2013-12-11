@@ -59,7 +59,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                     attendee.setIsOwner(isOwner.getAsBoolean());
                 }
 
-                updateAttendee(attendee);
+                saveAttendee(attendee);
                 return attendee;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -74,7 +74,7 @@ public class AttendeeServiceImpl implements AttendeeService {
             try {
                 Set<Attendee> attendees = new HashSet<Attendee>();
                 for (JsonElement jsonAttendee : jsonElement.getAsJsonArray()) {
-                    attendees.add(deserializeAttendee(jsonAttendee));
+                    attendees.add(saveAttendee(jsonAttendee));
                 }
                 return attendees;
             } catch (Exception ex) {
@@ -84,24 +84,20 @@ public class AttendeeServiceImpl implements AttendeeService {
         }
     };
 
-
-    public void addAttendee(Attendee attendee){
-        attendeeDAO.addAttendee(attendee);
-    }
-
-    public void updateAttendee(Attendee attendee){
-        attendeeDAO.updateAttendee(attendee);
+    public Attendee saveAttendee(Attendee attendee){
+        attendeeDAO.saveAttendee(attendee);
+        return attendee;
     }
 
     public Attendee getAttendee(Long id){
         return attendeeDAO.getAttendee(id);
     }
 
-    public Attendee deserializeAttendee(String json) {
-        return deserializeAttendee(new Gson().fromJson(json, JsonElement.class));
+    public Attendee saveAttendee(String json) {
+        return saveAttendee(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Attendee deserializeAttendee(JsonElement json){
+    public Attendee saveAttendee(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Attendee.class, getAttendeeJsonDeserializer())
                 .create();
@@ -109,11 +105,11 @@ public class AttendeeServiceImpl implements AttendeeService {
         return gson.fromJson(json, Attendee.class);
     }
 
-    public Set deserializeAttendees(String json) {
-        return deserializeAttendees(new Gson().fromJson(json, JsonElement.class));
+    public Set saveAttendees(String json) {
+        return saveAttendees(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Set deserializeAttendees(JsonElement json) {
+    public Set saveAttendees(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getAttendeesJsonDeserializer())
                 .create();

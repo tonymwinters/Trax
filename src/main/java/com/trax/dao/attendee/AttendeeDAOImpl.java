@@ -27,12 +27,7 @@ public class AttendeeDAOImpl implements AttendeeDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public void addAttendee(Attendee attendee){
-        getCurrentSession().save(attendee);
-        getCurrentSession().flush();
-    }
-
-    public void updateAttendee(Attendee attendee){
+    public void saveAttendee(Attendee attendee){
         getCurrentSession().saveOrUpdate(attendee);
     }
 

@@ -17,13 +17,12 @@ import java.util.Set;
  */
 public interface AttendeeService {
 
-    public void addAttendee(Attendee attendee);
-    public void updateAttendee(Attendee attendee);
+    public Attendee saveAttendee(Attendee attendee);
     public Attendee getAttendee(Long id);
-    public Attendee deserializeAttendee(String json);
-    public Attendee deserializeAttendee(JsonElement json);
-    public Set deserializeAttendees(String json);
-    public Set deserializeAttendees(JsonElement json);
+    public Attendee saveAttendee(String json);
+    public Attendee saveAttendee(JsonElement json);
+    public Set saveAttendees(String json);
+    public Set saveAttendees(JsonElement json);
     public JsonDeserializer<Attendee> getAttendeeJsonDeserializer();
     public JsonDeserializer<Set<Attendee>> getAttendeesJsonDeserializer();
     public void deleteAttendee(Long id);
