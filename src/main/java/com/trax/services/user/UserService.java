@@ -17,14 +17,13 @@ import java.util.Set;
  */
 public interface UserService {
 
-    public void addUser(User user);
-    public void updateUser(User user);
+    public User saveUser(User user);
     public User getUser(Long id);
     public User getUser(String username);
-    public User deserializeUser(String json);
-    public User deserializeUser(JsonElement json);
-    public Set deserializeUsers(String json);
-    public Set deserializeUsers(JsonElement json);
+    public User saveUser(String json);
+    public User saveUser(JsonElement json);
+    public Set saveUsers(String json);
+    public Set saveUsers(JsonElement json);
     public JsonDeserializer<User> getUserJsonDeserializer();
     public JsonDeserializer<Set<User>> getUsersJsonDeserializer();
     public void deleteUser(Long id);

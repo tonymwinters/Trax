@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService{
                     user.setContact(Alfred.gsonDeserializer.fromJson(contact, Contact.class));
                 }
 
-                updateUser(user);
+                saveUser(user);
                 return user;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService{
             try {
                 Set<User> users = new HashSet<User>();
                 for (JsonElement jsonUser : jsonElement.getAsJsonArray()) {
-                    users.add(deserializeUser(jsonUser));
+                    users.add(saveUser(jsonUser));
                 }
                 return users;
             } catch (Exception ex) {
@@ -99,12 +99,9 @@ public class UserServiceImpl implements UserService{
         }
     };
 
-    public void addUser(User user) {
-        userDAO.addUser(user);
-    }
-
-    public void updateUser(User user) {
-        userDAO.updateUser(user);
+    public User saveUser(User user) {
+        userDAO.saveUser(user);
+        return user;
     }
 
     public User getUser(Long id) {
@@ -115,11 +112,11 @@ public class UserServiceImpl implements UserService{
         return userDAO.getUser(username);
     }
 
-    public User deserializeUser(String json){
-        return deserializeUser(new Gson().fromJson(json, JsonElement.class));
+    public User saveUser(String json){
+        return saveUser(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public User deserializeUser(JsonElement json){
+    public User saveUser(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(User.class, getUserJsonDeserializer())
                 .create();
@@ -127,11 +124,11 @@ public class UserServiceImpl implements UserService{
         return gson.fromJson(json, User.class);
     }
 
-    public Set deserializeUsers(String json){
-        return deserializeUsers(new Gson().fromJson(json, JsonElement.class));
+    public Set saveUsers(String json){
+        return saveUsers(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Set deserializeUsers(JsonElement json){
+    public Set saveUsers(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getUsersJsonDeserializer())
                 .create();

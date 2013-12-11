@@ -3,7 +3,6 @@ package com.trax.services.comment;
 import com.google.gson.*;
 import com.trax.dao.comment.CommentDAO;
 import com.trax.models.Comment;
-import com.trax.models.Session;
 import com.trax.services.user.UserService;
 import com.trax.utilities.Alfred;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
                     comment.setContent(content.getAsString());
                 }
                 if (Alfred.notNull(user)) {
-                    comment.setUser(userService.deserializeUser(user));
+                    comment.setUser(userService.saveUser(user));
                 }
 
                 updateComment(comment);

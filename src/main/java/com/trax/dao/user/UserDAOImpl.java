@@ -29,12 +29,7 @@ public class UserDAOImpl implements UserDAO{
         return sessionFactory.getCurrentSession();
     }
 
-    public void addUser(User user) {
-        getCurrentSession().save(user);
-        getCurrentSession().flush();
-    }
-
-    public void updateUser(User user) {
+    public void saveUser(User user) {
         getCurrentSession().saveOrUpdate(user);
     }
 

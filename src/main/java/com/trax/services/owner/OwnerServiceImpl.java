@@ -63,7 +63,7 @@ public class OwnerServiceImpl implements OwnerService {
                     owner.setVenues(venueService.deserializeVenues(venues));
                 }
                 if (Alfred.notNull(users)) {
-                    owner.setUsers(userService.deserializeUsers(users));
+                    owner.setUsers(userService.saveUsers(users));
                 }
 
                 saveOwner(owner);

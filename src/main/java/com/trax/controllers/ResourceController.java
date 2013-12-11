@@ -157,25 +157,11 @@ public class ResourceController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/user/add", method= RequestMethod.POST)
-    public String addUser(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            User newUser = userService.deserializeUser(requestJson);
-            userService.addUser(newUser);
-            response = Alfred.renderSuccess(userService.getUser(newUser.getId()));
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/user/update", method= RequestMethod.POST)
+    @RequestMapping(value="/user/save", method= RequestMethod.POST)
     public String updateUser(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            User newUser = userService.deserializeUser(requestJson);
-            userService.updateUser(newUser);
+            User newUser = userService.saveUser(requestJson);
             response = Alfred.renderSuccess(newUser);
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
@@ -187,7 +173,7 @@ public class ResourceController {
     public String deleteUser(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            User user = userService.deserializeUser(requestJson);
+            User user = userService.saveUser(requestJson);
             if(Alfred.isNull(user)){
                 throw new Exception("Object doesn't exist.");
             }

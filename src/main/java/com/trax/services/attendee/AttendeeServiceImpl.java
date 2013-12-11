@@ -47,7 +47,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                     attendee = getAttendee(id.getAsLong());
                 }
                 if (Alfred.notNull(user)) {
-                    attendee.setUser(userService.deserializeUser(user));
+                    attendee.setUser(userService.saveUser(user));
                 }
                 if (Alfred.notNull(session)) {
                     attendee.setSession(sessionService.deserializeSession(session));
