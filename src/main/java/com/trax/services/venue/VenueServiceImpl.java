@@ -74,7 +74,7 @@ public class VenueServiceImpl implements VenueService{
                     venue.setLocation(Alfred.gsonDeserializer.fromJson(location, Location.class));
                 }
 
-                updateVenue(venue);
+                saveVenue(venue);
                 return venue;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -89,7 +89,7 @@ public class VenueServiceImpl implements VenueService{
             try {
                 Set<Venue> sessions = new HashSet<Venue>();
                 for (JsonElement jsonVenue : jsonElement.getAsJsonArray()) {
-                    sessions.add(deserializeVenue(jsonVenue));
+                    sessions.add(saveVenue(jsonVenue));
                 }
                 return sessions;
             } catch (Exception ex) {
@@ -99,23 +99,20 @@ public class VenueServiceImpl implements VenueService{
         }
     };
 
-    public void addVenue(Venue venue) {
-        venueDAO.addVenue(venue);
-    }
-
-    public void updateVenue(Venue venue) {
-        venueDAO.updateVenue(venue);
+    public Venue saveVenue(Venue venue) {
+        venueDAO.saveVenue(venue);
+        return venue;
     }
 
     public Venue getVenue(Long id) {
         return venueDAO.getVenue(id);
     }
 
-    public Venue deserializeVenue(String json){
-        return deserializeVenue(new Gson().fromJson(json, JsonElement.class));
+    public Venue saveVenue(String json){
+        return saveVenue(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Venue deserializeVenue(JsonElement json){
+    public Venue saveVenue(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Venue.class, getVenueJsonDeserializer())
                 .create();
@@ -123,11 +120,11 @@ public class VenueServiceImpl implements VenueService{
         return gson.fromJson(json, Venue.class);
     }
 
-    public Set deserializeVenues(String json){
-        return deserializeVenues(new Gson().fromJson(json, JsonElement.class));
+    public Set saveVenues(String json){
+        return saveVenues(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Set deserializeVenues(JsonElement json){
+    public Set saveVenues(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getVenuesJsonDeserializer())
                 .create();

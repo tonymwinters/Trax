@@ -60,7 +60,7 @@ public class OwnerServiceImpl implements OwnerService {
                     owner.setLocation(Alfred.gsonDeserializer.fromJson(location, Location.class));
                 }
                 if (Alfred.notNull(venues)) {
-                    owner.setVenues(venueService.deserializeVenues(venues));
+                    owner.setVenues(venueService.saveVenues(venues));
                 }
                 if (Alfred.notNull(users)) {
                     owner.setUsers(userService.saveUsers(users));

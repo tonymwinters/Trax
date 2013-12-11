@@ -16,13 +16,12 @@ import java.util.Set;
  */
 public interface VenueService {
 
-    public void addVenue(Venue venue);
-    public void updateVenue(Venue venue);
+    public Venue saveVenue(Venue venue);
     public Venue getVenue(Long id);
-    public Venue deserializeVenue(String json);
-    public Venue deserializeVenue(JsonElement json);
-    public Set deserializeVenues(String json);
-    public Set deserializeVenues(JsonElement json);
+    public Venue saveVenue(String json);
+    public Venue saveVenue(JsonElement json);
+    public Set saveVenues(String json);
+    public Set saveVenues(JsonElement json);
     public JsonDeserializer<Venue> getVenueJsonDeserializer();
     public JsonDeserializer<Set<Venue>> getVenuesJsonDeserializer();
     public void deleteVenue(Long id);

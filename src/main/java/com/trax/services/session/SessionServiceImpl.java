@@ -68,7 +68,7 @@ public class SessionServiceImpl implements SessionService{
                     session.setEndTime(Alfred.gsonDeserializer.fromJson(endTime, Date.class));
                 }
                 if (Alfred.notNull(venue)) {
-                    session.setVenue(venueService.deserializeVenue(venue));
+                    session.setVenue(venueService.saveVenue(venue));
                 }
                 if (Alfred.notNull(attendees)) {
                     session.setAttendees(attendeeService.deserializeAttendees(attendees));

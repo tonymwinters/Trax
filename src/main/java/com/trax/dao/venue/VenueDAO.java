@@ -13,8 +13,7 @@ import java.util.List;
  */
 public interface VenueDAO {
 
-    public void addVenue(Venue venue);
-    public void updateVenue(Venue venue);
+    public void saveVenue(Venue venue);
     public Venue getVenue(Long id);
     public void deleteVenue(Long id);
     public List<Venue> getVenues();

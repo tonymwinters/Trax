@@ -27,12 +27,7 @@ public class VenueDAOImpl implements VenueDAO{
         return sessionFactory.getCurrentSession();
     }
 
-    public void addVenue(Venue venue){
-        getCurrentSession().save(venue);
-        getCurrentSession().flush();
-    }
-
-    public void updateVenue(Venue venue){
+    public void saveVenue(Venue venue){
         getCurrentSession().saveOrUpdate(venue);
     }
 
