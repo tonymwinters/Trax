@@ -308,26 +308,11 @@ public class ResourceController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/room/add", method= RequestMethod.POST)
-    public String addRoom(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Room newRoom = roomService.deserializeRoom(requestJson);
-            roomService.addRoom(newRoom);
-            response = Alfred.renderSuccess(roomService.getRoom(newRoom.getId()));
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/room/update", method= RequestMethod.POST)
+    @RequestMapping(value="/room/save", method= RequestMethod.POST)
     public String updateRoom(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Room room  = roomService.deserializeRoom(requestJson);
-            roomService.updateRoom(room);
+            Room room  = roomService.saveRoom(requestJson);
             response = Alfred.renderSuccess(room);
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
@@ -340,7 +325,7 @@ public class ResourceController {
     public String deleteRoom(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Room room = roomService.deserializeRoom(requestJson);
+            Room room = roomService.saveRoom(requestJson);
             if(Alfred.isNull(room)){
                 throw new Exception("Object doesn't exist.");
             }

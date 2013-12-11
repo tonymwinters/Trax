@@ -12,8 +12,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface RoomDAO {
-    public void addRoom(Room room);
-    public void updateRoom(Room room);
+    public void saveRoom(Room room);
     public Room getRoom(Long id);
     public void deleteRoom(Long id);
     public List<Room> getRooms();

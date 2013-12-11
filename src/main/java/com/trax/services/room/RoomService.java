@@ -16,13 +16,12 @@ import java.util.Set;
  */
 public interface RoomService {
 
-    public void addRoom(Room room);
-    public void updateRoom(Room room);
+    public Room saveRoom(Room room);
     public Room getRoom(Long id);
-    public Room deserializeRoom(String json);
-    public Room deserializeRoom(JsonElement json);
-    public Set deserializeRooms(String json);
-    public Set deserializeRooms(JsonElement json);
+    public Room saveRoom(String json);
+    public Room saveRoom(JsonElement json);
+    public Set saveRooms(String json);
+    public Set saveRooms(JsonElement json);
     public JsonDeserializer<Room> getRoomJsonDeserializer();
     public JsonDeserializer<Set<Room>> getRoomsJsonDeserializer();
     public void deleteRoom(Long id);

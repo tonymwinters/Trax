@@ -27,12 +27,7 @@ public class RoomDAOImpl implements RoomDAO{
         return sessionFactory.getCurrentSession();
     }
 
-    public void addRoom(Room room){
-        getCurrentSession().save(room);
-        getCurrentSession().flush();
-    }
-
-    public void updateRoom(Room room){
+    public void saveRoom(Room room){
         getCurrentSession().saveOrUpdate(room);
     }
 

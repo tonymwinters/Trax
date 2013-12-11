@@ -62,7 +62,7 @@ public class VenueServiceImpl implements VenueService{
                     venue.setOwner(ownerService.saveOwner(owner));
                 }
                 if (Alfred.notNull(rooms)) {
-                    venue.setRooms(roomService.deserializeRooms(rooms));
+                    venue.setRooms(roomService.saveRooms(rooms));
                 }
                 if (Alfred.notNull(sessions)) {
                     venue.setSessions(sessionService.deserializeSessions(sessions));

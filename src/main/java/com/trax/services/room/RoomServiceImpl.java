@@ -61,7 +61,7 @@ public class RoomServiceImpl implements RoomService {
                     room.setSessions(sessionService.deserializeSessions(sessions));
                 }
 
-                updateRoom(room);
+                saveRoom(room);
                 return room;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -76,7 +76,7 @@ public class RoomServiceImpl implements RoomService {
             try {
                 Set<Room> rooms = new HashSet<Room>();
                 for (JsonElement jsonRoom : jsonElement.getAsJsonArray()) {
-                    rooms.add(deserializeRoom(jsonRoom));
+                    rooms.add(saveRoom(jsonRoom));
                 }
                 return rooms;
             } catch (Exception ex) {
@@ -86,23 +86,20 @@ public class RoomServiceImpl implements RoomService {
         }
     };
 
-    public void addRoom(Room room){
-        roomDAO.addRoom(room);
-    }
-
-    public void updateRoom(Room room){
-        roomDAO.updateRoom(room);
+    public Room saveRoom(Room room){
+        roomDAO.saveRoom(room);
+        return room;
     }
 
     public Room getRoom(Long id){
         return roomDAO.getRoom(id);
     }
 
-    public Room deserializeRoom(String json){
-        return deserializeRoom(new Gson().fromJson(json, JsonElement.class));
+    public Room saveRoom(String json){
+        return saveRoom(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Room deserializeRoom(JsonElement json){
+    public Room saveRoom(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Room.class, getRoomJsonDeserializer())
                 .create();
@@ -110,11 +107,11 @@ public class RoomServiceImpl implements RoomService {
         return gson.fromJson(json, Room.class);
     }
 
-    public Set deserializeRooms(String json) {
-        return deserializeRooms(new Gson().fromJson(json, JsonElement.class));
+    public Set saveRooms(String json) {
+        return saveRooms(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Set deserializeRooms(JsonElement json) {
+    public Set saveRooms(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getRoomsJsonDeserializer())
                 .create();
