@@ -26,13 +26,17 @@ public class CommentDAOImpl implements CommentDAO {
 
     public void addComment(Comment comment){
         getCurrentSession().save(comment);
+        getCurrentSession().flush();
     }
+
     public void updateComent(Comment comment){
-        getCurrentSession().update(comment);
+        getCurrentSession().saveOrUpdate(comment);
     }
+
     public Comment getComment(Long id){
         return (Comment) getCurrentSession().get(Comment.class, id);
     }
+
     public void deleteComment(Long id){
         Comment comment = getComment(id);
         if(Alfred.notNull(comment))

@@ -29,10 +29,11 @@ public class AttendeeDAOImpl implements AttendeeDAO {
 
     public void addAttendee(Attendee attendee){
         getCurrentSession().save(attendee);
+        getCurrentSession().flush();
     }
 
     public void updateAttendee(Attendee attendee){
-        getCurrentSession().update(attendee);
+        getCurrentSession().saveOrUpdate(attendee);
     }
 
     public Attendee getAttendee(Long id){

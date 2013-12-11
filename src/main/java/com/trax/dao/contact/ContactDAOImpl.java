@@ -28,12 +28,11 @@ public class ContactDAOImpl implements ContactDAO{
 
     public void addContact(Contact contact){
         getCurrentSession().save(contact);
+        getCurrentSession().flush();
     }
 
     public void updateContact(Contact contact){
-        if(Alfred.notNull(contact.getId())){
-            getCurrentSession().update(contact);
-        }
+        getCurrentSession().saveOrUpdate(contact);
     }
 
     public Contact getContact(Long id){

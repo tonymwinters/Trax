@@ -59,6 +59,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                     attendee.setIsOwner(isOwner.getAsBoolean());
                 }
 
+                updateAttendee(attendee);
                 return attendee;
             } catch (Exception ex) {
                 ex.printStackTrace();

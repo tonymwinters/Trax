@@ -29,12 +29,11 @@ public class LocationDAOImpl implements LocationDAO{
 
     public void addLocation(Location location){
         getCurrentSession().save(location);
+        getCurrentSession().flush();
     }
 
     public void updateLocation(Location location){
-        if(Alfred.notNull(location.getId())){
-            getCurrentSession().update(location);
-        }
+            getCurrentSession().saveOrUpdate(location);
     }
 
     public Location getLocation(Long id){

@@ -29,12 +29,11 @@ public class VenueDAOImpl implements VenueDAO{
 
     public void addVenue(Venue venue){
         getCurrentSession().save(venue);
+        getCurrentSession().flush();
     }
 
     public void updateVenue(Venue venue){
-        if(Alfred.notNull(venue.getId())){
-            getCurrentSession().update(venue);
-        }
+        getCurrentSession().saveOrUpdate(venue);
     }
 
     public Venue getVenue(Long id){

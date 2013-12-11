@@ -79,6 +79,8 @@ public class SessionServiceImpl implements SessionService{
                 if (Alfred.notNull(comments)) {
                     session.setComments(commentService.deserializeComments(comments));
                 }
+
+                updateSession(session);
                 return session;
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -43,12 +43,12 @@ public class Comment {
 
     @Expose
     @SerializedName("dateCreated")
-    @Column(name="date_created")
+    @Column(name="date_created", updatable = false)
     private Date dateCreated;
 
     @Expose
     @SerializedName("lastUpdated")
-    @Column(name="last_updated")
+    @Column(name="last_updated", updatable = false)
     private Date lastUpdated;
 
     @ManyToOne

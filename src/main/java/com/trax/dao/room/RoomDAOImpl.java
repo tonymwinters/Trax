@@ -29,11 +29,11 @@ public class RoomDAOImpl implements RoomDAO{
 
     public void addRoom(Room room){
         getCurrentSession().save(room);
+        getCurrentSession().flush();
     }
 
     public void updateRoom(Room room){
-        if(Alfred.notNull(room.getId()))
-            getCurrentSession().update(room);
+        getCurrentSession().saveOrUpdate(room);
     }
 
     public Room getRoom(Long id){

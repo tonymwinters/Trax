@@ -65,6 +65,8 @@ public class OwnerServiceImpl implements OwnerService {
                 if (Alfred.notNull(users)) {
                     owner.setUsers(userService.deserializeUsers(users));
                 }
+
+                updateOwner(owner);
                 return owner;
             } catch (Exception ex) {
                 ex.printStackTrace();

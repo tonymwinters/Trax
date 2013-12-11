@@ -61,6 +61,7 @@ public class RoomServiceImpl implements RoomService {
                     room.setSessions(sessionService.deserializeSessions(sessions));
                 }
 
+                updateRoom(room);
                 return room;
             } catch (Exception ex) {
                 ex.printStackTrace();

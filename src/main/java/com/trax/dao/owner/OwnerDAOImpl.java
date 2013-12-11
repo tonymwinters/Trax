@@ -29,12 +29,11 @@ public class OwnerDAOImpl implements OwnerDAO {
 
     public void addOwner(Owner owner) {
         getCurrentSession().save(owner);
+        getCurrentSession().flush();
     }
 
     public void updateOwner(Owner owner) {
-        if(Alfred.notNull(owner.getId())){
-            getCurrentSession().saveOrUpdate(owner);
-        }
+        getCurrentSession().saveOrUpdate(owner);
     }
 
     public Owner getOwner(Long id) {

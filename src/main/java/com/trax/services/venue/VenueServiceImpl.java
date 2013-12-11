@@ -73,6 +73,8 @@ public class VenueServiceImpl implements VenueService{
                 if (Alfred.notNull(location)) {
                     venue.setLocation(Alfred.gsonDeserializer.fromJson(location, Location.class));
                 }
+
+                updateVenue(venue);
                 return venue;
             } catch (Exception ex) {
                 ex.printStackTrace();

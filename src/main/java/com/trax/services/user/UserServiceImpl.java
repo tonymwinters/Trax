@@ -73,6 +73,8 @@ public class UserServiceImpl implements UserService{
                 if (Alfred.notNull(contact)) {
                     user.setContact(Alfred.gsonDeserializer.fromJson(contact, Contact.class));
                 }
+
+                updateUser(user);
                 return user;
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -27,12 +27,11 @@ public class SessionDAOImpl implements SessionDAO{
 
     public void addSession(Session session){
         getCurrentSession().save(session);
+        getCurrentSession().flush();
     }
 
     public void updateSession(Session session){
-        if(Alfred.notNull(session.getId())){
-            getCurrentSession().update(session);
-        }
+        getCurrentSession().saveOrUpdate(session);
     }
 
     public Session getSession(Long id){

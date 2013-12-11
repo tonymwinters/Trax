@@ -45,6 +45,8 @@ public class RoleServiceImpl implements RoleService{
                 if (Alfred.notNull(code)) {
                     role.setCode(code.getAsString());
                 }
+
+                updateRole(role);
                 return role;
             } catch (Exception ex) {
                 ex.printStackTrace();

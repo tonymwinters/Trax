@@ -51,6 +51,8 @@ public class CommentServiceImpl implements CommentService {
                 if (Alfred.notNull(user)) {
                     comment.setUser(userService.deserializeUser(user));
                 }
+
+                updateComment(comment);
                 return comment;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -78,6 +80,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment getComment(Long id) {
         return commentDAO.getComment(id);
+    }
+
+    public void updateComment(Comment comment){
+        commentDAO.updateComent(comment);
     }
 
     public Comment deserializeComment(String json) {

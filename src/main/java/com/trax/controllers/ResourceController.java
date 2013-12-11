@@ -90,7 +90,6 @@ public class ResourceController {
         String response;
         try{
             Owner newOwner = ownerService.deserializeOwner(requestJson);
-            ownerService.addOwner(newOwner);
             response = Alfred.renderSuccess(ownerService.getOwner(newOwner.getId()));
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());

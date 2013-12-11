@@ -31,12 +31,11 @@ public class UserDAOImpl implements UserDAO{
 
     public void addUser(User user) {
         getCurrentSession().save(user);
+        getCurrentSession().flush();
     }
 
     public void updateUser(User user) {
-        if(Alfred.notNull(user.getId())){
-            getCurrentSession();
-        }
+        getCurrentSession().saveOrUpdate(user);
     }
 
     public User getUser(Long id) {

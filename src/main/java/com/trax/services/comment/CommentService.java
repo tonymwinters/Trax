@@ -16,6 +16,7 @@ import java.util.Set;
 public interface CommentService {
 
     public Comment getComment(Long id);
+    public void updateComment(Comment comment);
     public Comment deserializeComment(String json);
     public Comment deserializeComment(JsonElement json);
     public Set deserializeComments(String json);

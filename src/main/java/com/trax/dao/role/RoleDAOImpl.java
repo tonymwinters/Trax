@@ -30,12 +30,11 @@ public class RoleDAOImpl implements RoleDAO {
 
     public void addRole(Role role) {
         getCurrentSession().save(role);
+        getCurrentSession().flush();
     }
 
     public void updateRole(Role role) {
-        if(Alfred.notNull(role.getId())){
-            getCurrentSession().update(role);
-        }
+        getCurrentSession().save(role);
     }
 
     public Role getRole(Long id) {
