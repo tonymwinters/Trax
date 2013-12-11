@@ -80,7 +80,7 @@ public class SessionServiceImpl implements SessionService{
                     session.setComments(commentService.deserializeComments(comments));
                 }
 
-                updateSession(session);
+                saveSession(session);
                 return session;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -95,7 +95,7 @@ public class SessionServiceImpl implements SessionService{
             try {
                 Set<Session> sessions = new HashSet<Session>();
                 for (JsonElement jsonSession : jsonElement.getAsJsonArray()) {
-                    sessions.add(deserializeSession(jsonSession));
+                    sessions.add(saveSession(jsonSession));
                 }
                 return sessions;
             } catch (Exception ex) {
@@ -105,23 +105,20 @@ public class SessionServiceImpl implements SessionService{
         }
     };
 
-    public void addSession(Session session){
-        sessionDAO.addSession(session);
-    }
-
-    public void updateSession(Session session){
-        sessionDAO.updateSession(session);
+    public Session saveSession(Session session){
+        sessionDAO.saveSession(session);
+        return session;
     }
 
     public Session getSession(Long id){
         return sessionDAO.getSession(id);
     }
 
-    public Session deserializeSession(String json){
-        return deserializeSession(new Gson().fromJson(json, JsonElement.class));
+    public Session saveSession(String json){
+        return saveSession(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Session deserializeSession(JsonElement json){
+    public Session saveSession(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Session.class, getSessionJsonDeserializer())
                 .create();
@@ -129,11 +126,11 @@ public class SessionServiceImpl implements SessionService{
         return gson.fromJson(json, Session.class);
     }
 
-    public Set deserializeSessions(String json){
-        return deserializeSessions(new Gson().fromJson(json, JsonElement.class));
+    public Set saveSessions(String json){
+        return saveSessions(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Set deserializeSessions(JsonElement json){
+    public Set saveSessions(JsonElement json){
 
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getSessionsJsonDeserializer())

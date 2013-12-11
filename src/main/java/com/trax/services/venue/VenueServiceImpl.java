@@ -65,7 +65,7 @@ public class VenueServiceImpl implements VenueService{
                     venue.setRooms(roomService.saveRooms(rooms));
                 }
                 if (Alfred.notNull(sessions)) {
-                    venue.setSessions(sessionService.deserializeSessions(sessions));
+                    venue.setSessions(sessionService.saveSessions(sessions));
                 }
                 if (Alfred.notNull(contact)) {
                     venue.setContact(Alfred.gsonDeserializer.fromJson(contact, Contact.class));

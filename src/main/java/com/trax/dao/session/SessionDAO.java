@@ -13,8 +13,7 @@ import java.util.List;
  */
 public interface SessionDAO {
 
-    public void addSession(Session session);
-    public void updateSession(Session session);
+    public void saveSession(Session session);
     public Session getSession(Long id);
     public void deleteSession(Long id);
     public List<Session> getSessions();

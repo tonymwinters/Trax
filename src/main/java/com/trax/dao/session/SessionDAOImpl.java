@@ -25,12 +25,7 @@ public class SessionDAOImpl implements SessionDAO{
         return sessionFactory.getCurrentSession();
     }
 
-    public void addSession(Session session){
-        getCurrentSession().save(session);
-        getCurrentSession().flush();
-    }
-
-    public void updateSession(Session session){
+    public void saveSession(Session session){
         getCurrentSession().saveOrUpdate(session);
     }
 

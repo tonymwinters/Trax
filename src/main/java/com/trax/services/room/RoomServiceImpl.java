@@ -58,7 +58,7 @@ public class RoomServiceImpl implements RoomService {
                     room.setVenue(venueService.saveVenue(venue));
                 }
                 if (Alfred.notNull(sessions)) {
-                    room.setSessions(sessionService.deserializeSessions(sessions));
+                    room.setSessions(sessionService.saveSessions(sessions));
                 }
 
                 saveRoom(room);

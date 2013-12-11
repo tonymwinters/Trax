@@ -50,7 +50,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                     attendee.setUser(userService.saveUser(user));
                 }
                 if (Alfred.notNull(session)) {
-                    attendee.setSession(sessionService.deserializeSession(session));
+                    attendee.setSession(sessionService.saveSession(session));
                 }
                 if (Alfred.notNull(arrival)) {
                     attendee.setArrival(Alfred.gsonDeserializer.fromJson(arrival, Date.class));

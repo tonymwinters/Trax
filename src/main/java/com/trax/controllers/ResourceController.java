@@ -385,26 +385,11 @@ public class ResourceController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/session/add", method= RequestMethod.POST)
-    public String addSession(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Session newSession = sessionService.deserializeSession(requestJson);
-            sessionService.addSession(newSession);
-            response = Alfred.renderSuccess(sessionService.getSession(newSession.getId()));
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/session/update", method= RequestMethod.POST)
+    @RequestMapping(value="/session/save", method= RequestMethod.POST)
     public String updateSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session session = sessionService.deserializeSession(requestJson);
-            sessionService.updateSession(session);
+            Session session = sessionService.saveSession(requestJson);
             response = Alfred.renderSuccess(session);
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
@@ -417,7 +402,7 @@ public class ResourceController {
     public String deleteSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Session session = sessionService.deserializeSession(requestJson);
+            Session session = sessionService.saveSession(requestJson);
             if(Alfred.isNull(session)){
                 throw new Exception("Object doesn't exist.");
             }

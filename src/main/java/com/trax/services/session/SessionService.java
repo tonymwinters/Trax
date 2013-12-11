@@ -17,13 +17,12 @@ import java.util.Set;
  */
 public interface SessionService {
 
-    public void addSession(Session session);
-    public void updateSession(Session session);
+    public Session saveSession(Session session);
     public Session getSession(Long id);
-    public Session deserializeSession(String json);
-    public Session deserializeSession(JsonElement json);
-    public Set deserializeSessions(String json);
-    public Set deserializeSessions(JsonElement json);
+    public Session saveSession(String json);
+    public Session saveSession(JsonElement json);
+    public Set saveSessions(String json);
+    public Set saveSessions(JsonElement json);
     public JsonDeserializer<Session> getSessionJsonDeserializer();
     public JsonDeserializer<Set<Session>> getSessionsJsonDeserializer();
     public void deleteSession(Long id);
