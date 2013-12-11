@@ -44,7 +44,7 @@ Trax.Model.Venue.VenueTable = Class.create({
         console.log(json);
 
         var table = $('main-admin-table');
-        var template = new EJS({url: contextPath + '/resources/ui/templates/admin/venue.ejs'}).update(table, json);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/venue.ejs'}).update(table, json);
 
 
 
@@ -83,7 +83,7 @@ Trax.Model.User.UserTable = Class.create({
         console.log(json);
         EJS.config({cache: false});
         var table = $('main-admin-table');
-        var template = new EJS({url: contextPath + '/resources/ui/templates/admin/user.ejs'}).update(table, json);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/user.ejs'}).update(table, json);
 
     },
 
@@ -117,10 +117,7 @@ Trax.Model.Session.SessionTable = Class.create({
         console.log(json);
 
         var table = $('main-admin-table');
-        var template = new EJS({url: contextPath + '/resources/ui/templates/admin/session.ejs'}).update(table, json);
-
-
-
+        new EJS({url: contextPath + '/resources/ui/templates/admin/session.ejs'}).update(table, json);
     }
 
 });
@@ -136,35 +133,84 @@ Trax.Model.Session.Page = Class.create({
         this.populateSessionList(data);
         this.populateInitialSession(data);
 
+        // New Session Click Listener
+        $$('div.new_session')[0].observe("click", function(){
+            self.createNewSessionTemplate(data);
+        });
+
+        this.refreshListeners();
+
+    },
+
+    refreshListeners: function(){
+        var self = this;
+        // Click Listeners for All Session Divs
         $$('.single_session_container').each(function(element){
             element.observe("click", function(){
-                console.log("swag, clicked a new session");
                 var id = element.readAttribute('id');
-                console.log("sessionId is: " + id);
+                self.removeActive();
+                element.addClassName('active_session');
                 self.populateSessionDetail(id);
             });
         });
 
     },
 
+    createNewSessionTemplate: function(data){
+        var json = JSON.parse(data);
+        json.object.sessions.unshift({
+            "id": null,
+            "name": "Untitled Session",
+            "description": "",
+            "startTime": new Date(),
+            "endTime": new Date(),
+            "room": null,
+            "attendees": [],
+            "capacity": null,
+            "comments": []
+        });
+
+        this.populateSessionList(JSON.stringify(json));
+        this.refreshListeners();
+        $$('.single_session_container')[0].click();
+
+    },
+
+    // Remove Active Class From all Sessions
+    removeActive: function(){
+        $$('.single_session_container').each(function(element){
+            element.removeClassName('active_session');
+        });
+    },
+
     populateSessionList: function(data){
         var json = JSON.parse(data);
         var target = $('all_sessions_container');
-        var template = new EJS({url: contextPath + '/resources/ui/templates/session/session-item.ejs'}).update(target, json);
+        new EJS({url: contextPath + '/resources/ui/templates/session/session-item.ejs'}).update(target, json);
     },
 
     populateInitialSession: function(data){
         var json = JSON.parse(data);
+        $$('.single_session_container')[0].addClassName('active_session');
         var target = $$('div.session_info_container')[0];
+        var header = $$('div.session_page_header')[0];
+        new EJS({url: contextPath + '/resources/ui/templates/session/session-header.ejs'}).update(header, json.object);
         new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, json.object.sessions[0]);
 
     },
 
     populateSessionDetail: function(sessionId){
-        var data = Trax.ajax(contextPath + "/resources/session/" + sessionId,'get', {});
-        var json = JSON.parse(data);
         var target = $$('div.session_info_container')[0];
-        new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, json.object);
+
+        if(sessionId != ""){
+            var data = Trax.ajax(contextPath + "/resources/session/" + sessionId,'get', {});
+            var json = JSON.parse(data);
+            new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, json.object);
+        }
+        else {
+            new EJS({url: contextPath + '/resources/ui/templates/session/session-blank.ejs'}).update(target, {});
+        }
+
 
     }
 });

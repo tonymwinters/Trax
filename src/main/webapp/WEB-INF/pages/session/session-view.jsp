@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="session_page_header">
-    Sessions >> Crossfit Spartanburg
+
 </div>
 
 <div class="sessions_left">
