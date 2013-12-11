@@ -66,7 +66,7 @@ public class OwnerServiceImpl implements OwnerService {
                     owner.setUsers(userService.deserializeUsers(users));
                 }
 
-                updateOwner(owner);
+                saveOwner(owner);
                 return owner;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -75,23 +75,20 @@ public class OwnerServiceImpl implements OwnerService {
         }
     };
 
-    public void addOwner(Owner owner) {
-        ownerDAO.addOwner(owner);
-    }
-
-    public void updateOwner(Owner owner) {
-        ownerDAO.updateOwner(owner);
+    public Owner saveOwner(Owner owner) {
+        ownerDAO.saveOwner(owner);
+        return owner;
     }
 
     public Owner getOwner(Long id) {
         return ownerDAO.getOwner(id);
     }
 
-    public Owner deserializeOwner(String json) {
-        return deserializeOwner(new Gson().fromJson(json, JsonElement.class));
+    public Owner saveOwner(String json) {
+        return saveOwner(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Owner deserializeOwner(JsonElement json){
+    public Owner saveOwner(JsonElement json){
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Owner.class, getOwnerJsonDeserializer())
                 .create();

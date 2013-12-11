@@ -13,8 +13,7 @@ import java.util.List;
  */
 public interface OwnerDAO {
 
-    public void addOwner(Owner owner);
-    public void updateOwner(Owner owner);
+    public void saveOwner(Owner owner);
     public Owner getOwner(Long id);
     public void deleteOwner(Long id);
     public List<Owner> getOwners();

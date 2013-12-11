@@ -15,11 +15,10 @@ import java.util.List;
  */
 public interface OwnerService {
 
-    public void addOwner(Owner owner);
-    public void updateOwner(Owner owner);
+    public Owner saveOwner(Owner owner);
     public Owner getOwner(Long id);
-    public Owner deserializeOwner(String json);
-    public Owner deserializeOwner(JsonElement json);
+    public Owner saveOwner(String json);
+    public Owner saveOwner(JsonElement json);
     public JsonDeserializer<Owner> getOwnerJsonDeserializer();
     public void deleteOwner(Long id);
     public List<Owner> getOwners();

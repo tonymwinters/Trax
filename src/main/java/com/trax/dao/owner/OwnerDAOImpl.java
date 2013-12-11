@@ -27,12 +27,7 @@ public class OwnerDAOImpl implements OwnerDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public void addOwner(Owner owner) {
-        getCurrentSession().save(owner);
-        getCurrentSession().flush();
-    }
-
-    public void updateOwner(Owner owner) {
+    public void saveOwner(Owner owner) {
         getCurrentSession().saveOrUpdate(owner);
     }
 

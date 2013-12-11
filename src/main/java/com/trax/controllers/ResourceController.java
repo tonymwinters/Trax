@@ -1,6 +1,5 @@
 package com.trax.controllers;
 
-import com.google.gson.*;
 import com.trax.models.*;
 import com.trax.services.attendee.AttendeeService;
 import com.trax.services.contact.ContactService;
@@ -15,11 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.security.Principal;
-import java.text.ParseException;
-import java.util.Date;
 
 /**
  * Location for the frontend to access crud operations
@@ -85,26 +80,12 @@ public class ResourceController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/owner/add", method= RequestMethod.POST)
-    public String addOwner(@RequestBody String requestJson, Principal principal){
+    @RequestMapping(value="/owner/save", method= RequestMethod.POST)
+    public String saveOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Owner newOwner = ownerService.deserializeOwner(requestJson);
+            Owner newOwner = ownerService.saveOwner(requestJson);
             response = Alfred.renderSuccess(ownerService.getOwner(newOwner.getId()));
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/owner/update", method= RequestMethod.POST)
-    public String updateOwner(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Owner owner = ownerService.deserializeOwner(requestJson);
-            ownerService.updateOwner(owner);
-            response = Alfred.renderSuccess(owner);
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
         }
@@ -116,7 +97,7 @@ public class ResourceController {
     public String deleteOwner(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Owner owner = ownerService.deserializeOwner(requestJson);
+            Owner owner = ownerService.saveOwner(requestJson);
             if(Alfred.isNull(owner)){
                 throw new Exception("Object doesn't exist.");
             }
@@ -603,56 +584,6 @@ public class ResourceController {
         return response;
     }
     //endregion
-
-    //region Activity
-//    @Autowired
-//    ActivityService activityService;
-//    @ResponseBody
-//    @RequestMapping(value="/activity/list", method= RequestMethod.GET)
-//    public String listActivities(@RequestBody String requestJson, Principal principal){
-//        String response;
-//        try{
-//            response = Alfred.renderSuccess(new Object());
-//        } catch (Exception ex){
-//            response = Alfred.renderError(ex.getMessage());
-//        }
-//        return response;
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping(value="/activity/add", method= RequestMethod.POST)
-//    public String addActivity(@RequestBody String requestJson, Principal principal){
-//        String response;
-//        try{
-//            response = Alfred.renderSuccess(new Object());
-//        } catch (Exception ex){
-//            response = Alfred.renderError(ex.getMessage());
-//        }
-//        return response;}
-//
-//    @ResponseBody
-//    @RequestMapping(value="/activity/update", method= RequestMethod.POST)
-//    public String updateActivity(@RequestBody String requestJson, Principal principal){
-//        String response;
-//        try{
-//            response = Alfred.renderSuccess(new Object());
-//        } catch (Exception ex){
-//            response = Alfred.renderError(ex.getMessage());
-//        }
-//        return response;}
-//
-//    @ResponseBody
-//    @RequestMapping(value="/activity/delete", method= RequestMethod.POST)
-//    public String deleteActivity(@RequestBody String requestJson, Principal principal){
-//        String response;
-//        try{
-//            response = Alfred.renderSuccess(new Object());
-//        } catch (Exception ex){
-//            response = Alfred.renderError(ex.getMessage());
-//        }
-//        return response;}
-    //endregion
-
 
     //region default Crud Methods
 //    @ResponseBody
