@@ -13,8 +13,7 @@ import java.util.List;
  */
 public interface ContactService {
 
-    public void addContact(Contact contact);
-    public void updateContact(Contact contact);
+    public Contact saveContact(Contact contact);
     public Contact getContact(Long id);
     public void deleteContact(Long id);
     public List<Contact> getContacts();

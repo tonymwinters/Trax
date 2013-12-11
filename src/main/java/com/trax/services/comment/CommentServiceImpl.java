@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
                     comment.setUser(userService.saveUser(user));
                 }
 
-                updateComment(comment);
+                saveComment(comment);
                 return comment;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -66,7 +66,7 @@ public class CommentServiceImpl implements CommentService {
             try {
                 Set<Comment> comments = new HashSet<Comment>();
                 for (JsonElement jsonComment : jsonElement.getAsJsonArray()) {
-                    comments.add(deserializeComment(jsonComment));
+                    comments.add(saveComment(jsonComment));
                 }
                 return comments;
             } catch (Exception ex) {
@@ -81,15 +81,16 @@ public class CommentServiceImpl implements CommentService {
         return commentDAO.getComment(id);
     }
 
-    public void updateComment(Comment comment){
-        commentDAO.updateComent(comment);
+    public Comment saveComment(Comment comment){
+        commentDAO.saveComment(comment);
+        return comment;
     }
 
-    public Comment deserializeComment(String json) {
-        return deserializeComment(new Gson().fromJson(json, JsonElement.class));
+    public Comment saveComment(String json) {
+        return saveComment(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Comment deserializeComment(JsonElement json) {
+    public Comment saveComment(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
             .registerTypeAdapter(Comment.class, getCommentJsonDeserializer())
             .create();
@@ -97,11 +98,11 @@ public class CommentServiceImpl implements CommentService {
         return gson.fromJson(json, Comment.class);
     }
 
-    public Set deserializeComments(String json) {
-        return deserializeComments(new Gson().fromJson(json, JsonElement.class));
+    public Set saveComments(String json) {
+        return saveComments(new Gson().fromJson(json, JsonElement.class));
     }
 
-    public Set deserializeComments(JsonElement json) {
+    public Set saveComments(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getCommentsJsonDeserializer())
                 .create();

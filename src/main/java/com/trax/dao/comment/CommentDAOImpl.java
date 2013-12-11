@@ -24,12 +24,7 @@ public class CommentDAOImpl implements CommentDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public void addComment(Comment comment){
-        getCurrentSession().save(comment);
-        getCurrentSession().flush();
-    }
-
-    public void updateComent(Comment comment){
+    public void saveComment(Comment comment){
         getCurrentSession().saveOrUpdate(comment);
     }
 

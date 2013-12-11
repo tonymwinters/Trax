@@ -77,7 +77,7 @@ public class SessionServiceImpl implements SessionService{
                     session.setCapacity(capacity.getAsInt());
                 }
                 if (Alfred.notNull(comments)) {
-                    session.setComments(commentService.deserializeComments(comments));
+                    session.setComments(commentService.saveComments(comments));
                 }
 
                 saveSession(session);

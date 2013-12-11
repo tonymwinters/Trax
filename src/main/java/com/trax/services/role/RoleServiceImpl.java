@@ -46,7 +46,7 @@ public class RoleServiceImpl implements RoleService{
                     role.setCode(code.getAsString());
                 }
 
-                updateRole(role);
+                saveRole(role);
                 return role;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -61,7 +61,7 @@ public class RoleServiceImpl implements RoleService{
             try {
                 Set<Role> roles = new HashSet<Role>();
                 for (JsonElement jsonRole : jsonElement.getAsJsonArray()) {
-                    roles.add(deserializeRole(jsonRole));
+                    roles.add(saveRole(jsonRole));
                 }
                 return roles;
             } catch (Exception ex) {
@@ -75,8 +75,9 @@ public class RoleServiceImpl implements RoleService{
         roleDAO.addRole(role);
     }
 
-    public void updateRole(Role role) {
+    public Role saveRole(Role role) {
         roleDAO.updateRole(role);
+        return role;
     }
 
     public Role getRole(Long id) {
@@ -93,14 +94,14 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public Role deserializeRole(JsonElement json) {
+    public Role saveRole(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .create();
         return gson.fromJson(json, Role.class);
     }
 
     @Override
-    public Set deserializeRoles(JsonElement json) {
+    public Set saveRoles(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getRolesJsonDeserializer())
                 .create();

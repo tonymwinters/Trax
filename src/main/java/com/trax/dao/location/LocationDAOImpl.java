@@ -27,12 +27,7 @@ public class LocationDAOImpl implements LocationDAO{
         return sessionFactory.getCurrentSession();
     }
 
-    public void addLocation(Location location){
-        getCurrentSession().save(location);
-        getCurrentSession().flush();
-    }
-
-    public void updateLocation(Location location){
+    public void saveLocation(Location location){
             getCurrentSession().saveOrUpdate(location);
     }
 

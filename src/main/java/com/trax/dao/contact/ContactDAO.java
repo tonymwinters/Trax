@@ -13,8 +13,7 @@ import java.util.List;
  */
 public interface ContactDAO {
 
-    public void addContact(Contact contact);
-    public void updateContact(Contact contact);
+    public void saveContact(Contact contact);
     public Contact getContact(Long id);
     public void deleteContact(Long id);
     public List<Contact> getContacts();

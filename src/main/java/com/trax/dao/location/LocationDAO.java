@@ -13,8 +13,7 @@ import java.util.List;
  */
 public interface LocationDAO {
 
-    public void addLocation(Location location);
-    public void updateLocation(Location location);
+    public void saveLocation(Location location);
     public Location getLocation(Long id);
     public void deleteLocation(Long id);
     public List<Location> getLocation();

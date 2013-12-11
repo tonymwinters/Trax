@@ -11,8 +11,7 @@ import com.trax.models.Comment;
  */
 public interface CommentDAO {
 
-    public void addComment(Comment comment);
-    public void updateComent(Comment comment);
+    public void saveComment(Comment comment);
     public Comment getComment(Long id);
     public void deleteComment(Long id);
 }

@@ -26,12 +26,7 @@ public class ContactDAOImpl implements ContactDAO{
         return sessionFactory.getCurrentSession();
     }
 
-    public void addContact(Contact contact){
-        getCurrentSession().save(contact);
-        getCurrentSession().flush();
-    }
-
-    public void updateContact(Contact contact){
+    public void saveContact(Contact contact){
         getCurrentSession().saveOrUpdate(contact);
     }
 

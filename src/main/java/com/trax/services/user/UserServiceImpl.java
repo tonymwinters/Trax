@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService{
                     user.setLastName(lastName.getAsString());
                 }
                 if (Alfred.notNull(roles)) {
-                    user.setRoles(roleService.deserializeRoles(roles));
+                    user.setRoles(roleService.saveRoles(roles));
                 }
                 if (Alfred.notNull(contact)) {
                     user.setContact(Alfred.gsonDeserializer.fromJson(contact, Contact.class));

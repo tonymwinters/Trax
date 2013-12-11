@@ -17,13 +17,12 @@ import java.util.Set;
  */
 public interface RoleService {
 
-    public void addRole(Role role);
-    public void updateRole(Role role);
+    public Role saveRole(Role role);
     public Role getRole(Long id);
     public JsonDeserializer<Role> getRoleJsonDeserializer();
     public JsonDeserializer<Set<Role>> getRolesJsonDeserializer();
-    public Role deserializeRole(JsonElement json);
-    public Set deserializeRoles(JsonElement json);
+    public Role saveRole(JsonElement json);
+    public Set saveRoles(JsonElement json);
     public void deleteRole(Long id);
     public List<Role> getRoles();
 }

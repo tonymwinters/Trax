@@ -16,12 +16,9 @@ public class ContactServiceImpl implements ContactService{
     @Autowired
     private ContactDAO contactDAO;
 
-    public void addContact(Contact contact){
-        contactDAO.addContact(contact);
-    }
-
-    public void updateContact(Contact contact){
-        contactDAO.updateContact(contact);
+    public Contact saveContact(Contact contact){
+        contactDAO.saveContact(contact);
+        return contact;
     }
 
     public Contact getContact(Long id){
