@@ -89,6 +89,9 @@ public class Venue {
     }
 
     public void setRooms(Set rooms){
+        for(Room room : (Set<Room>)rooms){
+            room.setVenue(this);
+        }
         this.rooms = rooms;
     }
 
@@ -97,6 +100,9 @@ public class Venue {
     }
 
     public void setSessions(Set sessions){
+        for(Session session : (Set<Session>)sessions){
+            session.setVenue(this);
+        }
         this.sessions = sessions;
     }
 

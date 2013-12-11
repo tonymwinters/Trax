@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.trax.dao.session.SessionDAO;
 import com.trax.models.*;
 import com.trax.services.attendee.AttendeeService;
+import com.trax.services.comment.CommentService;
 import com.trax.services.venue.VenueService;
 import com.trax.utilities.Alfred;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,8 @@ public class SessionServiceImpl implements SessionService{
     @Autowired
     private VenueService venueService;
 
-    Gson gson = Alfred.gsonBuilder
-            .registerTypeAdapter(Session.class, getSessionJsonDeserializer())
-            .create();
+    @Autowired
+    private CommentService commentService;
 
     private JsonDeserializer<Session> sessionJsonDeserializer = new JsonDeserializer<Session>() {
         @Override
@@ -77,7 +77,7 @@ public class SessionServiceImpl implements SessionService{
                     session.setCapacity(capacity.getAsInt());
                 }
                 if (Alfred.notNull(comments)) {
-                    session.setComments(Alfred.gsonDeserializer.fromJson(comments, Set.class));
+                    session.setComments(commentService.deserializeComments(comments));
                 }
                 return session;
             } catch (Exception ex) {
@@ -99,7 +99,7 @@ public class SessionServiceImpl implements SessionService{
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            throw new JsonParseException("Could not deserialize Rooms.");
+            throw new JsonParseException("Could not deserialize Sessions.");
         }
     };
 
@@ -120,6 +120,10 @@ public class SessionServiceImpl implements SessionService{
     }
 
     public Session deserializeSession(JsonElement json){
+        Gson gson = Alfred.gsonBuilder
+                .registerTypeAdapter(Session.class, getSessionJsonDeserializer())
+                .create();
+
         return gson.fromJson(json, Session.class);
     }
 

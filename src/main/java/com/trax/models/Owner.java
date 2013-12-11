@@ -95,6 +95,9 @@ public class Owner {
     }
 
     public void setVenues(Set venues){
+        for(Venue venue : (Set<Venue>)venues){
+            venue.setOwner(this);
+        }
         this.venues = venues;
     }
 
@@ -103,6 +106,9 @@ public class Owner {
     }
 
     public void setUsers(Set users){
+        for(User user : (Set<User>)users){
+            user.setOwner(this);
+        }
         this.users = users;
     }
 

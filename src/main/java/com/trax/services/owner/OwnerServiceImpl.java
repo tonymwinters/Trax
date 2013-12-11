@@ -41,11 +41,11 @@ public class OwnerServiceImpl implements OwnerService {
         public Owner deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             try {
                 JsonElement id = json.getAsJsonObject().get("id");
-                JsonElement name = json.getAsJsonObject().get("id");
-                JsonElement contact = json.getAsJsonObject().get("id");
-                JsonElement location = json.getAsJsonObject().get("id");
-                JsonElement venues = json.getAsJsonObject().get("id");
-                JsonElement users = json.getAsJsonObject().get("id");
+                JsonElement name = json.getAsJsonObject().get("name");
+                JsonElement contact = json.getAsJsonObject().get("contact");
+                JsonElement location = json.getAsJsonObject().get("location");
+                JsonElement venues = json.getAsJsonObject().get("venues");
+                JsonElement users = json.getAsJsonObject().get("users");
                 Owner owner = new Owner();
                 if (Alfred.notNull(id)) {
                     owner = getOwner(id.getAsLong());

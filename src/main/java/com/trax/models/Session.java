@@ -142,6 +142,9 @@ public class Session {
     }
 
     public void setAttendees(Set attendees){
+        for(Attendee attendee : (Set<Attendee>)attendees){
+            attendee.setSession(this);
+        }
         this.attendees = attendees;
     }
 
@@ -158,6 +161,9 @@ public class Session {
     }
 
     public void setComments(Set comments){
+        for(Comment comment : (Set<Comment>)comments){
+            comment.setSession(this);
+        }
         this.comments = comments;
     }
 }

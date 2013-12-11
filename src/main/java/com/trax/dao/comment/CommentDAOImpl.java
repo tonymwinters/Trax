@@ -4,6 +4,7 @@ import com.trax.models.Comment;
 import com.trax.utilities.Alfred;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Time: 6:48 PM
  * To change this template use File | Settings | File Templates.
  */
+
+@Repository
 public class CommentDAOImpl implements CommentDAO {
 
     @Autowired

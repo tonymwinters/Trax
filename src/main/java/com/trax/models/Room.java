@@ -80,6 +80,10 @@ public class Room {
     }
 
     public void setSessions(Set sessions){
+        for(Session session : (Set<Session>)sessions){
+            session.setRoom(this);
+            session.setVenue(this.getVenue());
+        }
         this.sessions = sessions;
     }
 
