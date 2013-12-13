@@ -158,7 +158,7 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value="/user/save", method= RequestMethod.POST)
-    public String updateUser(@RequestBody String requestJson, Principal principal){
+    public String saveUser(@RequestBody String requestJson, Principal principal){
         String response;
         try{
             User newUser = userService.saveUser(requestJson);
@@ -187,7 +187,7 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value="/user/delete/{id}", method= RequestMethod.POST)
-    public String deleteUser(@RequestParam Long id, Principal principal){
+    public String deleteUser(@PathVariable Long id, Principal principal){
         String response;
         try{
             User user = userService.getUser(id);
@@ -234,7 +234,7 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value="/venue/save", method= RequestMethod.POST)
-    public String updateVenue(@RequestBody String requestJson, Principal principal){
+    public String saveVenue(@RequestBody String requestJson, Principal principal){
         String response;
         try{
 
@@ -309,7 +309,7 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value="/room/save", method= RequestMethod.POST)
-    public String updateRoom(@RequestBody String requestJson, Principal principal){
+    public String saveRoom(@RequestBody String requestJson, Principal principal){
         String response;
         try{
             Room room  = roomService.saveRoom(requestJson);
@@ -386,7 +386,7 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value="/session/save", method= RequestMethod.POST)
-    public String updateSession(@RequestBody String requestJson, Principal principal){
+    public String saveSession(@RequestBody String requestJson, Principal principal){
         String response;
         try{
             Session session = sessionService.saveSession(requestJson);
@@ -463,7 +463,7 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value="/attendee/save", method= RequestMethod.POST)
-    public String updateAttendee(@RequestBody String requestJson, Principal principal){
+    public String saveAttendee(@RequestBody String requestJson, Principal principal){
         String response;
         try{
             Attendee attendee  = attendeeService.saveAttendee(requestJson);
@@ -507,52 +507,5 @@ public class ResourceController {
         }
         return response;
     }
-    //endregion
-
-    //region default Crud Methods
-//    @ResponseBody
-//    @RequestMapping(value="/list", method= RequestMethod.GET)
-//    public String list(@RequestBody String requestJson, Principal principal){
-//        String response;
-//        try{
-//            response = Alfred.renderSuccess(new Object());
-//        } catch (Exception ex){
-//            response = Alfred.renderError(ex.getMessage());
-//        }
-//        return response;
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping(value="/add", method= RequestMethod.POST)
-//    public String add(@RequestBody String requestJson, Principal principal){
-//        String response;
-//        try{
-//            response = Alfred.renderSuccess(new Object());
-//        } catch (Exception ex){
-//            response = Alfred.renderError(ex.getMessage());
-//        }
-//        return response;}
-//
-//    @ResponseBody
-//    @RequestMapping(value="/update", method= RequestMethod.POST)
-//    public String update(@RequestBody String requestJson, Principal principal){
-//        String response;
-//        try{
-//            response = Alfred.renderSuccess(new Object());
-//        } catch (Exception ex){
-//            response = Alfred.renderError(ex.getMessage());
-//        }
-//        return response;}
-//
-//    @ResponseBody
-//    @RequestMapping(value="/delete", method= RequestMethod.POST)
-//    public String delete(@RequestBody String requestJson, Principal principal){
-//        String response;
-//        try{
-//            response = Alfred.renderSuccess(new Object());
-//        } catch (Exception ex){
-//            response = Alfred.renderError(ex.getMessage());
-//        }
-//        return response;}
     //endregion
 }
