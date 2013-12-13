@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Location for the frontend to access crud operations
@@ -390,6 +392,23 @@ public class ResourceController {
         String response;
         try{
             Session session = sessionService.saveSession(requestJson);
+            response = Alfred.renderSuccess(session);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value="/session/save/{id}", method= RequestMethod.GET)
+    public String saveSession(@PathVariable Long id, @RequestParam String key, @RequestParam String value){
+        String response;
+        Map<String, String> attr = new HashMap<String, String>();
+        attr.put("id", id.toString());
+        attr.put(key, value);
+        try{
+            Session session = sessionService.saveSession(Alfred.gsonSerializer.toJson(attr));
             response = Alfred.renderSuccess(session);
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
