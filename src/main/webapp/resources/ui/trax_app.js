@@ -127,6 +127,7 @@ Trax.Model.Session.SessionTable = Class.create({
 Trax.Model.Session.Page = Class.create({
 
     initialize: function(venueId){
+        EJS.config({cache: false});
         console.log("initializing session page");
         var self = this;
         var data = Trax.ajax(contextPath + "/resources/venue/"+venueId,'get', {});
@@ -136,6 +137,11 @@ Trax.Model.Session.Page = Class.create({
         // New Session Click Listener
         $$('div.new_session')[0].observe("click", function(){
             self.createNewSessionTemplate(data);
+        });
+
+        jQuery('.edit').editable(contextPath + '/resources/session/save', {
+            indicator : 'Saving...',
+            tooltip   : 'Click to edit...'
         });
 
         this.refreshListeners();
@@ -209,6 +215,10 @@ Trax.Model.Session.Page = Class.create({
         }
         else {
             new EJS({url: contextPath + '/resources/ui/templates/session/session-blank.ejs'}).update(target, {});
+            jQuery('.edit').editable(contextPath + '/resources/session/j/22/name?v=SwagNew', {
+                indicator : 'Saving...',
+                tooltip   : 'Click to edit...'
+            });
         }
 
 
