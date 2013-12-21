@@ -13,8 +13,7 @@ import java.util.List;
  */
 public interface RoleDAO {
 
-    public void addRole(Role role);
-    public void updateRole(Role role);
+    public void saveRole(Role role);
     public Role getRole(Long id);
     public void deleteRole(Long id);
     public List<Role> getRoles();

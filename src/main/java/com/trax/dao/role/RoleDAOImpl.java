@@ -1,6 +1,5 @@
 package com.trax.dao.role;
 
-import com.trax.models.Owner;
 import com.trax.models.Role;
 import com.trax.utilities.Alfred;
 import org.hibernate.Session;
@@ -28,13 +27,8 @@ public class RoleDAOImpl implements RoleDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public void addRole(Role role) {
-        getCurrentSession().save(role);
-        getCurrentSession().flush();
-    }
-
-    public void updateRole(Role role) {
-        getCurrentSession().save(role);
+    public void saveRole(Role role) {
+        getCurrentSession().saveOrUpdate(role);
     }
 
     public Role getRole(Long id) {

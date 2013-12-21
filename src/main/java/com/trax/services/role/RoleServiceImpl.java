@@ -71,12 +71,8 @@ public class RoleServiceImpl implements RoleService{
         }
     };
 
-    public void addRole(Role role) {
-        roleDAO.addRole(role);
-    }
-
     public Role saveRole(Role role) {
-        roleDAO.updateRole(role);
+        roleDAO.saveRole(role);
         return role;
     }
 
