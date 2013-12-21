@@ -1,7 +1,6 @@
 package com.trax.models;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -46,8 +45,8 @@ public class Attendee {
     private Date arrival;
 
     @Expose
-    @Column(name="is_owner")
-    private Boolean isOwner;
+    @Column(name="is_leader")
+    private Boolean isLeader;
 
     public Long getId() {
         return id;
@@ -74,11 +73,11 @@ public class Attendee {
     }
 
     public Boolean isOwner(){
-        return this.isOwner;
+        return this.isLeader;
     }
 
     public void setIsOwner(Boolean isOwner){
-        this.isOwner = isOwner;
+        this.isLeader = isOwner;
     }
 
     public Date getArrival(){
