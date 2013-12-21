@@ -75,12 +75,17 @@ Trax.Model.User.UserTable = Class.create({
                 self.deleteUser(userId);
             });
         });
+        $$('.edit_button').each(function(button){
+            button.observe("click", function(){
+                var userId = this.readAttribute('id');
+                self.editUser(userId);
+            });
+        });
 
     },
 
     populateTable: function(data){
         var json = JSON.parse(data);
-        console.log(json);
         EJS.config({cache: false});
         var table = $('main-admin-table');
         new EJS({url: contextPath + '/resources/ui/templates/admin/user.ejs'}).update(table, json);
@@ -88,7 +93,16 @@ Trax.Model.User.UserTable = Class.create({
     },
 
     deleteUser: function(userId){
-        return Trax.ajax("resources/user/delete", 'post', {userId: userId});
+        return Trax.ajax("resources/user/delete/" + userid, 'post');
+    },
+
+    editUser: function(userId){
+        var data = Trax.ajax(contextPath + "/resources/user/"+userId,'get', {});
+        var user = JSON.parse(data);
+        EJS.config({cache: false});
+        var modal = $('modal');
+        new EJS({url: contextPath + '/resources/ui/templates/admin/editUser.ejs'}).update(modal, user);
+        modal.show();
     }
 
 });
