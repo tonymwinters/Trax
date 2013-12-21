@@ -390,6 +390,7 @@ public class ResourceController {
     @RequestMapping(value="/session/save", method= RequestMethod.POST)
     public String saveSession(@RequestBody String requestJson, Principal principal){
         String response;
+        System.out.println(requestJson);
         try{
             Session session = sessionService.saveSession(requestJson);
             response = Alfred.renderSuccess(session);

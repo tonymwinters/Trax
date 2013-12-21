@@ -4,11 +4,13 @@ Trax.printTheWordSwag = function(){
     console.log("swag");
 };
 
-Trax.ajax = function(url, method, params){
+Trax.ajax = function(url, method, contentType , postBody, params){
     var self = this;
     var response;
     new Ajax.Request(url, {
         asynchronous: false,
+        contentType: contentType,
+        postBody: postBody,
         method: method,
         parameters: params,
         onSuccess: function(transport) {
@@ -142,8 +144,8 @@ Trax.Model.Session.Page = Class.create({
 
     initialize: function(venueId){
         EJS.config({cache: false});
-        console.log("initializing session page");
         var self = this;
+        self.venueId = venueId;
         var data = Trax.ajax(contextPath + "/resources/venue/"+venueId,'get', {});
         this.populateSessionList(data);
         this.populateInitialSession(data);
@@ -177,18 +179,19 @@ Trax.Model.Session.Page = Class.create({
     },
 
     createNewSessionTemplate: function(data){
+        var newId = 0;
+        var self = this;
+        var newSession = {};
+        newSession.name = "Untitled";
+        newSession.startTime = new XDate().toString("yyyy-MM-dd'T'HH:mm:sszz") + "00";
+        newSession.endTime = new XDate().toString("yyyy-MM-dd'T'HH:mm:sszz") + "00";
+        newSession.description = "Enter description here."
+        var response = Trax.ajax('/resources/venue/save','POST', 'application/json', '{"id": '+self.venueId+', "sessions" : ['+JSON.stringify(newSession)+']}');
+        newSession.id = JSON.parse(response).object.sessions[0].id;
+
+
         var json = JSON.parse(data);
-        json.object.sessions.unshift({
-            "id": null,
-            "name": "Untitled Session",
-            "description": "",
-            "startTime": new Date(),
-            "endTime": new Date(),
-            "room": null,
-            "attendees": [],
-            "capacity": null,
-            "comments": []
-        });
+        json.object.sessions.unshift(newSession);
 
         this.populateSessionList(JSON.stringify(json));
         this.refreshListeners();
@@ -223,16 +226,9 @@ Trax.Model.Session.Page = Class.create({
         var target = $$('div.session_info_container')[0];
 
         if(sessionId != ""){
-            var data = Trax.ajax(contextPath + "/resources/session/" + sessionId,'get', {});
+            var data = Trax.ajax(contextPath + "/resources/session/" + sessionId,'get');
             var json = JSON.parse(data);
             new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, json.object);
-        }
-        else {
-            new EJS({url: contextPath + '/resources/ui/templates/session/session-blank.ejs'}).update(target, {});
-            jQuery('.edit').editable(contextPath + '/resources/session/j/22/name?v=SwagNew', {
-                indicator : 'Saving...',
-                tooltip   : 'Click to edit...'
-            });
         }
 
 
