@@ -1,23 +1,12 @@
 package com.trax.utilities;
 
 import com.google.gson.*;
-import com.trax.models.Session;
-import com.trax.models.User;
-import com.trax.services.attendee.AttendeeService;
-import com.trax.services.contact.ContactService;
-import com.trax.services.owner.OwnerService;
-import com.trax.services.role.RoleService;
-import com.trax.services.room.RoomService;
-import com.trax.services.session.SessionService;
-import com.trax.services.user.UserService;
-import com.trax.services.venue.VenueService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -33,7 +22,7 @@ import java.util.Set;
  */
  public class Alfred {
 
-    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
 
     public static GsonBuilder gsonBuilder = new GsonBuilder()
             .excludeFieldsWithModifiers(Modifier.TRANSIENT)
