@@ -1,20 +1,14 @@
 package com.trax.models;
 
 import com.google.gson.annotations.Expose;
-import com.trax.services.session.SessionService;
-import com.trax.services.venue.VenueService;
-import com.trax.utilities.Alfred;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.Parameter;
 import com.google.gson.annotations.SerializedName;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -146,6 +140,13 @@ public class Session {
             attendee.setSession(this);
         }
         this.attendees = attendees;
+    }
+
+    public void appendAttendees(Set attendees){
+        for(Attendee attendee : (Set<Attendee>)attendees){
+            attendee.setSession(this);
+            this.attendees.add(attendee);
+        }
     }
 
     public void setCapacity(Integer capacity){

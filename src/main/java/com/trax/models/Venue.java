@@ -5,9 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -104,6 +102,13 @@ public class Venue {
             session.setVenue(this);
         }
         this.sessions = sessions;
+    }
+
+    public void appendSessions(Set sessions){
+        for(Session session : (Set<Session>)sessions){
+            session.setVenue(this);
+            this.sessions.add(session);
+        }
     }
 
     public Contact getContact() {
