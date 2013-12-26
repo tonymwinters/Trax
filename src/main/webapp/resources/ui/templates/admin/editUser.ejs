@@ -1,4 +1,22 @@
-<ul>
-     <li><input type="text" name="username" value="<%= object.username %>" /></li>
-     <li><input type="text" name="email" value="<%= object.contact.emailAddress %>"/></li>
-</ul>
+<form id="editUser" action="#" method="post">
+        <input type="text" class="hidden" name="id" value="<%= id %>" />
+        <input type="text" class="hidden" name="contact.id" value="<%= contact ? contact.id : "" %>" />
+    <ul>
+        <li><label for="username">username</label> <input type="text" name="username" value="<%= username %>" /></li>
+        <li><label for="email">email</label> <input type="text" name="contact.emailAddress" value="<%= contact ? contact.emailAddress : "" %>"/></li>
+        <li><label for="firstName">first name</label> <input type="text" name="firstName" value="<%= firstName %>"/></li>
+        <li><label for="middleName">middle name</label> <input type="text" name="middleName" value="<%= middleName %>"/></li>
+        <li><label for="lastName">last name</label> <input type="text" name="lastName" value="<%= lastName %>"/></li>
+        <li><label for="name">contact name</label> <input type="text" name="contact.name" value="<%= contact ? contact.name : "" %>"/></li>
+        <li><label for="phone">phone</label> <input type="text" name="contact.phoneNumber" value="<%= contact ? contact.phoneNumber : "" %>"/></li>
+        <li><label for="roles">roles</label>
+            <ul id="userRoles">
+                <% for(var i = 0; i < roles.length; ++i){ %>
+                <li><input type="checkbox" id="id" value="<%= roles[i].id %>" name="roles[]"><%= roles[i].name %></input></li>
+                <% } %>
+            </ul>
+            <a href="#"><div id="role_add" class="add button">Add Role</div></a>
+        </li>
+    </ul>
+</form>
+<a href="#"><div id="save_button" class="save button">Save</div></a>

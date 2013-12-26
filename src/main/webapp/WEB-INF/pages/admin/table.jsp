@@ -24,12 +24,7 @@
       <br/><br/><br/>
     <p><a href="${pageContext.request.contextPath}/index.html">Home page</a></p>
 
-    <div id="modal">
-        <ul>
-            <li><label for="username">username</label> <input type="text" name="username" value="<%= object.username %>" /></li>
-            <li><input type="text" name="email" value="<%= object.contact.emailAddress %>"/></li>
-        </ul>
-    </div>
+    <div id="modal" class="trax_modal"></div>
 
 </div>
 

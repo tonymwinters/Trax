@@ -4,7 +4,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.trax.models.Role;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +20,7 @@ public interface RoleService {
     public Role getRole(Long id);
     public JsonDeserializer<Role> getRoleJsonDeserializer();
     public JsonDeserializer<Set<Role>> getRolesJsonDeserializer();
+    public Role saveRole(String json);
     public Role saveRole(JsonElement json);
     public Set saveRoles(JsonElement json);
     public void deleteRole(Long id);

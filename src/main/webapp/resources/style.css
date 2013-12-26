@@ -87,6 +87,10 @@ h2{
     color: #eee;
 }
 
+.hiddent{
+    display: none;
+}
+
 #app_container{
     width: 960;
     margin: 0 auto;
@@ -232,6 +236,26 @@ h2{
     height: 38px;
     width: 300px;
     font-weight: 200;
+}
+
+.trax_modal a{
+    color: white;
+}
+
+.trax_modal .button{
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+}
+
+.trax_modal .add{
+    background-color: #6ab880;
+    width: 80px;
+}
+
+.trax_modal .save{
+    background-color: #6ab880;
+    width: 50px;
 }
 
 .sessions_left{

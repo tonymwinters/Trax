@@ -84,19 +84,21 @@ public class RoleServiceImpl implements RoleService{
         return roleJsonDeserializer;
     }
 
-    @Override
     public JsonDeserializer<Set<Role>> getRolesJsonDeserializer() {
         return rolesJsonDeserializer;
     }
 
-    @Override
+    public Role saveRole(String json){
+        return saveRole(new Gson().fromJson(json, JsonElement.class));
+    }
+
     public Role saveRole(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
+                .registerTypeAdapter(Role.class, getRoleJsonDeserializer())
                 .create();
         return gson.fromJson(json, Role.class);
     }
 
-    @Override
     public Set saveRoles(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getRolesJsonDeserializer())

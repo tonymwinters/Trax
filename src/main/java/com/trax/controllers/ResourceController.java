@@ -132,7 +132,7 @@ public class ResourceController {
     //region User
     @ResponseBody
     @RequestMapping(value="/user/list", method= RequestMethod.GET)
-    public String listUsers(@RequestBody String requestJson, Principal principal){
+    public String listUsers( Principal principal){
         String response;
         try{
             response = Alfred.renderSuccess(userService.getUsers());
@@ -171,23 +171,6 @@ public class ResourceController {
         return response;}
 
     @ResponseBody
-    @RequestMapping(value="/user/delete", method= RequestMethod.POST)
-    public String deleteUser(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            User user = userService.saveUser(requestJson);
-            if(Alfred.isNull(user)){
-                throw new Exception("Object doesn't exist.");
-            }
-            userService.deleteUser(user.getId());
-            response = Alfred.renderSuccess();
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
     @RequestMapping(value="/user/delete/{id}", method= RequestMethod.POST)
     public String deleteUser(@PathVariable Long id, Principal principal){
         String response;
@@ -197,6 +180,66 @@ public class ResourceController {
                 throw new Exception("Object doesn't exist.");
             }
             userService.deleteUser(id);
+            response = Alfred.renderSuccess();
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+    //endregion
+
+    //region User
+    @ResponseBody
+    @RequestMapping(value="/role/list", method= RequestMethod.GET)
+    public String listRoles(Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(roleService.getRoles());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/role/{id}", method= RequestMethod.GET)
+    public String getRole(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            User user = userService.getUser(id);
+            if(Alfred.isNull(user)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = Alfred.renderSuccess(user);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/role/save", method= RequestMethod.POST)
+    public String saveRole(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Role newRole = roleService.saveRole(requestJson);
+            response = Alfred.renderSuccess(newRole);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/role/delete/{id}", method= RequestMethod.POST)
+    public String deleteRole(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Role role = roleService.getRole(id);
+            if(Alfred.isNull(role)){
+                throw new Exception("Object doesn't exist.");
+            }
+            roleService.deleteRole(id);
             response = Alfred.renderSuccess();
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());

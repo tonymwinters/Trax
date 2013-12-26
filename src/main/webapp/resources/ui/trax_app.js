@@ -21,7 +21,59 @@ Trax.ajax = function(url, method, contentType , postBody, params){
      return self.response;
 };
 
+function setAttr(obj, keys, element){
+
+    var attr = keys.pop();
+
+    if(keys.size() > 0){
+        if(obj[attr] == null){
+            obj[attr] = {};
+        }
+        console.log(attr);
+        setAttr(obj[attr], keys, element);
+    }else{
+        //check for an array
+        if(attr.substring(attr.length - 2, attr.length) == "[]"){
+            attr = attr.substring(0,attr.length - 2);
+
+            if(obj[attr] == null){
+                obj[attr] = [];
+            }
+            var newItem = {};
+            newItem[element.id] = element.value;
+            console.log(attr + " add: " + JSON.stringify(newItem));
+            obj[attr].push(newItem);
+        }else{
+            var value = element.value ;
+            console.log(attr + " = " + value);
+            obj[attr] = (value == "" ? null : value);
+        }
+    }
+}
+
+Trax.formToObject = function(formId) {
+    var object = $(formId);
+    var result = {};
+    object.getElements().each(function (element){
+        setAttr(result, element.name.split(".").reverse(), element);
+        console.log(result);
+    });
+    return result;
+};
+
 Trax.Model = {};
+
+
+/*********************************************
+ * ROLE MODEL
+ *********************************************/
+Trax.Model.Role = Class.create({
+    getRoles: function(){
+        var data = Trax.ajax(contextPath + "/resources/role/list", 'get');
+        return JSON.parse(data);
+    }
+});
+
 
 /*********************************************
  * VENUE MODEL
@@ -99,12 +151,51 @@ Trax.Model.User.UserTable = Class.create({
     },
 
     editUser: function(userId){
-        var data = Trax.ajax(contextPath + "/resources/user/"+userId,'get', {});
-        var user = JSON.parse(data);
+        var editUser = new Trax.Model.User.UserEdit(userId);
+    }
+
+});
+
+Trax.Model.User.UserEdit = Class.create({
+
+
+    initialize: function(id){
+        var data = Trax.ajax(contextPath + "/resources/user/"+id,'get');
+
+        this.populateModal(data);
+
+    },
+
+    populateModal: function(data){
+        var self = this;
+        var user = JSON.parse(data).object;
+
         EJS.config({cache: false});
-        var modal = $('modal');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/editUser.ejs'}).update(modal, user);
-        modal.show();
+        var modal = new EJS({url: contextPath + '/resources/ui/templates/admin/editUser.ejs'}).update($('modal'), user);
+        $('modal').show();
+
+
+        $('role_add').observe("click", function(){
+            self.addRole();
+        });
+
+        $('save_button').observe("click", function(){
+            self.saveUser();
+        });
+    },
+
+    saveUser: function(){
+        var obj = Trax.formToObject('editUser');
+        var json = JSON.stringify(obj);
+        var result = JSON.parse(Trax.ajax('/resources/user/save','POST', 'application/json', json));
+        if(result.success){
+            $('modal').hide();
+        }
+    },
+
+    addRole: function(){
+        var availableRoles = new Trax.Model.Role().getRoles().object;
+        alert(JSON.stringify(availableRoles));
     }
 
 });

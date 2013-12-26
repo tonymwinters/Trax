@@ -33,9 +33,11 @@ public class Role {
 
     private Long id;
 
+    @Expose
     @Column(name="name")
     private String name;
 
+    @Expose
     @Column(name="code")
     private String code;
 
