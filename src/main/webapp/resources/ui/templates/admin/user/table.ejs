@@ -11,8 +11,8 @@
         <td><%= object[i].lastName %></td>
         <td><%= object[i].contact == null ? "" : object[i].contact.emailAddress  %></td>
         <td>
-            <a href="#"><div class="edit_button" id="<%= object[i].id %>">Edit</div></a>
-            <a href="#"><div class="delete_button" id="<%= object[i].id %>">Delete</div></a>
+            <a href="#"><div class="edit button" id="<%= object[i].id %>">Edit</div></a>
+            <a href="#"><div class="delete button" id="<%= object[i].id %>">Delete</div></a>
         </td>
     </tr>
     <% } %>

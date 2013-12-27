@@ -59,6 +59,13 @@ Trax.formToObject = function(formId) {
     return result;
 };
 
+Trax.Modal = Class.create({
+    initialize: function(type){
+        this.id = "modal-"+type;
+        $(document.body).insert("<div id='"+this.id+"' class='trax_modal' style='display: none'></div>")
+    }
+});
+
 Trax.Model = {};
 
 
@@ -92,17 +99,78 @@ Trax.Model.Venue.VenueTable = Class.create({
     },
 
     populateTable: function(data){
+        var self = this;
         var json = JSON.parse(data);
-        console.log(json);
 
         var table = $('main-admin-table');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/venue.ejs'}).update(table, json);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/table.ejs'}).update(table, json);
 
+        $$('.trax_table .delete').each(function(button){
+            button.observe("click", function(){
+                self.delete(this.readAttribute('id'));
+            });
+        });
+        $$('.trax_table .edit').each(function(button){
+            button.observe("click", function(){
+                self.edit(this.readAttribute('id'));
+            });
+        });
+    },
 
+    delete: function(id){
+        return Trax.ajax("resources/venue/delete/" + id, 'post');
+    },
 
+    edit: function(id){
+        new Trax.Model.Venue.Edit(id);
     }
 
 });
+
+Trax.Model.Venue.Edit = Class.create({
+
+
+    initialize: function(id){
+        var data = Trax.ajax(contextPath + "/resources/venue/"+id,'get');
+
+        this.populateModal(data);
+    },
+
+    populateModal: function(data){
+        var self = this;
+        var venue = JSON.parse(data).object;
+        var modalElement = $(new Trax.Modal("venue").id);
+
+        EJS.config({cache: false});
+        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/edit.ejs'}).update(modalElement, venue);
+
+        $$('.trax_modal .venue.save').each(function(button){
+            button.observe("click", function(){
+                self.save(modalElement);
+            });
+        });
+
+        $$('.trax_modal .room.edit').each(function(button){
+            button.observe("click", function(){
+                new Trax.Model.Room.Edit(this.readAttribute('id'));
+            });
+        });
+
+        modalElement.show();
+    },
+
+    save: function(modalElement){
+        var obj = Trax.formToObject('editVenue');
+        var json = JSON.stringify(obj);
+        var result = JSON.parse(Trax.ajax('/resources/venue/save','POST', 'application/json', json));
+        if(result.success){
+            modalElement.hide();
+        }
+    }
+
+});
+
+
 
 /*********************************************
  * USER MODEL
@@ -121,16 +189,14 @@ Trax.Model.User.UserTable = Class.create({
         $('table-href').setAttribute("href", "http://usersURL");
         this.populateTable(data);
 
-        $$('.delete_button').each(function(button){
+        $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
-                var userId = this.readAttribute('id');
-                self.deleteUser(userId);
+                self.delete(this.readAttribute('id'));
             });
         });
-        $$('.edit_button').each(function(button){
+        $$('.trax_table .edit').each(function(button){
             button.observe("click", function(){
-                var userId = this.readAttribute('id');
-                self.editUser(userId);
+                self.edit(this.readAttribute('id'));
             });
         });
 
@@ -140,21 +206,21 @@ Trax.Model.User.UserTable = Class.create({
         var json = JSON.parse(data);
         EJS.config({cache: false});
         var table = $('main-admin-table');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/user.ejs'}).update(table, json);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/user/table.ejs'}).update(table, json);
 
     },
 
-    deleteUser: function(userId){
-        return Trax.ajax("resources/user/delete/" + userid, 'post');
+    delete: function(id){
+        return Trax.ajax("resources/user/delete/" + id, 'post');
     },
 
-    editUser: function(userId){
-        var editUser = new Trax.Model.User.UserEdit(userId);
+    edit: function(id){
+        new Trax.Model.User.Edit(id);
     }
 
 });
 
-Trax.Model.User.UserEdit = Class.create({
+Trax.Model.User.Edit = Class.create({
 
 
     initialize: function(id){
@@ -167,13 +233,14 @@ Trax.Model.User.UserEdit = Class.create({
     populateModal: function(data){
         var self = this;
         var user = JSON.parse(data).object;
+        var modalElement = $(new Trax.Modal("user").id);
         var availableRoles = new Trax.Model.Role().getRoles().object;
         var userdata = {};
         userdata.user = user;
         userdata.availableRoles = availableRoles;
 
         EJS.config({cache: false});
-        var modal = new EJS({url: contextPath + '/resources/ui/templates/admin/editUser.ejs'}).update($('modal'), userdata);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/user/edit.ejs'}).update(modalElement, userdata);
         user.roles.each(function(role){
             $$('.role').each(function(element){
                if(element.value == role.id){
@@ -183,13 +250,13 @@ Trax.Model.User.UserEdit = Class.create({
         });
 
         $('save_button').observe("click", function(){
-            self.saveUser();
+            self.save();
         });
 
-        $('modal').show();
+        modalElement.show();
     },
 
-    saveUser: function(){
+    save: function(){
         var obj = Trax.formToObject('editUser');
         var json = JSON.stringify(obj);
         var result = JSON.parse(Trax.ajax('/resources/user/save','POST', 'application/json', json));
@@ -199,6 +266,60 @@ Trax.Model.User.UserEdit = Class.create({
     }
 
 });
+
+
+
+/*********************************************
+ * ROOM MODEL
+ *********************************************/
+Trax.Model.Room = {};
+Trax.Model.Room.Edit = Class.create({
+
+
+    initialize: function(id){
+        var data = Trax.ajax(contextPath + "/resources/room/"+id,'get');
+
+        this.populateModal(data);
+    },
+
+    populateModal: function(data){
+        var self = this;
+        var room = JSON.parse(data).object;
+        var modalElement = $(new Trax.Modal("room").id);
+
+        EJS.config({cache: false});
+        new EJS({url: contextPath + '/resources/ui/templates/admin/room/edit.ejs'}).update(modalElement, room);
+
+        $$('.trax_modal .room.delete').each(function(button){
+            button.observe("click", function(){
+                self.delete(this.readAttribute('id'));
+            });
+        });
+
+        $$('.trax_modal .room.save').each(function(button){
+            button.observe("click", function(){
+                self.save(modalElement);
+            });
+        });
+
+        modalElement.show();
+    },
+
+    delete: function(id){
+        return Trax.ajax("resources/room/delete/" + id, 'post');
+    },
+
+    save: function(modalElement){
+        var obj = Trax.formToObject('editRoom');
+        var json = JSON.stringify(obj);
+        var result = JSON.parse(Trax.ajax('/resources/room/save','POST', 'application/json', json));
+        if(result.success){
+            modalElement.hide();
+        }
+    }
+
+});
+
 
 
 /*********************************************

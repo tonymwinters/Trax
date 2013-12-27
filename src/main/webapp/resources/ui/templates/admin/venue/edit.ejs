@@ -1,0 +1,36 @@
+<form id="editVenue" action="#" method="post">
+    <input type="text" class="hidden" name="id" value="<%= id %>" />
+    <ul>
+        <li><label>Name</label> <input type="text" name="name" value="<%= name %>" /></li>
+                                                                                                                                                               
+        <li>Location</li>
+        <input type="text" class="hidden" name="location.id" value="<%= location ? location.id : "" %>" />
+        <li><label>name</label> <input type="text" name="location.name" value="<%= location ? location.name : "" %>"/></li>
+        <li><label>Address Line 1</label> <input type="text" name="location.addressLine1" value="<%= location ? location.addressLine1 : "" %>"/></li>
+        <li><label>Address Line 2</label> <input type="text" name="location.addressLine2" value="<%= location ? location.addressLine2 : "" %>"/></li>
+        <li><label>City</label> <input type="text" name="location.city" value="<%= location ? location.city : "" %>"/></li>
+        <li><label>State</label> <input type="text" name="location.regionCode" value="<%= location ? location.regionCode : "" %>"/></li>
+        <li><label>Postal</label> <input type="text" name="location.postalCode" value="<%= location ? location.postalCode : "" %>"/></li>
+        <li><label>Country</label> <input type="text" name="location.countryCode" value="<%= location ? location.countryCode : "" %>"/></li>
+
+        <li>Contact</li>
+        <input type="text" class="hidden" name="contact.id" value="<%= contact ? contact.id : "" %>" />
+        <li><label for="name">name</label> <input type="text" name="contact.name" value="<%= contact ? contact.name : "" %>"/></li>
+        <li><label for="email">email</label> <input type="text" name="contact.emailAddress" value="<%= contact ? contact.emailAddress : "" %>"/></li>
+        <li><label for="phone">phone</label> <input type="text" name="contact.phoneNumber" value="<%= contact ? contact.phoneNumber : "" %>"/></li>
+        
+        
+        <li><label for="rooms[]">rooms</label>
+            <ul>
+                <% for(var i = 0; i < rooms.length; ++i){ %>
+                <li>
+                    <input type="checkbox" id="id" value="<%= rooms[i].id %>" name="rooms[]" class="role"><%= rooms[i].name %></input>
+                    <a href="#"><div id="<%= rooms[i].id %>" class="room edit button">Edit</div></a>
+                </li>
+                <% } %>
+            </ul>
+            <a href="#"><div id="role_add" class="add button">Add Room</div></a>
+        </li>
+    </ul>
+</form>
+<a href="#"><div class="venue save button">Save</div></a>

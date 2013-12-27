@@ -1,14 +1,11 @@
 package com.trax.models;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,12 +32,10 @@ public class Room {
     private Long id;
 
     @Expose
-    @SerializedName("name")
     @Column(name="name")
     private String name;
 
     @Expose
-    @SerializedName("description")
     @Column(name="description")
     private String description;
 

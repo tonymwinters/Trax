@@ -188,20 +188,20 @@ h2{
     background-color: #FAFAFA;
 }
 
-.trax_table .edit_button{
+.button{
     display: inline-block;
     padding: 5px;
-    background-color: #12c2c0;
-    width: 50px;
     text-align: center;
 }
 
-.trax_table .delete_button{
-    display: inline-block;
-    padding: 5px;
+.trax_table .edit{
+    background-color: #12c2c0;
+    width: 50px;
+}
+
+.trax_table .delete{
     background-color: #FF6969;
     width: 50px;
-    text-align: center;
 }
 
 .table_title_h1{
@@ -242,12 +242,6 @@ h2{
     color: white;
 }
 
-.trax_modal .button{
-    display: inline-block;
-    padding: 5px;
-    text-align: center;
-}
-
 .trax_modal .add{
     background-color: #6ab880;
     width: 80px;
@@ -255,6 +249,16 @@ h2{
 
 .trax_modal .save{
     background-color: #6ab880;
+    width: 50px;
+}
+
+.trax_modal .edit{
+    background-color: #12c2c0;
+    width: 50px;
+}
+
+.trax_modal .delete{
+    background-color: #FF6969;
     width: 50px;
 }
 

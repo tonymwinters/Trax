@@ -53,6 +53,7 @@ public class Location {
     @Column(name="postal_code")
     private String postalCode;
 
+    @Expose
     @Column(name="country_code")
     private String countryCode;
 
