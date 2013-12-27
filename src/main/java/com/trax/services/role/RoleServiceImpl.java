@@ -46,7 +46,6 @@ public class RoleServiceImpl implements RoleService{
                     role.setCode(code.getAsString());
                 }
 
-                saveRole(role);
                 return role;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -60,8 +59,12 @@ public class RoleServiceImpl implements RoleService{
         public Set<Role> deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
             try {
                 Set<Role> roles = new HashSet<Role>();
+
                 for (JsonElement jsonRole : jsonElement.getAsJsonArray()) {
-                    roles.add(saveRole(jsonRole));
+                    Role role = saveRole(jsonRole);
+                    if(role.getId() != null){
+                        roles.add(role);
+                    }
                 }
                 return roles;
             } catch (Exception ex) {

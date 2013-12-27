@@ -87,10 +87,6 @@ h2{
     color: #eee;
 }
 
-.hiddent{
-    display: none;
-}
-
 #app_container{
     width: 960;
     margin: 0 auto;
@@ -236,6 +232,10 @@ h2{
     height: 38px;
     width: 300px;
     font-weight: 200;
+}
+
+.trax_modal {
+    background-color: #8f8f8f;
 }
 
 .trax_modal a{

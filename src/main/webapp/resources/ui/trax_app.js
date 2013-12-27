@@ -29,7 +29,6 @@ function setAttr(obj, keys, element){
         if(obj[attr] == null){
             obj[attr] = {};
         }
-        console.log(attr);
         setAttr(obj[attr], keys, element);
     }else{
         //check for an array
@@ -41,11 +40,9 @@ function setAttr(obj, keys, element){
             }
             var newItem = {};
             newItem[element.id] = element.value;
-            console.log(attr + " add: " + JSON.stringify(newItem));
             obj[attr].push(newItem);
         }else{
             var value = element.value ;
-            console.log(attr + " = " + value);
             obj[attr] = (value == "" ? null : value);
         }
     }
@@ -55,8 +52,9 @@ Trax.formToObject = function(formId) {
     var object = $(formId);
     var result = {};
     object.getElements().each(function (element){
-        setAttr(result, element.name.split(".").reverse(), element);
-        console.log(result);
+        if(element.checked || element.type != "checkbox"){
+            setAttr(result, element.name.split(".").reverse(), element);
+        }
     });
     return result;
 };
@@ -169,19 +167,26 @@ Trax.Model.User.UserEdit = Class.create({
     populateModal: function(data){
         var self = this;
         var user = JSON.parse(data).object;
+        var availableRoles = new Trax.Model.Role().getRoles().object;
+        var userdata = {};
+        userdata.user = user;
+        userdata.availableRoles = availableRoles;
 
         EJS.config({cache: false});
-        var modal = new EJS({url: contextPath + '/resources/ui/templates/admin/editUser.ejs'}).update($('modal'), user);
-        $('modal').show();
-
-
-        $('role_add').observe("click", function(){
-            self.addRole();
+        var modal = new EJS({url: contextPath + '/resources/ui/templates/admin/editUser.ejs'}).update($('modal'), userdata);
+        user.roles.each(function(role){
+            $$('.role').each(function(element){
+               if(element.value == role.id){
+                   element.checked = true;
+               }
+            });
         });
 
         $('save_button').observe("click", function(){
             self.saveUser();
         });
+
+        $('modal').show();
     },
 
     saveUser: function(){
@@ -191,11 +196,6 @@ Trax.Model.User.UserEdit = Class.create({
         if(result.success){
             $('modal').hide();
         }
-    },
-
-    addRole: function(){
-        var availableRoles = new Trax.Model.Role().getRoles().object;
-        alert(JSON.stringify(availableRoles));
     }
 
 });

@@ -24,7 +24,7 @@
       <br/><br/><br/>
     <p><a href="${pageContext.request.contextPath}/index.html">Home page</a></p>
 
-    <div id="modal" class="trax_modal"></div>
+    <div id="modal" class="trax_modal" style="display: none"></div>
 
 </div>
 
