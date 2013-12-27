@@ -25,6 +25,7 @@ public class CommentDAOImpl implements CommentDAO {
     }
 
     public void saveComment(Comment comment){
+        getCurrentSession().merge(comment);
         getCurrentSession().saveOrUpdate(comment);
     }
 

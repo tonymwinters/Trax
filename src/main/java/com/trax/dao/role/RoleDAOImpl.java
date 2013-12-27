@@ -28,6 +28,7 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     public void saveRole(Role role) {
+        getCurrentSession().merge(role);
         getCurrentSession().saveOrUpdate(role);
     }
 

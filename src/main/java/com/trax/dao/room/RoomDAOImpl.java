@@ -28,6 +28,7 @@ public class RoomDAOImpl implements RoomDAO{
     }
 
     public void saveRoom(Room room){
+        getCurrentSession().merge(room);
         getCurrentSession().saveOrUpdate(room);
     }
 

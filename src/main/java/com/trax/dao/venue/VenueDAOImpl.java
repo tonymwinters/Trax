@@ -28,6 +28,7 @@ public class VenueDAOImpl implements VenueDAO{
     }
 
     public void saveVenue(Venue venue){
+        getCurrentSession().merge(venue);
         getCurrentSession().saveOrUpdate(venue);
     }
 

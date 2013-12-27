@@ -28,6 +28,7 @@ public class LocationDAOImpl implements LocationDAO{
     }
 
     public void saveLocation(Location location){
+        getCurrentSession().merge(location);
             getCurrentSession().saveOrUpdate(location);
     }
 
