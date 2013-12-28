@@ -141,6 +141,9 @@ public class VenueServiceImpl implements VenueService{
     }
 
     public void deleteVenue(Long id) {
+        Venue venue = getVenue(id);
+        venue.getOwner().getVenues().remove(venue);
+        venue.setOwner(null);
         venueDAO.deleteVenue(id);
     }
 

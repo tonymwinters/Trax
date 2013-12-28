@@ -95,23 +95,6 @@ public class ResourceController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/owner/delete", method= RequestMethod.POST)
-    public String deleteOwner(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Owner owner = ownerService.saveOwner(requestJson);
-            if(Alfred.isNull(owner)){
-                throw new Exception("Object doesn't exist.");
-            }
-            ownerService.deleteOwner(owner.getId());
-            response = Alfred.renderSuccess();
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
     @RequestMapping(value="/owner/delete/{id}", method= RequestMethod.GET)
     public String deleteOwner(@PathVariable Long id, Principal principal){
         String response;
@@ -171,7 +154,7 @@ public class ResourceController {
         return response;}
 
     @ResponseBody
-    @RequestMapping(value="/user/delete/{id}", method= RequestMethod.POST)
+    @RequestMapping(value="/user/delete/{id}", method= RequestMethod.GET)
     public String deleteUser(@PathVariable Long id, Principal principal){
         String response;
         try{
@@ -231,7 +214,7 @@ public class ResourceController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/role/delete/{id}", method= RequestMethod.POST)
+    @RequestMapping(value="/role/delete/{id}", method= RequestMethod.GET)
     public String deleteRole(@PathVariable Long id, Principal principal){
         String response;
         try{
@@ -291,23 +274,7 @@ public class ResourceController {
         return response;}
 
     @ResponseBody
-    @RequestMapping(value="/venue/delete", method= RequestMethod.POST)
-    public String deleteVenue(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Venue venue = venueService.saveVenue(requestJson);
-            if(Alfred.isNull(venue)){
-                throw new Exception("Object doesn't exist.");
-            }
-            venueService.deleteVenue(venue.getId());
-            response = Alfred.renderSuccess();
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;}
-
-    @ResponseBody
-    @RequestMapping(value="/venue/delete/{id}", method= RequestMethod.POST)
+    @RequestMapping(value="/venue/delete/{id}", method= RequestMethod.GET)
     public String deleteVenue(@PathVariable Long id, Principal principal){
         String response;
         try{
@@ -444,23 +411,6 @@ public class ResourceController {
     }
 
     @ResponseBody
-    @RequestMapping(value="/session/delete", method= RequestMethod.POST)
-    public String deleteSession(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Session session = sessionService.saveSession(requestJson);
-            if(Alfred.isNull(session)){
-                throw new Exception("Object doesn't exist.");
-            }
-            sessionService.deleteSession(session.getId());
-            response = Alfred.renderSuccess();
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
     @RequestMapping(value="/session/delete/{id}", method= RequestMethod.GET)
     public String deleteSession(@PathVariable Long id, Principal principal){
         String response;
@@ -514,23 +464,6 @@ public class ResourceController {
         try{
             Attendee attendee  = attendeeService.saveAttendee(requestJson);
             response = Alfred.renderSuccess(attendee);
-        } catch (Exception ex){
-            response = Alfred.renderError(ex.getMessage());
-        }
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value="/attendee/delete", method= RequestMethod.POST)
-    public String deleteAttendee(@RequestBody String requestJson, Principal principal){
-        String response;
-        try{
-            Attendee attendee = attendeeService.saveAttendee(requestJson);
-            if(Alfred.isNull(attendee)){
-                throw new Exception("Object doesn't exist.");
-            }
-            attendeeService.deleteAttendee(attendee.getId());
-            response = Alfred.renderSuccess();
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
         }

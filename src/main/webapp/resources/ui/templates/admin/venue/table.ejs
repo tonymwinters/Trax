@@ -3,12 +3,12 @@
     <th>Actions</th>
 </thead>
 <tbody>
-    <% for(var i = 0; i < object.length; ++i){ %>
+    <% for(var i = 0; i < venues.length; ++i){ %>
     <tr>
-        <td><%= object[i].name %></td>
+        <td><%= venues[i].name %></td>
         <td>
-            <a href="#"><div id="<%= object[i].id %>" class="edit button">Edit</div></a>
-            <a href="#"><div id="<%= object[i].id %>" class="delete button">Delete</div></a>
+            <a href="#"><div id="<%= venues[i].id %>" class="edit button">Edit</div></a>
+            <a href="#"><div id="<%= venues[i].id %>" class="delete button">Delete</div></a>
         </td>
     </tr>
     <% } %>

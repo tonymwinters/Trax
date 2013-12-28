@@ -5,14 +5,14 @@
     <th>Actions</th>
 </thead>
 <tbody>
-    <% for(var i = 0; i < object.length; ++i){ %>
+    <% for(var i = 0; i < users.length; ++i){ %>
     <tr>
-        <td><%= object[i].firstName %></td>
-        <td><%= object[i].lastName %></td>
-        <td><%= object[i].contact == null ? "" : object[i].contact.emailAddress  %></td>
+        <td><%= users[i].firstName %></td>
+        <td><%= users[i].lastName %></td>
+        <td><%= users[i].contact ? users[i].contact.emailAddress : "" %></td>
         <td>
-            <a href="#"><div class="edit button" id="<%= object[i].id %>">Edit</div></a>
-            <a href="#"><div class="delete button" id="<%= object[i].id %>">Delete</div></a>
+            <a href="#"><div class="edit button" id="<%= users[i].id %>">Edit</div></a>
+            <a href="#"><div class="delete button" id="<%= users[i].id %>">Delete</div></a>
         </td>
     </tr>
     <% } %>

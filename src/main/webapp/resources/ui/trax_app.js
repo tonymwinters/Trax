@@ -21,6 +21,30 @@ Trax.ajax = function(url, method, contentType , postBody, params){
      return self.response;
 };
 
+Trax.getResource = function (url) {
+    var response = {};
+    if (url) {
+        response = JSON.parse(Trax.ajax(url, 'GET'));
+    }
+    if (response) {
+        return response;
+    }
+    alert(response.message.toString());
+    return {};
+};
+
+Trax.postResource = function(url, obj){
+    var response = {};
+    if (obj) {
+        response = JSON.parse(Trax.ajax(url, 'POST', 'application/json', JSON.stringify(obj)));
+    }
+    if (response) {
+        return response;
+    }
+    alert(response.message.toString());
+    return {};
+}
+
 function setAttr(obj, keys, element){
 
     var attr = keys.pop();
@@ -74,8 +98,7 @@ Trax.Model = {};
  *********************************************/
 Trax.Model.Role = Class.create({
     getRoles: function(){
-        var data = Trax.ajax(contextPath + "/resources/role/list", 'get');
-        return JSON.parse(data);
+        return Trax.getResource(contextPath + "/resources/role/list").object;
     }
 });
 
@@ -88,22 +111,23 @@ Trax.Model.Venue.VenueTable = Class.create({
 
 
     initialize: function(){
-        var data = Trax.ajax("resources/venue/list",'get', {});
+        var response = Trax.getResource("resources/venue/list");
         var table = $('page-title-header').update("Venues");
         $('table-title-header').update("Venues");
         $('table-add-button').update("New Venue");
         $('table-search').setAttribute("placeholder", "Search Venues");
         $('table-href').setAttribute("href", "http://venuesURL");
-        this.populateTable(data);
+        this.populateTable(response.object);
 
     },
 
-    populateTable: function(data){
+    populateTable: function(venues){
         var self = this;
-        var json = JSON.parse(data);
+        var data = {};
+        data.venues = venues;
 
         var table = $('main-admin-table');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/table.ejs'}).update(table, json);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/table.ejs'}).update(table, data);
 
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
@@ -118,7 +142,7 @@ Trax.Model.Venue.VenueTable = Class.create({
     },
 
     delete: function(id){
-        return Trax.ajax("resources/venue/delete/" + id, 'post');
+        return Trax.getResource("resources/venue/delete/" + id);
     },
 
     edit: function(id){
@@ -131,14 +155,13 @@ Trax.Model.Venue.Edit = Class.create({
 
 
     initialize: function(id){
-        var data = Trax.ajax(contextPath + "/resources/venue/"+id,'get');
+        var response = Trax.getResource(contextPath + "/resources/venue/"+id);
 
-        this.populateModal(data);
+        this.populateModal(response.object);
     },
 
-    populateModal: function(data){
+    populateModal: function(venue){
         var self = this;
-        var venue = JSON.parse(data).object;
         var modalElement = $(new Trax.Modal("venue").id);
 
         EJS.config({cache: false});
@@ -146,7 +169,10 @@ Trax.Model.Venue.Edit = Class.create({
 
         $$('.trax_modal .venue.save').each(function(button){
             button.observe("click", function(){
-                self.save(modalElement);
+                var response = self.save();
+                if(response.success){
+                    modalElement.hide();
+                }
             });
         });
 
@@ -156,16 +182,19 @@ Trax.Model.Venue.Edit = Class.create({
             });
         });
 
+        $$('.trax_modal .room.add').each(function(button){
+            button.observe("click", function(){
+                new Trax.Model.Room.Edit(null, venue);
+            });
+        });
+
         modalElement.show();
     },
 
-    save: function(modalElement){
+    save: function(){
         var obj = Trax.formToObject('editVenue');
-        var json = JSON.stringify(obj);
-        var result = JSON.parse(Trax.ajax('/resources/venue/save','POST', 'application/json', json));
-        if(result.success){
-            modalElement.hide();
-        }
+        return Trax.postResource('/resources/venue/save', obj);
+
     }
 
 });
@@ -181,13 +210,13 @@ Trax.Model.User.UserTable = Class.create({
 
     initialize: function(){
         var self = this;
-        var data = Trax.ajax("resources/user/list", 'get', {});
+        var response = Trax.getResource("resources/user/list", 'get');
         var table = $('page-title-header').update("Users");
         $('table-title-header').update("Users");
         $('table-add-button').update("New User");
         $('table-search').setAttribute("placeholder", "Search Users");
         $('table-href').setAttribute("href", "http://usersURL");
-        this.populateTable(data);
+        this.populateTable(response.object);
 
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
@@ -202,16 +231,17 @@ Trax.Model.User.UserTable = Class.create({
 
     },
 
-    populateTable: function(data){
-        var json = JSON.parse(data);
+    populateTable: function(users){
+        var data = {};
+        data.users = users;
         EJS.config({cache: false});
         var table = $('main-admin-table');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/user/table.ejs'}).update(table, json);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/user/table.ejs'}).update(table, data);
 
     },
 
     delete: function(id){
-        return Trax.ajax("resources/user/delete/" + id, 'post');
+        return Trax.getResource("resources/user/delete/" + id);
     },
 
     edit: function(id){
@@ -224,23 +254,22 @@ Trax.Model.User.Edit = Class.create({
 
 
     initialize: function(id){
-        var data = Trax.ajax(contextPath + "/resources/user/"+id,'get');
+        var response = Trax.getResource(contextPath + "/resources/user/"+id);
 
-        this.populateModal(data);
+        this.populateModal(response.object);
 
     },
 
-    populateModal: function(data){
+    populateModal: function(user){
         var self = this;
-        var user = JSON.parse(data).object;
         var modalElement = $(new Trax.Modal("user").id);
-        var availableRoles = new Trax.Model.Role().getRoles().object;
-        var userdata = {};
-        userdata.user = user;
-        userdata.availableRoles = availableRoles;
+        var availableRoles = new Trax.Model.Role().getRoles();
+        var data = {};
+        data.user = user;
+        data.availableRoles = availableRoles;
 
         EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/user/edit.ejs'}).update(modalElement, userdata);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/user/edit.ejs'}).update(modalElement, data);
         user.roles.each(function(role){
             $$('.role').each(function(element){
                if(element.value == role.id){
@@ -250,19 +279,17 @@ Trax.Model.User.Edit = Class.create({
         });
 
         $('save_button').observe("click", function(){
-            self.save();
+            var result =  self.save();
+            if(result.success){
+                modalElement.hide();
+            }
         });
 
         modalElement.show();
     },
 
     save: function(){
-        var obj = Trax.formToObject('editUser');
-        var json = JSON.stringify(obj);
-        var result = JSON.parse(Trax.ajax('/resources/user/save','POST', 'application/json', json));
-        if(result.success){
-            $('modal').hide();
-        }
+        return Trax.postResource('/resources/user/save', Trax.formToObject('editUser'));
     }
 
 });
@@ -276,15 +303,21 @@ Trax.Model.Room = {};
 Trax.Model.Room.Edit = Class.create({
 
 
-    initialize: function(id){
-        var data = Trax.ajax(contextPath + "/resources/room/"+id,'get');
+    initialize: function(id, venue){
+        var response = {};
+        this.venue = venue;
 
-        this.populateModal(data);
+        if(id){
+            response = Trax.getResource(contextPath + "/resources/room/"+id);
+            this.populateModal(response.object);
+        }else{
+            response = Trax.postResource(contextPath + "/resources/room/save", {});
+            this.populateModal(response.object);
+        }
     },
 
-    populateModal: function(data){
+    populateModal: function(room){
         var self = this;
-        var room = JSON.parse(data).object;
         var modalElement = $(new Trax.Modal("room").id);
 
         EJS.config({cache: false});
@@ -292,13 +325,19 @@ Trax.Model.Room.Edit = Class.create({
 
         $$('.trax_modal .room.delete').each(function(button){
             button.observe("click", function(){
-                self.delete(this.readAttribute('id'));
+                var result = self.delete(this.readAttribute('id'));
+                if(result.success){
+                    modalElement.hide();
+                }
             });
         });
 
         $$('.trax_modal .room.save').each(function(button){
             button.observe("click", function(){
-                self.save(modalElement);
+                var response = self.save();
+                if(response.success){
+                    modalElement.hide();
+                }
             });
         });
 
@@ -306,16 +345,13 @@ Trax.Model.Room.Edit = Class.create({
     },
 
     delete: function(id){
-        return Trax.ajax("resources/room/delete/" + id, 'post');
+        return Trax.getResource("resources/room/delete/" + id);
     },
 
-    save: function(modalElement){
-        var obj = Trax.formToObject('editRoom');
-        var json = JSON.stringify(obj);
-        var result = JSON.parse(Trax.ajax('/resources/room/save','POST', 'application/json', json));
-        if(result.success){
-            modalElement.hide();
-        }
+    save: function(){
+        var room = Trax.formToObject('editRoom');
+        room.venue = this.venue;
+        return Trax.postResource('/resources/room/save', room);
     }
 
 });
@@ -326,45 +362,20 @@ Trax.Model.Room.Edit = Class.create({
  * SESSION MODEL
  *********************************************/
 Trax.Model.Session = {};
-Trax.Model.Session.SessionTable = Class.create({
-
-
-    initialize: function(){
-        var data = Trax.ajax("resources/session/list",'get', {});
-        var table = $('page-title-header').update("Sessions");
-        $('table-title-header').update("Sessions");
-        $('table-add-button').update("New Session");
-        $('table-search').setAttribute("placeholder", "Search Sessions");
-        $('table-href').setAttribute("href", "http://sessionsURL");
-        this.populateTable(data);
-
-    },
-
-    populateTable: function(data){
-        var json = JSON.parse(data);
-        console.log(json);
-
-        var table = $('main-admin-table');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/session.ejs'}).update(table, json);
-    }
-
-});
-
-
-
 Trax.Model.Session.Page = Class.create({
 
     initialize: function(venueId){
         EJS.config({cache: false});
         var self = this;
         self.venueId = venueId;
-        var data = Trax.ajax(contextPath + "/resources/venue/"+venueId,'get', {});
-        this.populateSessionList(data);
-        this.populateInitialSession(data);
+        var response = Trax.getResource(contextPath + "/resources/venue/"+venueId);
+        var venue = response.object;
+        this.populateSessionList(venue);
+        this.populateInitialSession(venue);
 
         // New Session Click Listener
         $$('div.new_session')[0].observe("click", function(){
-            self.createNewSessionTemplate(data);
+            self.createNewSessionTemplate(venue);
         });
 
         jQuery('.edit').editable(contextPath + '/resources/session/save', {
@@ -390,22 +401,24 @@ Trax.Model.Session.Page = Class.create({
 
     },
 
-    createNewSessionTemplate: function(data){
-        var newId = 0;
+    createNewSessionTemplate: function(venue){
         var self = this;
+        var postObject = {};
         var newSession = {};
+        var newSessions = [];
         newSession.name = "Untitled";
         newSession.startTime = new XDate().toString("yyyy-MM-dd'T'HH:mm:sszz");
         newSession.endTime = new XDate().toString("yyyy-MM-dd'T'HH:mm:sszz");
         newSession.description = "Enter description here."
-        var response = Trax.ajax('/resources/venue/save','POST', 'application/json', '{"id": '+self.venueId+', "sessions" : ['+JSON.stringify(newSession)+']}');
-        newSession.id = JSON.parse(response).object.sessions[0].id;
+        newSessions.push(newSession);
+        postObject.id = venue.id;
+        postObject.sessions = newSessions;
+        var response = Trax.postResource('/resources/venue/save', postObject);
+        newSession.id = response.object.sessions[0].id;
 
+        venue.sessions.unshift(newSession);
 
-        var json = JSON.parse(data);
-        json.object.sessions.unshift(newSession);
-
-        this.populateSessionList(JSON.stringify(json));
+        this.populateSessionList(venue);
         this.refreshListeners();
         $$('.single_session_container')[0].click();
 
@@ -418,19 +431,18 @@ Trax.Model.Session.Page = Class.create({
         });
     },
 
-    populateSessionList: function(data){
-        var json = JSON.parse(data);
+    populateSessionList: function(venue){
         var target = $('all_sessions_container');
-        new EJS({url: contextPath + '/resources/ui/templates/session/session-item.ejs'}).update(target, json);
+        new EJS({url: contextPath + '/resources/ui/templates/session/session-item.ejs'}).update(target, venue);
     },
 
-    populateInitialSession: function(data){
-        var json = JSON.parse(data);
+    populateInitialSession: function(venue){
+        var session = venue.sessions[0];
         $$('.single_session_container')[0].addClassName('active_session');
         var target = $$('div.session_info_container')[0];
         var header = $$('div.session_page_header')[0];
-        new EJS({url: contextPath + '/resources/ui/templates/session/session-header.ejs'}).update(header, json.object);
-        new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, json.object.sessions[0]);
+        new EJS({url: contextPath + '/resources/ui/templates/session/session-header.ejs'}).update(header, venue);
+        new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, session);
 
     },
 
@@ -438,9 +450,9 @@ Trax.Model.Session.Page = Class.create({
         var target = $$('div.session_info_container')[0];
 
         if(sessionId != ""){
-            var data = Trax.ajax(contextPath + "/resources/session/" + sessionId,'get');
-            var json = JSON.parse(data);
-            new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, json.object);
+            var response = Trax.getResource(contextPath + "/resources/session/" + sessionId);
+            var session = response.object;
+            new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, session);
         }
 
 

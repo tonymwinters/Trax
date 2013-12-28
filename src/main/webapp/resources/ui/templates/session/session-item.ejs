@@ -1,6 +1,6 @@
-<% for(var i = 0; i < object.sessions.length; ++i){ %>
-    <div class="single_session_container" id="<%= object.sessions[i].id %>">
-           <h2><%=object.sessions[i].name%></h2>
-           <h3><%= new XDate(object.sessions[i].startTime).toString("h:mmTT") %> - <%=new XDate(object.sessions[i].endTime).toString("h:mmTT")%></h3>
+<% for(var i = 0; i < sessions.length; ++i){ %>
+    <div class="single_session_container" id="<%= sessions[i].id %>">
+           <h2><%=sessions[i].name%></h2>
+           <h3><%= new XDate(sessions[i].startTime).toString("h:mmTT") %> - <%=new XDate(sessions[i].endTime).toString("h:mmTT")%></h3>
     </div>
 <% } %>

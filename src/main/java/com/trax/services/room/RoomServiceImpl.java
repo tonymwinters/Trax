@@ -128,6 +128,9 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public void deleteRoom(Long id){
+        Room room = getRoom(id);
+        room.getVenue().getRooms().remove(room);
+        room.setVenue(null);
         roomDAO.deleteRoom(id);
     }
 
