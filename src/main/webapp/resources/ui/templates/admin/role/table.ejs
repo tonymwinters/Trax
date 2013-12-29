@@ -1,0 +1,24 @@
+<thead>
+    <th>Name</th>
+    <th>Code</th>
+    <th>Permissions</th>
+    <th>Actions</th>
+</thead>
+<tbody>
+    <% for(var i = 0; i < roles.length; ++i){ %>
+    <tr>
+        <td><%= roles[i].name %></td>
+        <td><%= roles[i].code %></td>
+        <td>
+            <%= roles[i].permissions %>
+            <% for(var j = 0; j < roles[i].permissions.length; ++i){ %>
+                <p><%= roles[i].permissions[j].name %></p>
+            <% } %>
+        </td>
+        <td>
+            <a href="#"><div class="edit button" id="<%= roles[i].id %>">Edit</div></a>
+            <a href="#"><div class="delete button" id="<%= roles[i].id %>">Delete</div></a>
+        </td>
+    </tr>
+    <% } %>
+</tbody>

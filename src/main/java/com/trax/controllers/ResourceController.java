@@ -171,7 +171,7 @@ public class ResourceController {
     }
     //endregion
 
-    //region User
+    //region Role
     @ResponseBody
     @RequestMapping(value="/role/list", method= RequestMethod.GET)
     public String listRoles(Principal principal){
@@ -189,11 +189,11 @@ public class ResourceController {
     public String getRole(@PathVariable Long id, Principal principal){
         String response;
         try{
-            User user = userService.getUser(id);
-            if(Alfred.isNull(user)){
+            Role role = roleService.getRole(id);
+            if(Alfred.isNull(role)){
                 throw new Exception("Object doesn't exist.");
             }
-            response = Alfred.renderSuccess(user);
+            response = Alfred.renderSuccess(role);
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
         }
@@ -216,6 +216,66 @@ public class ResourceController {
     @ResponseBody
     @RequestMapping(value="/role/delete/{id}", method= RequestMethod.GET)
     public String deleteRole(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            Role role = roleService.getRole(id);
+            if(Alfred.isNull(role)){
+                throw new Exception("Object doesn't exist.");
+            }
+            roleService.deleteRole(id);
+            response = Alfred.renderSuccess();
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+    //endregion
+
+    //region Permission
+    @ResponseBody
+    @RequestMapping(value="/permission/list", method= RequestMethod.GET)
+    public String listPermissions(Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(roleService.getRoles());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/permission/{id}", method= RequestMethod.GET)
+    public String getPermission(@PathVariable Long id, Principal principal){
+        String response;
+        try{
+            User user = userService.getUser(id);
+            if(Alfred.isNull(user)){
+                throw new Exception("Object doesn't exist.");
+            }
+            response = Alfred.renderSuccess(user);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/permission/save", method= RequestMethod.POST)
+    public String savePermission(@RequestBody String requestJson, Principal principal){
+        String response;
+        try{
+            Role newRole = roleService.saveRole(requestJson);
+            response = Alfred.renderSuccess(newRole);
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/permission/delete/{id}", method= RequestMethod.GET)
+    public String deletePermission(@PathVariable Long id, Principal principal){
         String response;
         try{
             Role role = roleService.getRole(id);

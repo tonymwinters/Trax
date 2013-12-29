@@ -8,9 +8,10 @@
    <br/><br/>
     <div id="side" style="display: inline-block; width: 200px; vertical-align: top;">
     <ul id="allModels" class="nav nav-tabs nav-stacked">
-        <li class="active model" id="usersTab" ><a href="#" >Users</a></li>
+        <li id="usersTab" class="active model" ><a href="#" >Users</a></li>
+        <li id="rolesTab" class="model" ><a href="#">Roles</a></li>
+        <li id="permissionsTab" class="model" ><a href="#">Permissions</a></li>
         <li id="venuesTab" class="model"><a href="#">Venues</a></li>
-        <li id="sessionsTab" class="model" ><a href="#">Sessions</a></li>
     </ul>
     </div>
 

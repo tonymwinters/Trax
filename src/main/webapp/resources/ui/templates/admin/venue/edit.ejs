@@ -22,11 +22,13 @@
         
         <li><label for="rooms[]">rooms</label>
             <ul>
-                <% for(var i = 0; i < rooms.length; ++i){ %>
-                <li>
-                    <input type="checkbox" id="id" value="<%= rooms[i].id %>" name="rooms[]" class="hidden"/><%= rooms[i].name %>
-                    <a href="#"><div id="<%= rooms[i].id %>" class="room edit button">Edit</div></a>
-                </li>
+                <% if(rooms){ %>
+                    <% for(var i = 0; i < rooms.length; ++i){ %>
+                    <li>
+                        <input type="checkbox" id="id" value="<%= rooms[i].id %>" name="rooms[]" class="hidden"/><%= rooms[i].name %>
+                        <a href="#"><div id="<%= rooms[i].id %>" class="room edit button">Edit</div></a>
+                    </li>
+                    <% } %>
                 <% } %>
             </ul>
             <a href="#"><div class="room add button">Add Room</div></a>

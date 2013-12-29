@@ -1,0 +1,17 @@
+<form id="role" class="edit" action="#" method="post">
+    <input type="text" class="hidden" name="id" value="<%= role.id %>" />
+        <li><label>Name</label> <input type="text" name="name" value="<%= role.name %>"/></li>
+        <li><label>Code</label> <input type="text" name="code" value="<%= role.code %>"/></li>
+        <li><label>Permissions</label>
+            <ul>
+                <li class = "hidden"><input type="checkbox" name="permissions[]" value="" class="permission" checked></li>
+                <% if(availablePermissions){ %>
+                    <% for(var i = 0; i < availablePermissions.length; ++i){ %>
+                        <li><input type="checkbox" id="id" value="<%= availablePermissions[i].id %>" name="permissions[]" class="permission"><%= availablePermissions[i].name %></input></li>
+                    <% } %>
+                <% } %>
+            </ul>
+        </li>
+    </ul>
+</form>
+<a href="#"><div class="role save button">Save</div></a>

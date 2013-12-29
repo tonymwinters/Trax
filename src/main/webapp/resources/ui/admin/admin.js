@@ -4,30 +4,33 @@
  */
 
 document.observe("dom:loaded", function() {
-    new Trax.Model.User.UserTable();
+    new Trax.Model.User.Table();
 });
 
 
 $("usersTab").observe("click", function(){
-   console.log("clicked on user tab");
    removeActive();
    this.addClassName("active");
-    var userTable = new Trax.Model.User.UserTable();
+    var userTable = new Trax.Model.User.Table();
 });
 
 $('venuesTab').observe("click", function(){
-    console.log("clicked on venue tab");
     removeActive();
     this.addClassName("active");
     Trax.printTheWordSwag();
-    var venueTable = new Trax.Model.Venue.VenueTable();
+    var venueTable = new Trax.Model.Venue.Table();
 });
 
-$('sessionsTab').observe("click", function(){
-    console.log("clicked on session tab");
+$('rolesTab').observe("click", function(){
     removeActive();
     this.addClassName("active");
-    var sessionTable = new Trax.Model.Session.SessionTable();
+    var roleTable = new Trax.Model.Role.Table();
+});
+
+$('permissionsTab').observe("click", function(){
+    removeActive();
+    this.addClassName("active");
+    var permissionTable = new Trax.Model.Permission.Table();
 });
 
 function removeActive(){

@@ -12,11 +12,13 @@
         <li><label for="roles">roles</label>
             <ul>
                 <li class = "hidden"><input type="checkbox" name="roles[]" value="" class="role" checked></li>
-                <% for(var i = 0; i < availableRoles.length; ++i){ %>
-                <li><input type="checkbox" id="id" value="<%= availableRoles[i].id %>" name="roles[]" class="role"><%= availableRoles[i].name %></input></li>
+                <% if(availableRoles){ %>
+                    <% for(var i = 0; i < availableRoles.length; ++i){ %>
+                        <li><input type="checkbox" id="id" value="<%= availableRoles[i].id %>" name="roles[]" class="role"><%= availableRoles[i].name %></input></li>
+                    <% } %>
                 <% } %>
             </ul>
         </li>
     </ul>
 </form>
-<a href="#"><div id="save_button" class="save button">Save</div></a>
+<a href="#"><div class="user save button">Save</div></a>
