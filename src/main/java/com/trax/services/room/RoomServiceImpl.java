@@ -61,7 +61,6 @@ public class RoomServiceImpl implements RoomService {
                     room.setSessions(sessionService.saveSessions(sessions));
                 }
 
-                saveRoom(room);
                 return room;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -104,7 +103,7 @@ public class RoomServiceImpl implements RoomService {
                 .registerTypeAdapter(Room.class, getRoomJsonDeserializer())
                 .create();
 
-        return gson.fromJson(json, Room.class);
+        return saveRoom(gson.fromJson(json, Room.class));
     }
 
     public Set saveRooms(String json) {

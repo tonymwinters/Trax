@@ -1,17 +1,19 @@
 package com.trax.services.owner;
 
-import java.lang.reflect.Type;
-import java.util.List;
-
 import com.google.gson.*;
 import com.trax.dao.owner.OwnerDAO;
-import com.trax.models.*;
+import com.trax.models.Contact;
+import com.trax.models.Location;
+import com.trax.models.Owner;
 import com.trax.services.user.UserService;
 import com.trax.services.venue.VenueService;
 import com.trax.utilities.Alfred;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 
 /**
@@ -65,8 +67,6 @@ public class OwnerServiceImpl implements OwnerService {
                 if (Alfred.notNull(users)) {
                     owner.setUsers(userService.saveUsers(users));
                 }
-
-                saveOwner(owner);
                 return owner;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -92,7 +92,7 @@ public class OwnerServiceImpl implements OwnerService {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Owner.class, getOwnerJsonDeserializer())
                 .create();
-        return gson.fromJson(json, Owner.class);
+        return saveOwner(gson.fromJson(json, Owner.class));
     }
 
     public JsonDeserializer<Owner> getOwnerJsonDeserializer() {

@@ -3,6 +3,7 @@ package com.trax.services.role;
 import com.google.gson.*;
 import com.trax.dao.role.RoleDAO;
 import com.trax.models.Role;
+import com.trax.services.permission.PermissionService;
 import com.trax.utilities.Alfred;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class RoleServiceImpl implements RoleService{
     @Autowired
     private RoleDAO roleDAO;
 
+    @Autowired
+    private PermissionService permissionService;
+
     private JsonDeserializer<Role> roleJsonDeserializer = new JsonDeserializer<Role>() {
         @Override
         public Role deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -35,6 +39,7 @@ public class RoleServiceImpl implements RoleService{
                 JsonElement id = json.getAsJsonObject().get("id");
                 JsonElement name = json.getAsJsonObject().get("name");
                 JsonElement code = json.getAsJsonObject().get("code");
+                JsonElement permissions = json.getAsJsonObject().get("permissions");
                 Role role = new Role();
                 if (Alfred.notNull(id)) {
                     role = getRole(id.getAsLong());
@@ -44,6 +49,9 @@ public class RoleServiceImpl implements RoleService{
                 }
                 if (Alfred.notNull(code)) {
                     role.setCode(code.getAsString());
+                }
+                if (Alfred.notNull(permissions)) {
+                    role.setPermissions(permissionService.savePermissions(permissions));
                 }
 
                 return role;
@@ -99,7 +107,7 @@ public class RoleServiceImpl implements RoleService{
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Role.class, getRoleJsonDeserializer())
                 .create();
-        return gson.fromJson(json, Role.class);
+        return saveRole(gson.fromJson(json, Role.class));
     }
 
     public Set saveRoles(JsonElement json) {

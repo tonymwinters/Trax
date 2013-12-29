@@ -80,7 +80,6 @@ public class SessionServiceImpl implements SessionService{
                     session.setComments(commentService.saveComments(comments));
                 }
 
-                saveSession(session);
                 return session;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -123,7 +122,7 @@ public class SessionServiceImpl implements SessionService{
                 .registerTypeAdapter(Session.class, getSessionJsonDeserializer())
                 .create();
 
-        return gson.fromJson(json, Session.class);
+        return saveSession(gson.fromJson(json, Session.class));
     }
 
     public Set saveSessions(String json){

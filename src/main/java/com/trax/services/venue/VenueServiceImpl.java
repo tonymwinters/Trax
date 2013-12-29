@@ -74,7 +74,6 @@ public class VenueServiceImpl implements VenueService{
                     venue.setLocation(Alfred.gsonDeserializer.fromJson(location, Location.class));
                 }
 
-                saveVenue(venue);
                 return venue;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -117,7 +116,7 @@ public class VenueServiceImpl implements VenueService{
                 .registerTypeAdapter(Venue.class, getVenueJsonDeserializer())
                 .create();
 
-        return gson.fromJson(json, Venue.class);
+        return saveVenue(gson.fromJson(json, Venue.class));
     }
 
     public Set saveVenues(String json){

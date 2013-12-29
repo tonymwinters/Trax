@@ -59,7 +59,6 @@ public class AttendeeServiceImpl implements AttendeeService {
                     attendee.setIsOwner(isOwner.getAsBoolean());
                 }
 
-                saveAttendee(attendee);
                 return attendee;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -102,7 +101,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                 .registerTypeAdapter(Attendee.class, getAttendeeJsonDeserializer())
                 .create();
 
-        return gson.fromJson(json, Attendee.class);
+        return saveAttendee(gson.fromJson(json, Attendee.class));
     }
 
     public Set saveAttendees(String json) {

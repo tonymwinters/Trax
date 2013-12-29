@@ -51,7 +51,6 @@ public class CommentServiceImpl implements CommentService {
                     comment.setUser(userService.saveUser(user));
                 }
 
-                saveComment(comment);
                 return comment;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -95,7 +94,7 @@ public class CommentServiceImpl implements CommentService {
             .registerTypeAdapter(Comment.class, getCommentJsonDeserializer())
             .create();
 
-        return gson.fromJson(json, Comment.class);
+        return saveComment(gson.fromJson(json, Comment.class));
     }
 
     public Set saveComments(String json) {

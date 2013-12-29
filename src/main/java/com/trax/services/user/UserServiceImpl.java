@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService{
                     user.setContact(Alfred.gsonDeserializer.fromJson(contact, Contact.class));
                 }
 
-                saveUser(user);
                 return user;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -121,7 +120,7 @@ public class UserServiceImpl implements UserService{
                 .registerTypeAdapter(User.class, getUserJsonDeserializer())
                 .create();
 
-        return gson.fromJson(json, User.class);
+        return saveUser(gson.fromJson(json, User.class));
     }
 
     public Set saveUsers(String json){
