@@ -58,6 +58,18 @@ public class ResourceController {
 
     //region Owner
     @ResponseBody
+    @RequestMapping(value="/owner/object", method= RequestMethod.GET)
+    public String geOwnerObject( Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(new Owner());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
     @RequestMapping(value="/owner/list", method= RequestMethod.GET)
     public String listOwners(@RequestBody String requestJson, Principal principal){
         String response;
@@ -118,6 +130,18 @@ public class ResourceController {
 
     //region User
     @ResponseBody
+    @RequestMapping(value="/user/object", method= RequestMethod.GET)
+    public String geUserObject( Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(new User());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
     @RequestMapping(value="/user/list", method= RequestMethod.GET)
     public String listUsers( Principal principal){
         String response;
@@ -176,6 +200,18 @@ public class ResourceController {
     //endregion
 
     //region Role
+    @ResponseBody
+    @RequestMapping(value="/role/object", method= RequestMethod.GET)
+    public String geRoleObject( Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(new Role());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
     @ResponseBody
     @RequestMapping(value="/role/list", method= RequestMethod.GET)
     public String listRoles(Principal principal){
@@ -237,6 +273,18 @@ public class ResourceController {
 
     //region Permission
     @ResponseBody
+    @RequestMapping(value="/permission/object", method= RequestMethod.GET)
+    public String gePermissionObject( Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(new Permission());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
     @RequestMapping(value="/permission/list", method= RequestMethod.GET)
     public String listPermissions(Principal principal){
         String response;
@@ -297,6 +345,18 @@ public class ResourceController {
 
     //region Venue
     @ResponseBody
+    @RequestMapping(value="/venue/object", method= RequestMethod.GET)
+    public String geVenueObject( Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(new Venue());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
+    @ResponseBody
     @RequestMapping(value="/venue/list", method= RequestMethod.GET)
     public String listVenues(@RequestBody String requestJson, Principal principal){
         String response;
@@ -355,6 +415,18 @@ public class ResourceController {
     //endregion
 
     //region Room
+    @ResponseBody
+    @RequestMapping(value="/room/object", method= RequestMethod.GET)
+    public String geRoomObject( Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(new Room());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
     @ResponseBody
     @RequestMapping(value="/room/list", method= RequestMethod.GET)
     public String listRooms(Principal principal){
@@ -415,6 +487,18 @@ public class ResourceController {
     //endregion
 
     //region Session
+    @ResponseBody
+    @RequestMapping(value="/session/object", method= RequestMethod.GET)
+    public String geSessionObject( Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(new Session());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
     @ResponseBody
     @RequestMapping(value="/session/list", method= RequestMethod.GET)
     public String listSessions(@RequestBody String requestJson, Principal principal){
@@ -493,6 +577,18 @@ public class ResourceController {
     //endregion
 
     //region Attendee
+    @ResponseBody
+    @RequestMapping(value="/attendee/object", method= RequestMethod.GET)
+    public String geAttendeeObject( Principal principal){
+        String response;
+        try{
+            response = Alfred.renderSuccess(new Attendee());
+        } catch (Exception ex){
+            response = Alfred.renderError(ex.getMessage());
+        }
+        return response;
+    }
+
     @ResponseBody
     @RequestMapping(value="/attendee/list", method= RequestMethod.GET)
     public String listAttendees(@RequestBody String requestJson, Principal principal){

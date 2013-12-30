@@ -151,6 +151,17 @@ h2{
     background-color: #50585C;
 }
 
+.table_wrapper .add{
+    width: 100px;
+    height: 40px;
+    background-color: #12c2c0;
+    float: right;
+    margin-top: 18px;
+    margin-right: 20px;
+    color: white;
+    padding-top: 10px;
+}
+
 .trax_table{
     width: 840px;
     margin-left: 5px;
@@ -194,7 +205,7 @@ h2{
     text-align: center;
 }
 
-.trax_table .edit.button{
+.trax_table .edit{
     background-color: #12c2c0;
     width: 50px;
 }
@@ -212,16 +223,6 @@ h2{
 }
 
 .table-add-new{
-    display: inline-block;
-    width: 100px;
-    height: 40px;
-    background-color: #12c2c0;
-    float: right;
-    margin-top: 18px;
-    margin-right: 20px;
-    color: white;
-    text-align: center;
-    padding-top: 10px;
 }
 
 .table-search{
@@ -240,6 +241,11 @@ h2{
 
 .trax_modal a{
     color: white;
+}
+
+.trax_modal .submit{
+    background-color: #6ab880;
+    width: 80px;
 }
 
 .trax_modal .add{

@@ -122,23 +122,30 @@ Trax.Model.User.Table = Class.create({
         var response = Trax.getResource("resources/user/list");
         var table = $('page-title-header').update("Users");
         $('table-title-header').update("Users");
-        $('table-add-button').update("New User");
         $('table-search').setAttribute("placeholder", "Search Users");
-        $('table-href').setAttribute("href", "http://usersURL");
         this.populateTable(response.object);
 
-        new Trax.Modal().hideAll();
+        $$('.table_wrapper .add').each(function(button){
+            button.update("New User");
+            button.stopObserving("click");
+            button.observe("click", function(){
+                self.edit();
+            });
+        });
 
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
                 self.delete(this.readAttribute('id'));
             });
         });
+
         $$('.trax_table .edit').each(function(button){
             button.observe("click", function(){
                 self.edit(this.readAttribute('id'));
             });
         });
+
+        new Trax.Modal().hideAll();
 
     },
 
@@ -165,8 +172,13 @@ Trax.Model.User.Edit = Class.create({
 
 
     initialize: function(id){
-        var response = Trax.getResource(contextPath + "/resources/user/"+id);
+        var response = {};
 
+        if(id){
+            response = Trax.getResource(contextPath + "/resources/user/"+id);
+        }else{
+            response = Trax.getResource(contextPath + "/resources/user/object");
+        }
         this.populateModal(response.object);
 
     },
@@ -181,19 +193,22 @@ Trax.Model.User.Edit = Class.create({
 
         EJS.config({cache: false});
         new EJS({url: contextPath + '/resources/ui/templates/admin/user/edit.ejs'}).update(modalElement, data);
-        user.roles.each(function(role){
-            $$('.role').each(function(element){
-                if(element.value == role.id){
-                    element.checked = true;
-                }
+        if(user.roles != null){
+            user.roles.each(function(role){
+                $$('.role').each(function(element){
+                    if(element.value == role.id){
+                        element.checked = true;
+                    }
+                });
             });
-        });
+        }
 
         $$('.trax_modal .user.save').each(function(button){
             button.observe("click", function(){
                 var response = self.save();
                 if(response.success){
                     modalElement.hide();
+                    new Trax.Model.User.Table();
                 }
             });
         });
@@ -224,23 +239,30 @@ Trax.Model.Role.Table = Class.create({
         var response = Trax.getResource("resources/role/list");
         var table = $('page-title-header').update("Roles");
         $('table-title-header').update("Roles");
-        $('table-add-button').update("New Role");
         $('table-search').setAttribute("placeholder", "Search Roles");
-        $('table-href').setAttribute("href", "http://roleURL");
         this.populateTable(response.object);
 
-        new Trax.Modal().hideAll();
+        $$('.table_wrapper .add').each(function(button){
+            button.update("New Role");
+            button.stopObserving("click");
+            button.observe("click", function(){
+                self.edit();
+            });
+        });
 
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
                 self.delete(this.readAttribute('id'));
             });
         });
+
         $$('.trax_table .edit').each(function(button){
             button.observe("click", function(){
                 self.edit(this.readAttribute('id'));
             });
         });
+
+        new Trax.Modal().hideAll();
 
     },
 
@@ -267,8 +289,13 @@ Trax.Model.Role.Edit = Class.create({
 
 
     initialize: function(id){
-        var response = Trax.getResource(contextPath + "/resources/role/"+id);
+        var response = {};
 
+        if(id){
+            response = Trax.getResource(contextPath + "/resources/role/"+id);
+        }else{
+            response = Trax.getResource(contextPath + "/resources/role/object");
+        }
         this.populateModal(response.object);
 
     },
@@ -283,19 +310,22 @@ Trax.Model.Role.Edit = Class.create({
 
         EJS.config({cache: false});
         new EJS({url: contextPath + '/resources/ui/templates/admin/role/edit.ejs'}).update(modalElement, data);
-        role.permissions.each(function(permission){
-            $$('.permission').each(function(element){
-                if(element.value == permission.id){
-                    element.checked = true;
-                }
+        if(role.permissions != null){
+            role.permissions.each(function(permission){
+                $$('.permission').each(function(element){
+                    if(element.value == permission.id){
+                        element.checked = true;
+                    }
+                });
             });
-        });
+        }
 
         $$('.trax_modal .role.save').each(function(button){
             button.observe("click", function(){
                 var response = self.save();
                 if(response.success){
                     modalElement.hide();
+                    new Trax.Model.Role.Table();
                 }
             });
         });
@@ -328,36 +358,43 @@ Trax.Model.Venue.Table = Class.create({
 
 
     initialize: function(){
+        var self = this;
         var response = Trax.getResource("resources/venue/list");
         var table = $('page-title-header').update("Venues");
         $('table-title-header').update("Venues");
-        $('table-add-button').update("New Venue");
         $('table-search').setAttribute("placeholder", "Search Venues");
-        $('table-href').setAttribute("href", "http://venuesURL");
         this.populateTable(response.object);
 
-        new Trax.Modal().hideAll();
-
-    },
-
-    populateTable: function(venues){
-        var self = this;
-        var data = {};
-        data.venues = venues;
-
-        var table = $('main-admin-table');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/table.ejs'}).update(table, data);
+        $$('.table_wrapper .add').each(function(button){
+            button.update("New Venue");
+            button.stopObserving("click");
+            button.observe("click", function(){
+                self.edit();
+            });
+        });
 
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
                 self.delete(this.readAttribute('id'));
             });
         });
+
         $$('.trax_table .edit').each(function(button){
             button.observe("click", function(){
                 self.edit(this.readAttribute('id'));
             });
         });
+
+        new Trax.Modal().hideAll();
+
+    },
+
+    populateTable: function(venues){
+        var data = {};
+        data.venues = venues;
+
+        var table = $('main-admin-table');
+        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/table.ejs'}).update(table, data);
     },
 
     delete: function(id){
@@ -374,8 +411,13 @@ Trax.Model.Venue.Edit = Class.create({
 
 
     initialize: function(id){
-        var response = Trax.getResource(contextPath + "/resources/venue/"+id);
+        var response = {};
 
+        if(id){
+            response = Trax.getResource(contextPath + "/resources/venue/"+id);
+        }else{
+            response = Trax.getResource(contextPath + "/resources/venue/object");
+        }
         this.populateModal(response.object);
     },
 
@@ -391,13 +433,14 @@ Trax.Model.Venue.Edit = Class.create({
                 var response = self.save();
                 if(response.success){
                     modalElement.hide();
+                    new Trax.Model.Venue.Table();
                 }
             });
         });
 
         $$('.trax_modal .room.edit').each(function(button){
             button.observe("click", function(){
-                new Trax.Model.Room.Edit(this.readAttribute('id'));
+                new Trax.Model.Room.Edit(this.readAttribute('id'), venue);
             });
         });
 
@@ -419,7 +462,6 @@ Trax.Model.Venue.Edit = Class.create({
 });
 
 
-
 /*********************************************
  * ROOM MODEL
  *********************************************/
@@ -428,39 +470,34 @@ Trax.Model.Room.Edit = Class.create({
 
 
     initialize: function(id, venue){
-        var response = {};
         this.venue = venue;
-
-        if(id){
-            response = Trax.getResource(contextPath + "/resources/room/"+id);
-            this.populateModal(response.object);
-        }else{
-            response = Trax.postResource(contextPath + "/resources/room/save", {});
-            this.populateModal(response.object);
-        }
-    },
-
-    populateModal: function(room){
+        var response = {};
         var self = this;
         var modalElement = new Trax.Modal().getModal("room");
 
-        EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/room/edit.ejs'}).update(modalElement, room);
+        if(id){
+            response = Trax.getResource(contextPath + "/resources/room/"+id);
+        }else{
+            response = Trax.getResource(contextPath + "/resources/room/object");
+        }
+
+        var room = response.object;
+
+        this.populateModal(modalElement, room);
+        if(room.id){
+            this.editModal(venue, modalElement);
+        }else{
+            this.addModal(venue, modalElement)
+        }
 
         $$('.trax_modal .room.delete').each(function(button){
+            button.update("Delete");
+            button.stopObserving("click");
             button.observe("click", function(){
                 var result = self.delete(this.readAttribute('id'));
                 if(result.success){
                     modalElement.hide();
-                }
-            });
-        });
-
-        $$('.trax_modal .room.save').each(function(button){
-            button.observe("click", function(){
-                var response = self.save();
-                if(response.success){
-                    modalElement.hide();
+                    new Trax.Model.Venue.Edit(venue.id)
                 }
             });
         });
@@ -468,14 +505,57 @@ Trax.Model.Room.Edit = Class.create({
         modalElement.show();
     },
 
+    addModal: function(venue, modal){
+        var self = this;
+        $$('.trax_modal .room.submit').each(function(button){
+            button.update("Add");
+            button.stopObserving("click");
+            button.observe("click", function(){
+                var room = Trax.formToObject('editRoom');
+                var response = self.add(room);
+                if(response.success){
+                    modal.hide();
+                    new Trax.Model.Venue.Edit(venue.id)
+                }
+            });
+        });
+    },
+
+    editModal: function(venue, modal){
+        var self = this;
+        $$('.trax_modal .room.submit').each(function(button){
+            button.update("Save");
+            button.stopObserving("click");
+            button.observe("click", function(){
+                var room = Trax.formToObject('editRoom');
+                var response = self.save(room);
+                if(response.success){
+                    modal.hide();
+                    new Trax.Model.Venue.Edit(venue.id)
+                }
+            });
+        });
+    },
+
+    populateModal: function(modal, room){
+        EJS.config({cache: false});
+        new EJS({url: contextPath + '/resources/ui/templates/admin/room/edit.ejs'}).update(modal, room);
+    },
+
     delete: function(id){
         return Trax.getResource("resources/room/delete/" + id);
     },
 
-    save: function(){
-        var room = Trax.formToObject('editRoom');
-        room.venue = this.venue;
+    save: function(room){
         return Trax.postResource('/resources/room/save', room);
+    },
+
+    add: function(room){
+        var rooms = [room];
+        var postObject = {};
+        postObject.id = this.venue.id;
+        postObject.rooms = rooms;
+        return Trax.postResource('/resources/venue/save', postObject);
     }
 
 });

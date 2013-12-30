@@ -48,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
                     comment.setContent(content.getAsString());
                 }
                 if (Alfred.notNull(user)) {
-                    comment.setUser(userService.saveUser(user));
+                    comment.setUser(userService.getUser(user.getAsJsonObject().get("id").getAsLong()));
                 }
 
                 return comment;

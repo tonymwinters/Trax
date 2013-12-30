@@ -5,8 +5,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,9 +41,6 @@ public class Room {
     @JoinColumn(name="venue_id")
     private Venue venue;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "room")
-    private Set<Session> sessions = new HashSet<Session>();
-
     public Long getId() {
         return id;
     }
@@ -68,18 +63,6 @@ public class Room {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Set<Session> getSessions() {
-        return this.sessions;
-    }
-
-    public void setSessions(Set sessions){
-        for(Session session : (Set<Session>)sessions){
-            session.setRoom(this);
-            session.setVenue(this.getVenue());
-        }
-        this.sessions = sessions;
     }
 
     public Venue getVenue(){

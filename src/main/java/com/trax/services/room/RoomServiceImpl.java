@@ -55,10 +55,7 @@ public class RoomServiceImpl implements RoomService {
                     room.setDescription(description.getAsString());
                 }
                 if (Alfred.notNull(venue)) {
-                    room.setVenue(venueService.saveVenue(venue));
-                }
-                if (Alfred.notNull(sessions)) {
-                    room.setSessions(sessionService.saveSessions(sessions));
+                    room.setVenue(venueService.getVenue(venue.getAsJsonObject().get("id").getAsLong()));
                 }
 
                 return room;

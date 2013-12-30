@@ -73,7 +73,7 @@ import java.util.Set;
      * @return boolean true if not null
      */
     public static Boolean notNull(Object obj){
-        return obj != null;
+        return obj != null && !obj.toString().toLowerCase().equals("null");
     }
 
     /**

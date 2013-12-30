@@ -27,12 +27,6 @@ $('rolesTab').observe("click", function(){
     var roleTable = new Trax.Model.Role.Table();
 });
 
-$('permissionsTab').observe("click", function(){
-    removeActive();
-    this.addClassName("active");
-    var permissionTable = new Trax.Model.Permission.Table();
-});
-
 function removeActive(){
     $$('li.model').each(function(el){
         el.removeClassName("active");
