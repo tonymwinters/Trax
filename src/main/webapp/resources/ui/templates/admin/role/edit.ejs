@@ -8,7 +8,7 @@
                 <li class = "hidden"><input type="checkbox" name="permissions[]" value="" class="permission" checked></li>
                 <% if(availablePermissions){ %>
                     <% for(var i = 0; i < availablePermissions.length; ++i){ %>
-                        <li><input type="checkbox" id="id" value="<%= availablePermissions[i].id %>" name="permissions[]" class="permission"><%= availablePermissions[i].name %></input></li>
+                        <li><input type="checkbox" id="id" value="<%= availablePermissions[i].id %>" name="permissions[]" class="permission"><%= availablePermissions[i].name %> (<%= availablePermissions[i].description %>)</input></li>
                     <% } %>
                 <% } %>
             </ul>

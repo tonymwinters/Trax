@@ -22,7 +22,8 @@ public interface PermissionService {
     public JsonDeserializer<Set<Permission>> getPermissionsJsonDeserializer();
     public Permission savePermission(String json);
     public Permission savePermission(JsonElement json);
-    public Set savePermissions(JsonElement json);
+    public Permission getPermission(JsonElement json);
+    public Set getPermissions(JsonElement json);
     public void deletePermission(Long id);
     public List<Permission> getPermissions();
 }

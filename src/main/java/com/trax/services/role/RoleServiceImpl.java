@@ -51,7 +51,7 @@ public class RoleServiceImpl implements RoleService{
                     role.setCode(code.getAsString());
                 }
                 if (Alfred.notNull(permissions)) {
-                    role.setPermissions(permissionService.savePermissions(permissions));
+                    role.setPermissions(permissionService.getPermissions(permissions));
                 }
 
                 return role;
@@ -69,7 +69,7 @@ public class RoleServiceImpl implements RoleService{
                 Set<Role> roles = new HashSet<Role>();
 
                 for (JsonElement jsonRole : jsonElement.getAsJsonArray()) {
-                    Role role = saveRole(jsonRole);
+                    Role role = getRole(jsonRole);
                     if(role.getId() != null){
                         roles.add(role);
                     }
@@ -103,6 +103,13 @@ public class RoleServiceImpl implements RoleService{
         return saveRole(new Gson().fromJson(json, JsonElement.class));
     }
 
+    public Role getRole(JsonElement json) {
+        Gson gson = Alfred.gsonBuilder
+                .registerTypeAdapter(Role.class, getRoleJsonDeserializer())
+                .create();
+        return gson.fromJson(json, Role.class);
+    }
+
     public Role saveRole(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Role.class, getRoleJsonDeserializer())
@@ -110,7 +117,7 @@ public class RoleServiceImpl implements RoleService{
         return saveRole(gson.fromJson(json, Role.class));
     }
 
-    public Set saveRoles(JsonElement json) {
+    public Set getRoles(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getRolesJsonDeserializer())
                 .create();

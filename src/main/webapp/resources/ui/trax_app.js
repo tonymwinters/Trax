@@ -84,13 +84,24 @@ Trax.formToObject = function(formId) {
 };
 
 Trax.Modal = Class.create({
-    initialize: function(type){
+    initialize: function(){
+
+    },
+
+    getModal: function(type, containerId){
         this.id = "modal-"+type;
-        $(document.body).insert("<div id='"+this.id+"' class='trax_modal' style='display: none'></div>")
+        if(!$(this.id) && type != null){
+            if(containerId != null){
+                $(containerId).insert("<div id='"+this.id+"' class='trax_modal' style='display: none'></div>")
+            }else{
+                $(document.body).insert("<div id='"+this.id+"' class='trax_modal' style='display: none'></div>")
+            }
+        }
+        return $(this.id);
     },
 
     hideAll: function(){
-      $$('trax_modal').each(function(element){
+      $$('.trax_modal').each(function(element){
           element.hide();
       });
     }
@@ -115,6 +126,8 @@ Trax.Model.User.Table = Class.create({
         $('table-search').setAttribute("placeholder", "Search Users");
         $('table-href').setAttribute("href", "http://usersURL");
         this.populateTable(response.object);
+
+        new Trax.Modal().hideAll();
 
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
@@ -160,7 +173,7 @@ Trax.Model.User.Edit = Class.create({
 
     populateModal: function(user){
         var self = this;
-        var modalElement = $(new Trax.Modal("user").id);
+        var modalElement = new Trax.Modal().getModal("user", "admin-table");
         var availableRoles = new Trax.Model.Role().getRoles();
         var data = {};
         data.user = user;
@@ -216,6 +229,8 @@ Trax.Model.Role.Table = Class.create({
         $('table-href').setAttribute("href", "http://roleURL");
         this.populateTable(response.object);
 
+        new Trax.Modal().hideAll();
+
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
                 self.delete(this.readAttribute('id'));
@@ -260,7 +275,7 @@ Trax.Model.Role.Edit = Class.create({
 
     populateModal: function(role){
         var self = this;
-        var modalElement = $(new Trax.Modal("role").id);
+        var modalElement = new Trax.Modal().getModal("role");
         var availablePermissions = new Trax.Model.Permission().getPermissions();
         var data = {};
         data.role = role;
@@ -321,6 +336,8 @@ Trax.Model.Venue.Table = Class.create({
         $('table-href').setAttribute("href", "http://venuesURL");
         this.populateTable(response.object);
 
+        new Trax.Modal().hideAll();
+
     },
 
     populateTable: function(venues){
@@ -364,7 +381,7 @@ Trax.Model.Venue.Edit = Class.create({
 
     populateModal: function(venue){
         var self = this;
-        var modalElement = $(new Trax.Modal("venue").id);
+        var modalElement = new Trax.Modal().getModal("venue");
 
         EJS.config({cache: false});
         new EJS({url: contextPath + '/resources/ui/templates/admin/venue/edit.ejs'}).update(modalElement, venue);
@@ -425,7 +442,7 @@ Trax.Model.Room.Edit = Class.create({
 
     populateModal: function(room){
         var self = this;
-        var modalElement = $(new Trax.Modal("room").id);
+        var modalElement = new Trax.Modal().getModal("room");
 
         EJS.config({cache: false});
         new EJS({url: contextPath + '/resources/ui/templates/admin/room/edit.ejs'}).update(modalElement, room);

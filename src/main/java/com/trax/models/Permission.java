@@ -37,6 +37,10 @@ public class Permission {
     @Column(name="code")
     private String code;
 
+    @Expose
+    @Column(name="description")
+    private String description;
+
     public void setId(Long id){
         this.id = id;
     }
@@ -62,6 +66,13 @@ public class Permission {
         this.code = code.replaceAll("(\\s+|\\t+|\\r+|\\n+)", "_").toUpperCase();
     }
 
+    public String getDescription(){
+        return this.description;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
 
     public String toString(){
         return this.name;

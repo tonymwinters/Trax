@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<div class="container">
+<div id="admin-table" class="container">
 
     <h1 id="page-title-header"></h1>
    <br/><br/>
@@ -10,7 +10,6 @@
     <ul id="allModels" class="nav nav-tabs nav-stacked">
         <li id="usersTab" class="active model" ><a href="#" >Users</a></li>
         <li id="rolesTab" class="model" ><a href="#">Roles</a></li>
-        <li id="permissionsTab" class="model" ><a href="#">Permissions</a></li>
         <li id="venuesTab" class="model"><a href="#">Venues</a></li>
     </ul>
     </div>

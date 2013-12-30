@@ -35,6 +35,7 @@ public class PermissionServiceImpl implements PermissionService{
                 JsonElement id = json.getAsJsonObject().get("id");
                 JsonElement name = json.getAsJsonObject().get("name");
                 JsonElement code = json.getAsJsonObject().get("code");
+                JsonElement description = json.getAsJsonObject().get("description");
                 Permission permission = new Permission();
                 if (Alfred.notNull(id)) {
                     permission = getPermission(id.getAsLong());
@@ -44,6 +45,9 @@ public class PermissionServiceImpl implements PermissionService{
                 }
                 if (Alfred.notNull(code)) {
                     permission.setCode(code.getAsString());
+                }
+                if (Alfred.notNull(description)) {
+                    permission.setDescription(description.getAsString());
                 }
 
                 return permission;
@@ -61,7 +65,7 @@ public class PermissionServiceImpl implements PermissionService{
                 Set<Permission> permissions = new HashSet<Permission>();
 
                 for (JsonElement jsonPermission : jsonElement.getAsJsonArray()) {
-                    Permission permission = savePermission(jsonPermission);
+                    Permission permission = getPermission(jsonPermission);
                     if(permission.getId() != null){
                         permissions.add(permission);
                     }
@@ -95,6 +99,13 @@ public class PermissionServiceImpl implements PermissionService{
         return savePermission(new Gson().fromJson(json, JsonElement.class));
     }
 
+    public Permission getPermission(JsonElement json) {
+        Gson gson = Alfred.gsonBuilder
+                .registerTypeAdapter(Permission.class, getPermissionJsonDeserializer())
+                .create();
+        return gson.fromJson(json, Permission.class);
+    }
+
     public Permission savePermission(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Permission.class, getPermissionJsonDeserializer())
@@ -102,7 +113,7 @@ public class PermissionServiceImpl implements PermissionService{
         return savePermission(gson.fromJson(json, Permission.class));
     }
 
-    public Set savePermissions(JsonElement json) {
+    public Set getPermissions(JsonElement json) {
         Gson gson = Alfred.gsonBuilder
                 .registerTypeAdapter(Set.class, getPermissionsJsonDeserializer())
                 .create();

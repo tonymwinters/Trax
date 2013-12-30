@@ -10,8 +10,7 @@
         <td><%= roles[i].name %></td>
         <td><%= roles[i].code %></td>
         <td>
-            <%= roles[i].permissions %>
-            <% for(var j = 0; j < roles[i].permissions.length; ++i){ %>
+            <% for(var j = 0; j < roles[i].permissions.length; ++j){ %>
                 <p><%= roles[i].permissions[j].name %></p>
             <% } %>
         </td>
