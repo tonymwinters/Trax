@@ -194,7 +194,7 @@ h2{
     text-align: center;
 }
 
-.trax_table .edit{
+.trax_table .edit.button{
     background-color: #12c2c0;
     width: 50px;
 }
@@ -252,7 +252,7 @@ h2{
     width: 50px;
 }
 
-.trax_modal .edit{
+.trax_modal .edit.button{
     background-color: #12c2c0;
     width: 50px;
 }

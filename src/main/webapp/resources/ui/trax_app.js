@@ -87,6 +87,12 @@ Trax.Modal = Class.create({
     initialize: function(type){
         this.id = "modal-"+type;
         $(document.body).insert("<div id='"+this.id+"' class='trax_modal' style='display: none'></div>")
+    },
+
+    hideAll: function(){
+      $$('trax_modal').each(function(element){
+          element.hide();
+      });
     }
 });
 
@@ -283,7 +289,7 @@ Trax.Model.Role.Edit = Class.create({
     },
 
     save: function(){
-        return Trax.postResource('/resources/role/save', Trax.formToObject('role .edit'));
+        return Trax.postResource('/resources/role/save', Trax.formToObject('editRole'));
     }
 
 });

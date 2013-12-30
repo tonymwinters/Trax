@@ -4,6 +4,7 @@ import com.trax.models.*;
 import com.trax.services.attendee.AttendeeService;
 import com.trax.services.contact.ContactService;
 import com.trax.services.owner.OwnerService;
+import com.trax.services.permission.PermissionService;
 import com.trax.services.role.RoleService;
 import com.trax.services.room.RoomService;
 import com.trax.services.session.SessionService;
@@ -28,28 +29,31 @@ public class ResourceController {
 
     //region Object Services
     @Autowired
-    ContactService contactService;
+    private OwnerService ownerService;
 
     @Autowired
-    OwnerService ownerService;
+    private UserService userService;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
     @Autowired
-    SessionService sessionService;
+    private PermissionService permissionService;
 
     @Autowired
-    UserService userService;
+    private ContactService contactService;
 
     @Autowired
-    VenueService venueService;
+    private SessionService sessionService;
 
     @Autowired
-    RoomService roomService;
+    private VenueService venueService;
 
     @Autowired
-    AttendeeService attendeeService;
+    private RoomService roomService;
+
+    @Autowired
+    private AttendeeService attendeeService;
     //endregion
 
     //region Owner
@@ -237,7 +241,7 @@ public class ResourceController {
     public String listPermissions(Principal principal){
         String response;
         try{
-            response = Alfred.renderSuccess(roleService.getRoles());
+            response = Alfred.renderSuccess(permissionService.getPermissions());
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
         }
@@ -249,11 +253,11 @@ public class ResourceController {
     public String getPermission(@PathVariable Long id, Principal principal){
         String response;
         try{
-            User user = userService.getUser(id);
-            if(Alfred.isNull(user)){
+            Permission permission = permissionService.getPermission(id);
+            if(Alfred.isNull(permission)){
                 throw new Exception("Object doesn't exist.");
             }
-            response = Alfred.renderSuccess(user);
+            response = Alfred.renderSuccess(permission);
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
         }
@@ -265,8 +269,8 @@ public class ResourceController {
     public String savePermission(@RequestBody String requestJson, Principal principal){
         String response;
         try{
-            Role newRole = roleService.saveRole(requestJson);
-            response = Alfred.renderSuccess(newRole);
+            Permission newPermission = permissionService.savePermission(requestJson);
+            response = Alfred.renderSuccess(newPermission);
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
         }
@@ -278,11 +282,11 @@ public class ResourceController {
     public String deletePermission(@PathVariable Long id, Principal principal){
         String response;
         try{
-            Role role = roleService.getRole(id);
-            if(Alfred.isNull(role)){
+            Permission permission = permissionService.getPermission(id);
+            if(Alfred.isNull(permission)){
                 throw new Exception("Object doesn't exist.");
             }
-            roleService.deleteRole(id);
+            permissionService.deletePermission(id);
             response = Alfred.renderSuccess();
         } catch (Exception ex){
             response = Alfred.renderError(ex.getMessage());
