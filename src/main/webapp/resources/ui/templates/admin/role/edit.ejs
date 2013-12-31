@@ -1,18 +1,31 @@
-<form id="editRole" action="#" method="post">
-    <input type="text" class="hidden" name="id" value="<%= role.id %>" />
-    <ul>
-        <li><label>Name</label> <input type="text" name="name" value="<%= role.name %>"/></li>
-        <li><label>Code</label> <input type="text" name="code" value="<%= role.code %>"/></li>
-        <li><label>Permissions</label>
-            <ul>
-                <li class = "hidden"><input type="checkbox" name="permissions[]" value="" class="permission" checked></li>
-                <% if(availablePermissions){ %>
-                    <% for(var i = 0; i < availablePermissions.length; ++i){ %>
-                        <li><input type="checkbox" id="id" value="<%= availablePermissions[i].id %>" name="permissions[]" class="permission"><%= availablePermissions[i].name %> (<%= availablePermissions[i].description %>)</input></li>
-                    <% } %>
-                <% } %>
-            </ul>
-        </li>
-    </ul>
-</form>
-<a href="#"><div class="role save button">Save</div></a>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Edit <%= type %></h4>
+        </div>
+        <div class="modal-body">
+            <form id="editRole" action="#" method="post">
+                <input type="text" class="hidden" name="id" value="<%= role.id %>" />
+                <ul>
+                    <li><label>Name</label> <input type="text" name="name" value="<%= role.name %>"/></li>
+                    <li><label>Code</label> <input type="text" name="code" value="<%= role.code %>"/></li>
+                    <li><label>Permissions</label>
+                        <ul>
+                            <li class = "hidden"><input type="checkbox" name="permissions[]" value="" class="permission" checked></li>
+                            <% if(availablePermissions){ %>
+                            <% for(var i = 0; i < availablePermissions.length; ++i){ %>
+                            <li><input type="checkbox" id="id" value="<%= availablePermissions[i].id %>" name="permissions[]" class="permission"><%= availablePermissions[i].name %> (<%= availablePermissions[i].description %>)</input></li>
+                            <% } %>
+                            <% } %>
+                        </ul>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="<%= type.toString().toLowerCase() %> save button btn btn-primary">Save changes</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

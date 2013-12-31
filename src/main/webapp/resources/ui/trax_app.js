@@ -89,19 +89,23 @@ Trax.Modal = Class.create({
     },
 
     getModal: function(type, containerId){
-        this.id = "modal-"+type;
-        if(!$(this.id) && type != null){
+        var id = "modal-"+type;
+
+        if(!$(id) && type != null){
+            var modal = jQuery('<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>')[0]
+            modal.id = "modal-"+type;
+
             if(containerId != null){
-                $(containerId).insert("<div id='"+this.id+"' class='trax_modal' style='display: none'></div>")
+                $(containerId).insert(modal)
             }else{
-                $(document.body).insert("<div id='"+this.id+"' class='trax_modal' style='display: none'></div>")
+                $(document.body).insert(modal)
             }
         }
-        return $(this.id);
+        return $(id);
     },
 
     hideAll: function(){
-      $$('.trax_modal').each(function(element){
+      $$('.modal').each(function(element){
           element.hide();
       });
     }
@@ -136,6 +140,7 @@ Trax.Model.User.Table = Class.create({
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
                 self.delete(this.readAttribute('id'));
+                new Trax.Model.User.Table();
             });
         });
 
@@ -185,9 +190,10 @@ Trax.Model.User.Edit = Class.create({
 
     populateModal: function(user){
         var self = this;
-        var modalElement = new Trax.Modal().getModal("user", "admin-table");
+        var modalElement = new Trax.Modal().getModal("user");
         var availableRoles = new Trax.Model.Role().getRoles();
         var data = {};
+        data.type = "User";
         data.user = user;
         data.availableRoles = availableRoles;
 
@@ -203,17 +209,17 @@ Trax.Model.User.Edit = Class.create({
             });
         }
 
-        $$('.trax_modal .user.save').each(function(button){
+        $$('.modal .user.save').each(function(button){
             button.observe("click", function(){
                 var response = self.save();
                 if(response.success){
-                    modalElement.hide();
+                    jQuery(modalElement).modal("hide");
                     new Trax.Model.User.Table();
                 }
             });
         });
 
-        modalElement.show();
+        jQuery(modalElement).modal("show");
     },
 
     save: function(){
@@ -253,6 +259,7 @@ Trax.Model.Role.Table = Class.create({
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
                 self.delete(this.readAttribute('id'));
+                new Trax.Model.Role.Table();
             });
         });
 
@@ -305,6 +312,7 @@ Trax.Model.Role.Edit = Class.create({
         var modalElement = new Trax.Modal().getModal("role");
         var availablePermissions = new Trax.Model.Permission().getPermissions();
         var data = {};
+        data.type = "Role";
         data.role = role;
         data.availablePermissions = availablePermissions;
 
@@ -320,17 +328,17 @@ Trax.Model.Role.Edit = Class.create({
             });
         }
 
-        $$('.trax_modal .role.save').each(function(button){
+        $$('.modal .role.save').each(function(button){
             button.observe("click", function(){
                 var response = self.save();
                 if(response.success){
-                    modalElement.hide();
+                    jQuery(modalElement).modal("hide");
                     new Trax.Model.Role.Table();
                 }
             });
         });
 
-        modalElement.show();
+        jQuery(modalElement).modal("show");
     },
 
     save: function(){
@@ -376,6 +384,7 @@ Trax.Model.Venue.Table = Class.create({
         $$('.trax_table .delete').each(function(button){
             button.observe("click", function(){
                 self.delete(this.readAttribute('id'));
+                new Trax.Model.Venue.Table();
             });
         });
 
@@ -424,33 +433,35 @@ Trax.Model.Venue.Edit = Class.create({
     populateModal: function(venue){
         var self = this;
         var modalElement = new Trax.Modal().getModal("venue");
-
+        var data = {};
+        data.type = "Venue";
+        data.venue = venue;
         EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/edit.ejs'}).update(modalElement, venue);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/edit.ejs'}).update(modalElement, data);
 
-        $$('.trax_modal .venue.save').each(function(button){
+        $$('.modal .venue.save').each(function(button){
             button.observe("click", function(){
                 var response = self.save();
                 if(response.success){
-                    modalElement.hide();
+                    jQuery(modalElement).modal("hide");
                     new Trax.Model.Venue.Table();
                 }
             });
         });
 
-        $$('.trax_modal .room.edit').each(function(button){
+        $$('.modal .room.edit').each(function(button){
             button.observe("click", function(){
                 new Trax.Model.Room.Edit(this.readAttribute('id'), venue);
             });
         });
 
-        $$('.trax_modal .room.add').each(function(button){
+        $$('.modal .room.add').each(function(button){
             button.observe("click", function(){
                 new Trax.Model.Room.Edit(null, venue);
             });
         });
 
-        modalElement.show();
+        jQuery(modalElement).modal("show");
     },
 
     save: function(){
@@ -487,35 +498,36 @@ Trax.Model.Room.Edit = Class.create({
         if(room.id){
             this.editModal(venue, modalElement);
         }else{
-            this.addModal(venue, modalElement)
+            this.addModal(modalElement)
         }
 
-        $$('.trax_modal .room.delete').each(function(button){
+        $$('.modal .room.delete').each(function(button){
             button.update("Delete");
             button.stopObserving("click");
             button.observe("click", function(){
                 var result = self.delete(this.readAttribute('id'));
                 if(result.success){
-                    modalElement.hide();
+                    jQuery(modalElement).modal("hide");
                     new Trax.Model.Venue.Edit(venue.id)
                 }
             });
         });
 
-        modalElement.show();
+        jQuery(modalElement).modal("show");
     },
 
-    addModal: function(venue, modal){
+    addModal: function(modal){
         var self = this;
-        $$('.trax_modal .room.submit').each(function(button){
+        $$('.modal .room.submit').each(function(button){
             button.update("Add");
             button.stopObserving("click");
             button.observe("click", function(){
                 var room = Trax.formToObject('editRoom');
                 var response = self.add(room);
                 if(response.success){
-                    modal.hide();
-                    new Trax.Model.Venue.Edit(venue.id)
+                    jQuery(modal).modal("hide");
+                    var venue = response.object;
+                    new Trax.Model.Venue.Edit(venue.id);
                 }
             });
         });
@@ -523,14 +535,14 @@ Trax.Model.Room.Edit = Class.create({
 
     editModal: function(venue, modal){
         var self = this;
-        $$('.trax_modal .room.submit').each(function(button){
+        $$('.modal .room.submit').each(function(button){
             button.update("Save");
             button.stopObserving("click");
             button.observe("click", function(){
                 var room = Trax.formToObject('editRoom');
                 var response = self.save(room);
                 if(response.success){
-                    modal.hide();
+                    jQuery(modal).modal("hide");
                     new Trax.Model.Venue.Edit(venue.id)
                 }
             });
@@ -538,8 +550,11 @@ Trax.Model.Room.Edit = Class.create({
     },
 
     populateModal: function(modal, room){
+        var data = {};
+        data.type = "Room";
+        data.room = room;
         EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/room/edit.ejs'}).update(modal, room);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/room/edit.ejs'}).update(modal, data);
     },
 
     delete: function(id){

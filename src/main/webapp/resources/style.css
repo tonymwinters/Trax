@@ -203,6 +203,7 @@ h2{
     display: inline-block;
     padding: 5px;
     text-align: center;
+    width: auto;
 }
 
 .trax_table .edit{
@@ -235,37 +236,31 @@ h2{
     font-weight: 200;
 }
 
-.trax_modal {
-    background-color: #8f8f8f;
+.modal {
 }
 
-.trax_modal a{
+.modal a{
     color: white;
 }
 
-.trax_modal .submit{
+.modal .submit{
     background-color: #6ab880;
-    width: 80px;
 }
 
-.trax_modal .add{
+.modal .add{
     background-color: #6ab880;
-    width: 80px;
 }
 
-.trax_modal .save{
+.modal .save{
     background-color: #6ab880;
-    width: 50px;
 }
 
-.trax_modal .edit.button{
+.modal .edit{
     background-color: #12c2c0;
-    width: 50px;
 }
 
-.trax_modal .delete{
+.modal .delete{
     background-color: #FF6969;
-    width: 50px;
 }
 
 .sessions_left{

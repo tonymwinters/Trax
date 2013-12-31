@@ -1,24 +1,37 @@
-<form id="editUser" action="#" method="post">
-    <input type="text" class="hidden" name="id" value="<%= user.id %>" />
-    <input type="text" class="hidden" name="contact.id" value="<%= user.contact ? user.contact.id : "" %>" />
-    <ul>
-        <li><label for="username">username</label> <input type="text" name="username" value="<%= user.username %>" /></li>
-        <li><label for="email">email</label> <input type="text" name="contact.emailAddress" value="<%= user.contact ? user.contact.emailAddress : "" %>"/></li>
-        <li><label for="firstName">first name</label> <input type="text" name="firstName" value="<%= user.firstName %>"/></li>
-        <li><label for="middleName">middle name</label> <input type="text" name="middleName" value="<%= user.middleName %>"/></li>
-        <li><label for="lastName">last name</label> <input type="text" name="lastName" value="<%= user.lastName %>"/></li>
-        <li><label for="name">contact name</label> <input type="text" name="contact.name" value="<%= user.contact ? user.contact.name : "" %>"/></li>
-        <li><label for="phone">phone</label> <input type="text" name="contact.phoneNumber" value="<%= user.contact ? user.contact.phoneNumber : "" %>"/></li>
-        <li><label for="roles">roles</label>
-            <ul>
-                <li class = "hidden"><input type="checkbox" name="roles[]" value="" class="role" checked></li>
-                <% if(availableRoles){ %>
-                    <% for(var i = 0; i < availableRoles.length; ++i){ %>
-                        <li><input type="checkbox" id="id" value="<%= availableRoles[i].id %>" name="roles[]" class="role"><%= availableRoles[i].name %></input></li>
-                    <% } %>
-                <% } %>
-            </ul>
-        </li>
-    </ul>
-</form>
-<a href="#"><div class="user save button">Save</div></a>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Edit <%= type %></h4>
+        </div>
+        <div class="modal-body">
+            <form id="edit<%= type %>" action="#" method="post">
+                <input type="text" class="hidden" name="id" value="<%= user.id %>" />
+                <input type="text" class="hidden" name="contact.id" value="<%= user.contact ? user.contact.id : "" %>" />
+                <ul>
+                    <li><label for="username">username</label> <input type="text" name="username" value="<%= user.username %>" /></li>
+                    <li><label for="email">email</label> <input type="text" name="contact.emailAddress" value="<%= user.contact ? user.contact.emailAddress : "" %>"/></li>
+                    <li><label for="firstName">first name</label> <input type="text" name="firstName" value="<%= user.firstName %>"/></li>
+                    <li><label for="middleName">middle name</label> <input type="text" name="middleName" value="<%= user.middleName %>"/></li>
+                    <li><label for="lastName">last name</label> <input type="text" name="lastName" value="<%= user.lastName %>"/></li>
+                    <li><label for="name">contact name</label> <input type="text" name="contact.name" value="<%= user.contact ? user.contact.name : "" %>"/></li>
+                    <li><label for="phone">phone</label> <input type="text" name="contact.phoneNumber" value="<%= user.contact ? user.contact.phoneNumber : "" %>"/></li>
+                    <li><label for="roles">roles</label>
+                        <ul>
+                            <li class = "hidden"><input type="checkbox" name="roles[]" value="" class="role" checked></li>
+                            <% if(availableRoles){ %>
+                                <% for(var i = 0; i < availableRoles.length; ++i){ %>
+                                    <li><input type="checkbox" id="id" value="<%= availableRoles[i].id %>" name="roles[]" class="role"><%= availableRoles[i].name %></input></li>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="<%= type.toString().toLowerCase() %> save button btn btn-primary">Save changes</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

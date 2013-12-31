@@ -1,38 +1,51 @@
-<form id="editVenue" action="#" method="post">
-    <input type="text" class="hidden" name="id" value="<%= id %>" />
-    <ul>
-        <li><label>Name</label> <input type="text" name="name" value="<%= name %>" /></li>
-                                                                                                                                                               
-        <li>Location</li>
-        <input type="text" class="hidden" name="location.id" value="<%= location ? location.id : "" %>" />
-        <li><label>name</label> <input type="text" name="location.name" value="<%= location ? location.name : "" %>"/></li>
-        <li><label>Address Line 1</label> <input type="text" name="location.addressLine1" value="<%= location ? location.addressLine1 : "" %>"/></li>
-        <li><label>Address Line 2</label> <input type="text" name="location.addressLine2" value="<%= location ? location.addressLine2 : "" %>"/></li>
-        <li><label>City</label> <input type="text" name="location.city" value="<%= location ? location.city : "" %>"/></li>
-        <li><label>State</label> <input type="text" name="location.regionCode" value="<%= location ? location.regionCode : "" %>"/></li>
-        <li><label>Postal</label> <input type="text" name="location.postalCode" value="<%= location ? location.postalCode : "" %>"/></li>
-        <li><label>Country</label> <input type="text" name="location.countryCode" value="<%= location ? location.countryCode : "" %>"/></li>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Edit <%= type %></h4>
+        </div>
+        <div class="modal-body">
+            <form id="editVenue" action="#" method="post">
+                <input type="text" class="hidden" name="id" value="<%= venue.id %>" />
+                <ul>
+                    <li><label>Name</label> <input type="text" name="name" value="<%= venue.name %>" /></li>
 
-        <li>Contact</li>
-        <input type="text" class="hidden" name="contact.id" value="<%= contact ? contact.id : "" %>" />
-        <li><label for="name">name</label> <input type="text" name="contact.name" value="<%= contact ? contact.name : "" %>"/></li>
-        <li><label for="email">email</label> <input type="text" name="contact.emailAddress" value="<%= contact ? contact.emailAddress : "" %>"/></li>
-        <li><label for="phone">phone</label> <input type="text" name="contact.phoneNumber" value="<%= contact ? contact.phoneNumber : "" %>"/></li>
-        
-        
-        <li><label for="rooms[]">rooms</label>
-            <ul>
-                <% if(rooms){ %>
-                    <% for(var i = 0; i < rooms.length; ++i){ %>
-                    <li>
-                        <input type="checkbox" id="id" value="<%= rooms[i].id %>" name="rooms[]" class="hidden"/><%= rooms[i].name %>
-                        <a href="#"><div id="<%= rooms[i].id %>" class="room edit button">Edit</div></a>
+                    <li>Location</li>
+                    <input type="text" class="hidden" name="location.id" value="<%= venue.location ? location.id : "" %>" />
+                    <li><label>name</label> <input type="text" name="location.name" value="<%= venue.location ? venue.location.name : "" %>"/></li>
+                    <li><label>Address Line 1</label> <input type="text" name="location.addressLine1" value="<%= venue.location ? venue.location.addressLine1 : "" %>"/></li>
+                    <li><label>Address Line 2</label> <input type="text" name="location.addressLine2" value="<%= venue.location ? venue.location.addressLine2 : "" %>"/></li>
+                    <li><label>City</label> <input type="text" name="location.city" value="<%= venue.location ? venue.location.city : "" %>"/></li>
+                    <li><label>State</label> <input type="text" name="location.regionCode" value="<%= venue.location ? venue.location.regionCode : "" %>"/></li>
+                    <li><label>Postal</label> <input type="text" name="location.postalCode" value="<%= venue.location ? venue.location.postalCode : "" %>"/></li>
+                    <li><label>Country</label> <input type="text" name="location.countryCode" value="<%= venue.location ? venue.location.countryCode : "" %>"/></li>
+
+                    <li>Contact</li>
+                    <input type="text" class="hidden" name="contact.id" value="<%= venue.contact ? venue.contact.id : "" %>" />
+                    <li><label for="name">name</label> <input type="text" name="contact.name" value="<%= venue.contact ? venue.contact.name : "" %>"/></li>
+                    <li><label for="email">email</label> <input type="text" name="contact.emailAddress" value="<%= venue.contact ? venue.contact.emailAddress : "" %>"/></li>
+                    <li><label for="phone">phone</label> <input type="text" name="contact.phoneNumber" value="<%= venue.contact ? venue.contact.phoneNumber : "" %>"/></li>
+
+
+                    <li><label for="rooms[]">rooms</label>
+                        <ul>
+                            <% if(venue.rooms){ %>
+                                <% for(var i = 0; i < venue.rooms.length; ++i){ %>
+                                <li>
+                                    <input type="checkbox" id="id" value="<%= venue.rooms[i].id %>" name="rooms[]" class="hidden"/><%= venue.rooms[i].name %>
+                                    <a href="#"><div id="<%= venue.rooms[i].id %>" class="room edit button">Edit</div></a>
+                                </li>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                        <a href="#"><div class="room add button">Add Room</div></a>
                     </li>
-                    <% } %>
-                <% } %>
-            </ul>
-            <a href="#"><div class="room add button">Add Room</div></a>
-        </li>
-    </ul>
-</form>
-<a href="#"><div class="venue save button">Save</div></a>
+                </ul>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="<%= type.toString().toLowerCase() %> save button btn btn-primary">Save changes</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
