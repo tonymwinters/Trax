@@ -4,7 +4,7 @@
 
 <div id="admin-table" class="container">
 
-    <h1 id="page-title-header"></h1>
+    <h1 id="page-title"></h1>
    <br/><br/>
     <div id="side" style="display: inline-block; width: 200px; vertical-align: top;">
     <ul id="allModels" class="nav nav-tabs nav-stacked">
@@ -15,8 +15,8 @@
     </div>
 
     <div class="table_wrapper">
-        <h1 id="table-title-header" class="table_title_h1"></h1>
-        <a href ="#"><div class="add button"></div></a>
+        <h1 id="table-title" class="table_title_h1"></h1>
+        <%--<a href ="#"><div class="add button"></div></a>--%>
         <input id="table-search" type="text" name="fname" class="table-search" />
         <table id="main-admin-table" class="table table-hover trax_table" style="width: 800px;">
         </table>

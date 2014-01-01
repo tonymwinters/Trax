@@ -2,18 +2,13 @@
     <th>First Name</th>
     <th>Last Name</th>
     <th>Email</th>
-    <th>Actions</th>
 </thead>
 <tbody>
     <% for(var i = 0; i < users.length; ++i){ %>
-    <tr>
+    <tr id="<%= users[i].id %>">
         <td><%= users[i].firstName %></td>
         <td><%= users[i].lastName %></td>
         <td><%= users[i].contact ? users[i].contact.emailAddress : "" %></td>
-        <td>
-            <a href="#"><div class="edit button" id="<%= users[i].id %>">Edit</div></a>
-            <a href="#"><div class="delete button" id="<%= users[i].id %>">Delete</div></a>
-        </td>
     </tr>
     <% } %>
 </tbody>

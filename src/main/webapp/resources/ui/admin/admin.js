@@ -4,27 +4,43 @@
  */
 
 document.observe("dom:loaded", function() {
-    new Trax.Model.User.Table();
+
+    var options = {};
+    options.tableId = "main-admin-table";
+    options.create = false;
+    options.actions = ["edit", "delete"];
+    new Trax.Model.User.Table(options);
 });
 
 
 $("usersTab").observe("click", function(){
-   removeActive();
-   this.addClassName("active");
-    var userTable = new Trax.Model.User.Table();
+    removeActive();
+    this.addClassName("active");
+    var options = {};
+    options.tableId = "main-admin-table";
+    options.create = false;
+    options.actions = ["edit", "delete"];
+    new Trax.Model.User.Table(options);
 });
 
 $('venuesTab').observe("click", function(){
     removeActive();
     this.addClassName("active");
-    Trax.printTheWordSwag();
-    var venueTable = new Trax.Model.Venue.Table();
+    var options = {};
+    options.tableId = "main-admin-table";
+    options.create = false;
+    options.actions = ["edit", "delete"];
+    new Trax.Model.Venue.Table(options);
 });
 
 $('rolesTab').observe("click", function(){
     removeActive();
     this.addClassName("active");
-    var roleTable = new Trax.Model.Role.Table();
+    var options = {};
+    options.tableId = "main-admin-table";
+    options.create = false;
+    options.actions = ["edit", "delete"];
+    new Trax.Model.Role.Table(options);
 });
 
 function removeActive(){

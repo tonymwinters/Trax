@@ -1,5 +1,9 @@
 // Default NameSpace
 Trax = {};
+
+/*********************************************
+ * HELPER FUNCTIONS
+ *********************************************/
 Trax.printTheWordSwag = function(){
     console.log("swag");
 };
@@ -27,7 +31,7 @@ Trax.getResource = function (url) {
         response = JSON.parse(Trax.ajax(url, 'GET'));
     }
     if (response.success) {
-        return response;
+        return response.object;
     }
     alert(response.message.toString());
     return {};
@@ -43,6 +47,14 @@ Trax.postResource = function(url, obj){
     }
     alert(response.message.toString());
     return {};
+};
+
+function toTitleCase(str){
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+function arrayContains(array, str){
+    return array.indexOf(str) > -1;
 }
 
 function setAttr(obj, keys, element){
@@ -83,7 +95,134 @@ Trax.formToObject = function(formId) {
     return result;
 };
 
-Trax.Modal = Class.create({
+
+/*********************************************
+ * WIDGETS
+ *********************************************/
+Trax.Widget = {};
+Trax.Widget.getButton = function(action){
+    var button = new Element('a');
+    button.href = "#";
+    button.innerHTML = toTitleCase(action);
+    jQuery(button).addClass(action);
+    jQuery(button).addClass("button");
+    return button;
+};
+Trax.Widget.DataTable = Class.create({
+
+    initialize: function(options){
+        this.options = options;
+        this.table = $(this.options.tableId);
+        this.populateTableInfo();
+        this.setTableControls();
+        this.refreshTable();
+
+    },
+
+    getData: function(){
+        return {};
+    },
+
+    populateTableInfo: function(){
+        var titlePlural = toTitleCase(this.options.dataType.toString()) + "s";
+        $('page-title').update(titlePlural);
+        $('table-title').update(titlePlural);
+    },
+
+    setTableControls: function(){
+        var titlePlural = toTitleCase(this.options.dataType.toString()) + "s";
+        if(this.options.create){
+            this.initCreate();
+        }
+        $('table-search').setAttribute("placeholder", "Search " + titlePlural);
+    },
+
+    refreshTable: function(){
+        this.refreshData();
+
+        var actions = this.options.actions;
+        if(actions != null && actions.length > 0){
+            this.initActions();
+        }
+    },
+
+    refreshData: function(){
+        EJS.config({cache: false});
+        new EJS({url: contextPath + '/resources/ui/templates/admin/'+this.options.dataType.toString().toLowerCase()+'/table.ejs'}).update(this.table, this.getData());
+    },
+
+    initCreate: function(){
+        var self = this;
+        $$('.table_wrapper .add').each(function(button){
+            button.update("New " + toTitleCase(self.options.dataType.toString()));
+            button.stopObserving("click");
+            button.observe("click", function(){
+                self.create();
+            });
+        });
+    },
+
+    create: function(){
+
+    },
+
+    initActions: function(){
+        var actionColumnHeader = new Element('th');
+        actionColumnHeader.innerHTML = "Actions";
+        this.table.down('thead').down('tr').insert(actionColumnHeader);
+        var rows = this.table.down('tbody').rows;
+        for(var i = 0; i < rows.length; i++){
+            var row = rows[i];
+            var actionColumn = new Element('td');
+            actionColumn.id = row.id;
+            jQuery(actionColumn).addClass("action");
+            row.insert(actionColumn);
+        }
+        if(arrayContains(this.options.actions, "edit")){
+            this.initEdit();
+        }
+        if(arrayContains(this.options.actions, "delete")){
+            this.initDelete();
+        }
+    },
+
+    initEdit: function(){
+        var self = this;
+        $$('.trax_table .action').each(function(container){
+            var button = Trax.Widget.getButton("edit");
+            button.id = container.id;
+            button.observe("click", function(){
+                var id = this.readAttribute('id');
+                self.edit(id);
+            });
+            container.insert(button)
+        });
+    },
+
+    edit: function(id){
+        console.log("default " + id);
+    },
+
+    initDelete: function(){
+        var self = this;
+        $$('.trax_table .action').each(function(container){
+            var button = Trax.Widget.getButton("delete");
+            button.id = container.id;
+            button.observe("click", function(){
+                var id = this.readAttribute('id');
+                self.delete(id);
+            });
+            container.insert(button)
+        });
+    },
+
+    delete: function(id){
+        Trax.getResource("resources/" + this.options.dataType.toString() + "/delete/" + id);
+        this.refreshTable();
+    }
+});
+
+Trax.Widget.Modal = Class.create({
     initialize: function(){
 
     },
@@ -102,14 +241,9 @@ Trax.Modal = Class.create({
             }
         }
         return $(id);
-    },
-
-    hideAll: function(){
-      $$('.modal').each(function(element){
-          element.hide();
-      });
     }
 });
+
 
 Trax.Model = {};
 
@@ -118,53 +252,17 @@ Trax.Model = {};
  * USER MODEL
  *********************************************/
 Trax.Model.User = {};
-Trax.Model.User.Table = Class.create({
+Trax.Model.User.Table = Class.create(Trax.Widget.DataTable, {
 
-
-    initialize: function(){
-        var self = this;
-        var response = Trax.getResource("resources/user/list");
-        var table = $('page-title-header').update("Users");
-        $('table-title-header').update("Users");
-        $('table-search').setAttribute("placeholder", "Search Users");
-        this.populateTable(response.object);
-
-        $$('.table_wrapper .add').each(function(button){
-            button.update("New User");
-            button.stopObserving("click");
-            button.observe("click", function(){
-                self.edit();
-            });
-        });
-
-        $$('.trax_table .delete').each(function(button){
-            button.observe("click", function(){
-                self.delete(this.readAttribute('id'));
-                new Trax.Model.User.Table();
-            });
-        });
-
-        $$('.trax_table .edit').each(function(button){
-            button.observe("click", function(){
-                self.edit(this.readAttribute('id'));
-            });
-        });
-
-        new Trax.Modal().hideAll();
-
+    initialize: function($super, options){
+        options.dataType = "user";
+        $super(options);
     },
 
-    populateTable: function(users){
+    getData: function(){
         var data = {};
-        data.users = users;
-        EJS.config({cache: false});
-        var table = $('main-admin-table');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/user/table.ejs'}).update(table, data);
-
-    },
-
-    delete: function(id){
-        return Trax.getResource("resources/user/delete/" + id);
+        data.users = Trax.getResource("resources/user/list");;
+        return data;
     },
 
     edit: function(id){
@@ -172,25 +270,24 @@ Trax.Model.User.Table = Class.create({
     }
 
 });
-
 Trax.Model.User.Edit = Class.create({
 
 
     initialize: function(id){
-        var response = {};
+        var user = {};
 
         if(id){
-            response = Trax.getResource(contextPath + "/resources/user/"+id);
+            user = Trax.getResource(contextPath + "/resources/user/"+id);
         }else{
-            response = Trax.getResource(contextPath + "/resources/user/object");
+            user = Trax.getResource(contextPath + "/resources/user/object");
         }
-        this.populateModal(response.object);
+        this.populateModal(user);
 
     },
 
     populateModal: function(user){
         var self = this;
-        var modalElement = new Trax.Modal().getModal("user");
+        var modalElement = new Trax.Widget.Modal().getModal("user");
         var availableRoles = new Trax.Model.Role().getRoles();
         var data = {};
         data.type = "User";
@@ -214,7 +311,6 @@ Trax.Model.User.Edit = Class.create({
                 var response = self.save();
                 if(response.success){
                     jQuery(modalElement).modal("hide");
-                    new Trax.Model.User.Table();
                 }
             });
         });
@@ -237,53 +333,17 @@ Trax.Model.Role = Class.create({
         return Trax.getResource(contextPath + "/resources/role/list").object;
     }
 });
-Trax.Model.Role.Table = Class.create({
+Trax.Model.Role.Table = Class.create(Trax.Widget.DataTable, {
 
-
-    initialize: function(){
-        var self = this;
-        var response = Trax.getResource("resources/role/list");
-        var table = $('page-title-header').update("Roles");
-        $('table-title-header').update("Roles");
-        $('table-search').setAttribute("placeholder", "Search Roles");
-        this.populateTable(response.object);
-
-        $$('.table_wrapper .add').each(function(button){
-            button.update("New Role");
-            button.stopObserving("click");
-            button.observe("click", function(){
-                self.edit();
-            });
-        });
-
-        $$('.trax_table .delete').each(function(button){
-            button.observe("click", function(){
-                self.delete(this.readAttribute('id'));
-                new Trax.Model.Role.Table();
-            });
-        });
-
-        $$('.trax_table .edit').each(function(button){
-            button.observe("click", function(){
-                self.edit(this.readAttribute('id'));
-            });
-        });
-
-        new Trax.Modal().hideAll();
-
+    initialize: function($super, options){
+        options.dataType = "role";
+        $super(options);
     },
 
-    populateTable: function(roles){
+    getData: function(){
         var data = {};
-        data.roles = roles;
-        EJS.config({cache: false});
-        var table = $('main-admin-table');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/role/table.ejs'}).update(table, data);
-
-    },
-
-    delete: function(id){
-        return Trax.getResource("resources/role/delete/" + id);
+        data.roles = Trax.getResource("resources/role/list");;
+        return data;
     },
 
     edit: function(id){
@@ -291,25 +351,24 @@ Trax.Model.Role.Table = Class.create({
     }
 
 });
-
 Trax.Model.Role.Edit = Class.create({
 
 
     initialize: function(id){
-        var response = {};
+        var role = {};
 
         if(id){
-            response = Trax.getResource(contextPath + "/resources/role/"+id);
+            role = Trax.getResource(contextPath + "/resources/role/"+id);
         }else{
-            response = Trax.getResource(contextPath + "/resources/role/object");
+            role = Trax.getResource(contextPath + "/resources/role/object");
         }
-        this.populateModal(response.object);
+        this.populateModal(role);
 
     },
 
     populateModal: function(role){
         var self = this;
-        var modalElement = new Trax.Modal().getModal("role");
+        var modalElement = new Trax.Widget.Modal().getModal("role");
         var availablePermissions = new Trax.Model.Permission().getPermissions();
         var data = {};
         data.type = "Role";
@@ -362,52 +421,17 @@ Trax.Model.Permission = Class.create({
  * VENUE MODEL
  *********************************************/
 Trax.Model.Venue = {};
-Trax.Model.Venue.Table = Class.create({
+Trax.Model.Venue.Table = Class.create(Trax.Widget.DataTable, {
 
-
-    initialize: function(){
-        var self = this;
-        var response = Trax.getResource("resources/venue/list");
-        var table = $('page-title-header').update("Venues");
-        $('table-title-header').update("Venues");
-        $('table-search').setAttribute("placeholder", "Search Venues");
-        this.populateTable(response.object);
-
-        $$('.table_wrapper .add').each(function(button){
-            button.update("New Venue");
-            button.stopObserving("click");
-            button.observe("click", function(){
-                self.edit();
-            });
-        });
-
-        $$('.trax_table .delete').each(function(button){
-            button.observe("click", function(){
-                self.delete(this.readAttribute('id'));
-                new Trax.Model.Venue.Table();
-            });
-        });
-
-        $$('.trax_table .edit').each(function(button){
-            button.observe("click", function(){
-                self.edit(this.readAttribute('id'));
-            });
-        });
-
-        new Trax.Modal().hideAll();
-
+    initialize: function($super, options){
+        options.dataType = "venue";
+        $super(options);
     },
 
-    populateTable: function(venues){
+    getData: function(){
         var data = {};
-        data.venues = venues;
-
-        var table = $('main-admin-table');
-        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/table.ejs'}).update(table, data);
-    },
-
-    delete: function(id){
-        return Trax.getResource("resources/venue/delete/" + id);
+        data.venues = Trax.getResource("resources/venue/list");;
+        return data;
     },
 
     edit: function(id){
@@ -415,24 +439,23 @@ Trax.Model.Venue.Table = Class.create({
     }
 
 });
-
 Trax.Model.Venue.Edit = Class.create({
 
 
     initialize: function(id){
-        var response = {};
+        var venue = {};
 
         if(id){
-            response = Trax.getResource(contextPath + "/resources/venue/"+id);
+            venue = Trax.getResource(contextPath + "/resources/venue/"+id);
         }else{
-            response = Trax.getResource(contextPath + "/resources/venue/object");
+            venue = Trax.getResource(contextPath + "/resources/venue/object");
         }
-        this.populateModal(response.object);
+        this.populateModal(venue);
     },
 
     populateModal: function(venue){
         var self = this;
-        var modalElement = new Trax.Modal().getModal("venue");
+        var modalElement = new Trax.Widget.Modal().getModal("venue");
         var data = {};
         data.type = "Venue";
         data.venue = venue;
@@ -482,17 +505,15 @@ Trax.Model.Room.Edit = Class.create({
 
     initialize: function(id, venue){
         this.venue = venue;
-        var response = {};
+        var room = {};
         var self = this;
-        var modalElement = new Trax.Modal().getModal("room");
+        var modalElement = new Trax.Widget.Modal().getModal("room");
 
         if(id){
-            response = Trax.getResource(contextPath + "/resources/room/"+id);
+            room = Trax.getResource(contextPath + "/resources/room/"+id);
         }else{
-            response = Trax.getResource(contextPath + "/resources/room/object");
+            room = Trax.getResource(contextPath + "/resources/room/object");
         }
-
-        var room = response.object;
 
         this.populateModal(modalElement, room);
         if(room.id){
@@ -576,7 +597,6 @@ Trax.Model.Room.Edit = Class.create({
 });
 
 
-
 /*********************************************
  * SESSION MODEL
  *********************************************/
@@ -587,8 +607,7 @@ Trax.Model.Session.Page = Class.create({
         EJS.config({cache: false});
         var self = this;
         self.venueId = venueId;
-        var response = Trax.getResource(contextPath + "/resources/venue/"+venueId);
-        var venue = response.object;
+        var venue = Trax.getResource(contextPath + "/resources/venue/"+venueId);
         this.populateSessionList(venue);
         this.populateInitialSession(venue);
 
@@ -669,8 +688,7 @@ Trax.Model.Session.Page = Class.create({
         var target = $$('div.session_info_container')[0];
 
         if(sessionId != ""){
-            var response = Trax.getResource(contextPath + "/resources/session/" + sessionId);
-            var session = response.object;
+            var session = Trax.getResource(contextPath + "/resources/session/" + sessionId);
             new EJS({url: contextPath + '/resources/ui/templates/session/session-detail.ejs'}).update(target, session);
         }
 

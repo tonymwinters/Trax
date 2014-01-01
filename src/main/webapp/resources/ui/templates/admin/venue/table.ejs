@@ -1,15 +1,10 @@
 <thead>
     <th>Name</th>
-    <th>Actions</th>
 </thead>
 <tbody>
     <% for(var i = 0; i < venues.length; ++i){ %>
-    <tr>
+    <tr id="<%= venues[i].id %>">
         <td><%= venues[i].name %></td>
-        <td>
-            <a href="#"><div id="<%= venues[i].id %>" class="edit button">Edit</div></a>
-            <a href="#"><div id="<%= venues[i].id %>" class="delete button">Delete</div></a>
-        </td>
     </tr>
     <% } %>
 </tbody>
