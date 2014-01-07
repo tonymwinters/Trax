@@ -27,7 +27,6 @@ public class SessionDAOImpl implements SessionDAO{
 
     public void saveSession(Session session){
         getCurrentSession().merge(session);
-        getCurrentSession().saveOrUpdate(session);
     }
 
     public Session getSession(Long id){

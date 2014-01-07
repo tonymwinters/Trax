@@ -31,7 +31,6 @@ public class UserDAOImpl implements UserDAO{
 
     public void saveUser(User user) {
         getCurrentSession().merge(user);
-        getCurrentSession().saveOrUpdate(user);
     }
 
     public User getUser(Long id) {

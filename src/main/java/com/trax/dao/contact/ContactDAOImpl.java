@@ -28,7 +28,6 @@ public class ContactDAOImpl implements ContactDAO{
 
     public void saveContact(Contact contact){
         getCurrentSession().merge(contact);
-        getCurrentSession().saveOrUpdate(contact);
     }
 
     public Contact getContact(Long id){

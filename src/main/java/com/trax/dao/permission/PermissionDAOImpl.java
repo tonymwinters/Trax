@@ -29,7 +29,6 @@ public class PermissionDAOImpl implements PermissionDAO {
 
     public void savePermission(Permission permission) {
         getCurrentSession().merge(permission);
-        getCurrentSession().saveOrUpdate(permission);
     }
 
     public Permission getPermission(Long id) {

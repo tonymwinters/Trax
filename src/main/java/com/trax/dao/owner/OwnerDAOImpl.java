@@ -29,7 +29,6 @@ public class OwnerDAOImpl implements OwnerDAO {
 
     public void saveOwner(Owner owner) {
         getCurrentSession().merge(owner);
-        getCurrentSession().saveOrUpdate(owner);
     }
 
     public Owner getOwner(Long id) {

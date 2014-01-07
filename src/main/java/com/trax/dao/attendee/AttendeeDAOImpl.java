@@ -29,7 +29,6 @@ public class AttendeeDAOImpl implements AttendeeDAO {
 
     public void saveAttendee(Attendee attendee){
         getCurrentSession().merge(attendee);
-        getCurrentSession().saveOrUpdate(attendee);
     }
 
     public Attendee getAttendee(Long id){
