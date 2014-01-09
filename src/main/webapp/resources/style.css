@@ -147,23 +147,18 @@ h2{
     background-position: -400px -200px;
 }
 .table_wrapper{
-    display: inline-block;
+    display: inline-table;
     background-color: #50585C;
 }
 
 .table_wrapper .add{
-    width: 100px;
-    height: 40px;
     background-color: #12c2c0;
+    width: 100px;
     float: right;
-    margin-top: 18px;
-    margin-right: 20px;
-    color: white;
-    padding-top: 10px;
 }
 
 .trax_table{
-    width: 840px;
+    width: 100%;
     margin-left: 5px;
     margin-right: 5px;
     margin-bottom: 30px;
@@ -202,18 +197,18 @@ h2{
 .button{
     display: inline-block;
     padding: 5px;
+    margin: 5px;
     text-align: center;
     width: auto;
+    color: white;
 }
 
 .trax_table .edit{
     background-color: #12c2c0;
-    width: 50px;
 }
 
 .trax_table .delete{
     background-color: #FF6969;
-    width: 50px;
 }
 
 .table_title_h1{
@@ -232,7 +227,7 @@ h2{
     margin-top: 19px;
     margin-right: 40px;
     height: 38px;
-    width: 300px;
+    width: 20%;
     font-weight: 200;
 }
 

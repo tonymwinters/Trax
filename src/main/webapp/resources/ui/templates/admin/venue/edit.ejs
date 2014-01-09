@@ -26,19 +26,9 @@
                     <li><label for="email">email</label> <input type="text" name="contact.emailAddress" value="<%= venue.contact ? venue.contact.emailAddress : "" %>"/></li>
                     <li><label for="phone">phone</label> <input type="text" name="contact.phoneNumber" value="<%= venue.contact ? venue.contact.phoneNumber : "" %>"/></li>
 
-
-                    <li><label for="rooms[]">rooms</label>
-                        <ul>
-                            <% if(venue.rooms){ %>
-                                <% for(var i = 0; i < venue.rooms.length; ++i){ %>
-                                <li>
-                                    <input type="checkbox" id="id" value="<%= venue.rooms[i].id %>" name="rooms[]" class="hidden"/><%= venue.rooms[i].name %>
-                                    <a href="#"><div id="<%= venue.rooms[i].id %>" class="room edit button">Edit</div></a>
-                                </li>
-                                <% } %>
-                            <% } %>
-                        </ul>
-                        <a href="#"><div class="room add button">Add Room</div></a>
+                    <li>
+                        <div id="rooms-table" style="width: 400px;">
+                        </div>
                     </li>
                 </ul>
             </form>

@@ -1,0 +1,10 @@
+<thead>
+    <th>Name</th>
+</thead>
+<tbody>
+    <% for(var i = 0; i < rooms.length; ++i){ %>
+        <tr id="<%= rooms[i].id %>">
+            <td><%= rooms[i].name %></td>
+        </tr>
+    <% } %>
+</tbody>

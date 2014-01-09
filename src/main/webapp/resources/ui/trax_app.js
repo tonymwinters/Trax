@@ -108,37 +108,62 @@ Trax.Widget.getButton = function(action){
     jQuery(button).addClass("button");
     return button;
 };
+
 Trax.Widget.DataTable = Class.create({
 
     initialize: function(options){
         this.options = options;
-        this.table = $(this.options.tableId);
-        this.populateTableInfo();
-        this.setTableControls();
-        this.refreshTable();
+        this.initContainer();
+        this.initTitle();
+        this.initTableControls();
+        this.initTable();
+        this.refreshData();
+        this.refreshTableData();
 
+        jQuery(this.tableConatiner).addClass("table_wrapper");
     },
 
     getData: function(){
         return {};
     },
 
-    populateTableInfo: function(){
-        var titlePlural = toTitleCase(this.options.dataType.toString()) + "s";
-        $('page-title').update(titlePlural);
-        $('table-title').update(titlePlural);
+    initContainer: function(){
+        var container = $(this.options.containerId);
+        container.innerHTML = "";
+        this.tableConatiner = container
     },
 
-    setTableControls: function(){
-        var titlePlural = toTitleCase(this.options.dataType.toString()) + "s";
+    initTitle: function(){
+        if(this.options.title != null){
+            var title = new Element('h1');
+            jQuery(title).addClass("table_title_h1");
+            title.innerHTML = this.options.title;
+            this.tableConatiner.insert(title);
+            this.tableTitle = title;
+        }
+    },
+
+    initTableControls: function(){
         if(this.options.create){
             this.initCreate();
         }
-        $('table-search').setAttribute("placeholder", "Search " + titlePlural);
+        if(this.options.search){
+            this.initSearch();
+        }
     },
 
-    refreshTable: function(){
-        this.refreshData();
+    initTable: function(){
+        var table = new Element('table');
+        jQuery(table).addClass("table");
+        jQuery(table).addClass("trax_table");
+        jQuery(table).addClass("table-hover");
+        this.tableConatiner.insert(table);
+        this.table = table;
+    },
+
+    refreshTableData: function(){
+        EJS.config({cache: false});
+        new EJS({url: contextPath + '/resources/ui/templates/admin/'+this.options.dataType.toString().toLowerCase()+'/table.ejs'}).update(this.table, this.data);
 
         var actions = this.options.actions;
         if(actions != null && actions.length > 0){
@@ -147,19 +172,30 @@ Trax.Widget.DataTable = Class.create({
     },
 
     refreshData: function(){
-        EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/'+this.options.dataType.toString().toLowerCase()+'/table.ejs'}).update(this.table, this.getData());
+        this.data = this.getData();
+        this.refreshTableData();
+    },
+
+    initSearch: function(){
+        var search = new Element('input');
+        search.type = "text";
+        jQuery(search).addClass("table-search")
+        search.setAttribute("placeholder", "Search " + toTitleCase(this.options.dataType.toString()) + "s");
+        this.tableConatiner.insert(search);
+        this.searchBox = search;
     },
 
     initCreate: function(){
         var self = this;
-        $$('.table_wrapper .add').each(function(button){
-            button.update("New " + toTitleCase(self.options.dataType.toString()));
-            button.stopObserving("click");
-            button.observe("click", function(){
-                self.create();
-            });
+        var button = Trax.Widget.getButton("add");
+        button.update("New " + toTitleCase(self.options.dataType.toString()));
+        button.stopObserving("click");
+        button.observe("click", function(){
+            self.create();
         });
+
+        this.tableConatiner.insert(button);
+        this.addButton = button;
     },
 
     create: function(){
@@ -188,15 +224,17 @@ Trax.Widget.DataTable = Class.create({
 
     initEdit: function(){
         var self = this;
-        $$('.trax_table .action').each(function(container){
+        var buttons = [];
+        this.table.select('td.action').each(function(container){
             var button = Trax.Widget.getButton("edit");
-            button.id = container.id;
+            var id = container.id;
             button.observe("click", function(){
-                var id = this.readAttribute('id');
                 self.edit(id);
             });
-            container.insert(button)
+            container.insert(button);
+            buttons[id] = button;
         });
+        this.editButtons = buttons;
     },
 
     edit: function(id){
@@ -205,20 +243,23 @@ Trax.Widget.DataTable = Class.create({
 
     initDelete: function(){
         var self = this;
-        $$('.trax_table .action').each(function(container){
+        var buttons = [];
+        this.table.select('td.action').each(function(container){
             var button = Trax.Widget.getButton("delete");
-            button.id = container.id;
+            var id = container.id;
             button.observe("click", function(){
-                var id = this.readAttribute('id');
                 self.delete(id);
             });
-            container.insert(button)
+            container.insert(button);
+            buttons[id] = button;
         });
+        this.deleteButtons = buttons;
     },
 
     delete: function(id){
         Trax.getResource("resources/" + this.options.dataType.toString() + "/delete/" + id);
-        this.refreshTable();
+        this.refreshData();
+        this.refreshTableData();
     }
 });
 
@@ -265,8 +306,9 @@ Trax.Model.User.Table = Class.create(Trax.Widget.DataTable, {
         return data;
     },
 
-    edit: function(id){
+    edit: function($super, id){
         new Trax.Model.User.Edit(id);
+        this.refreshData();
     }
 
 });
@@ -348,6 +390,7 @@ Trax.Model.Role.Table = Class.create(Trax.Widget.DataTable, {
 
     edit: function(id){
         new Trax.Model.Role.Edit(id);
+        this.refreshData();
     }
 
 });
@@ -430,12 +473,13 @@ Trax.Model.Venue.Table = Class.create(Trax.Widget.DataTable, {
 
     getData: function(){
         var data = {};
-        data.venues = Trax.getResource("resources/venue/list");;
+        data.venues = Trax.getResource("resources/venue/list");
         return data;
     },
 
     edit: function(id){
         new Trax.Model.Venue.Edit(id);
+        this.refreshData();
     }
 
 });
@@ -461,6 +505,16 @@ Trax.Model.Venue.Edit = Class.create({
         data.venue = venue;
         EJS.config({cache: false});
         new EJS({url: contextPath + '/resources/ui/templates/admin/venue/edit.ejs'}).update(modalElement, data);
+
+
+        var options = {};
+        options.containerId = "rooms-table";
+        options.venueId = venue.id;
+        options.title = "Rooms";
+        options.create = true;
+        options.search = false;
+        options.actions = ["edit", "delete"];
+        new Trax.Model.Room.Table(options);
 
         $$('.modal .venue.save').each(function(button){
             button.observe("click", function(){
@@ -500,6 +554,33 @@ Trax.Model.Venue.Edit = Class.create({
  * ROOM MODEL
  *********************************************/
 Trax.Model.Room = {};
+Trax.Model.Room.Table = Class.create(Trax.Widget.DataTable, {
+
+    initialize: function($super, options){
+        options.dataType = "room";
+        $super(options);
+    },
+
+    getData: function(){
+        var data = {};
+        if(this.options.venueId != null){
+            var venue = Trax.getResource("resources/venue/" + this.options.venueId);
+            data.rooms = venue.rooms;
+        }else{
+            data.rooms = Trax.getResource("resources/room/list");
+        }
+        return data;
+    },
+
+    edit: function(id){
+        new Trax.Model.Room.Edit(id);
+    },
+
+    create: function(){
+        new Trax.Model.Room.Add(this.options.venueId, this);
+    }
+
+});
 Trax.Model.Room.Edit = Class.create({
 
 
@@ -590,6 +671,69 @@ Trax.Model.Room.Edit = Class.create({
         var rooms = [room];
         var postObject = {};
         postObject.id = this.venue.id;
+        postObject.rooms = rooms;
+        return Trax.postResource('/resources/venue/save', postObject);
+    }
+
+});
+Trax.Model.Room.Add = Class.create({
+
+
+    initialize: function(venueId, parent){
+        this.venueId = venueId;
+        this.parentTable = parent;
+        var room = {};
+        var self = this;
+        var modalElement = new Trax.Widget.Modal().getModal("room");
+        room = Trax.getResource(contextPath + "/resources/room/object");
+
+        this.populateModal(modalElement, room);
+        this.addModal(modalElement)
+
+        $$('.modal .room.delete').each(function(button){
+            button.update("Delete");
+            button.stopObserving("click");
+            button.observe("click", function(){
+                var result = self.delete(this.readAttribute('id'));
+                if(result.success){
+                    jQuery(modalElement).modal("hide");
+                    new Trax.Model.Venue.Edit(venue.id)
+                }
+            });
+        });
+
+        jQuery(modalElement).modal("show");
+    },
+
+    addModal: function(modal){
+        var self = this;
+        $$('.modal .room.submit').each(function(button){
+            button.update("Add");
+            button.stopObserving("click");
+            button.observe("click", function(){
+                var room = Trax.formToObject('editRoom');
+                var response = self.add(room);
+                if(response.success){
+                    jQuery(modal).modal("hide");
+                    var venue = response.object;
+                    self.parentTable.refreshData();
+                }
+            });
+        });
+    },
+
+    populateModal: function(modal, room){
+        var data = {};
+        data.type = "Room";
+        data.room = room;
+        EJS.config({cache: false});
+        new EJS({url: contextPath + '/resources/ui/templates/admin/room/edit.ejs'}).update(modal, data);
+    },
+
+    add: function(room){
+        var rooms = [room];
+        var postObject = {};
+        postObject.id = this.venueId;
         postObject.rooms = rooms;
         return Trax.postResource('/resources/venue/save', postObject);
     }
