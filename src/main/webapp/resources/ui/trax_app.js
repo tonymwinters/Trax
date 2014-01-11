@@ -100,15 +100,31 @@ Trax.formToObject = function(formId) {
  * WIDGETS
  *********************************************/
 Trax.Widget = {};
-Trax.Widget.getButton = function(action){
-    var button = new Element('a');
-    button.href = "#";
-    button.innerHTML = toTitleCase(action);
-    jQuery(button).addClass(action);
-    jQuery(button).addClass("button");
-    return button;
-};
+/*********************************************
+ * BUTTON WIDGET
+ *********************************************/
+Trax.Widget.Button = Class.create({
 
+    initialize: function(options){
+        this.options = options;
+        var button = new Element('a');
+        button.href = "#";
+        button.update(this.options.text);
+        jQuery(button).addClass(this.options.class);
+        jQuery(button).addClass("button");
+        button.stopObserving("click");
+        button.observe("click", this.options.action);
+        this.button = button;
+    },
+
+    getElement: function(){
+        return this.button;
+    }
+
+});
+/*********************************************
+ * DATA TABLE WIDGET
+ *********************************************/
 Trax.Widget.DataTable = Class.create({
 
     initialize: function(options){
@@ -187,14 +203,16 @@ Trax.Widget.DataTable = Class.create({
 
     initCreate: function(){
         var self = this;
-        var button = Trax.Widget.getButton("add");
-        button.update("New " + toTitleCase(self.options.dataType.toString()));
-        button.stopObserving("click");
-        button.observe("click", function(){
+        var options = {};
+        options.class = "add";
+        options.text = "New " + toTitleCase(self.options.dataType.toString());
+        options.action = function(){
             self.create();
-        });
+        };
+        var button = new Trax.Widget.Button(options);
 
-        this.tableConatiner.insert(button);
+
+        this.tableConatiner.insert(button.getElement());
         this.addButton = button;
     },
 
@@ -226,12 +244,15 @@ Trax.Widget.DataTable = Class.create({
         var self = this;
         var buttons = [];
         this.table.select('td.action').each(function(container){
-            var button = Trax.Widget.getButton("edit");
             var id = container.id;
-            button.observe("click", function(){
+            var options = {};
+            options.class = "edit";
+            options.text = "Edit";
+            options.action = function(){
                 self.edit(id);
-            });
-            container.insert(button);
+            };
+            var button = new Trax.Widget.Button(options);
+            container.insert(button.getElement());
             buttons[id] = button;
         });
         this.editButtons = buttons;
@@ -245,12 +266,15 @@ Trax.Widget.DataTable = Class.create({
         var self = this;
         var buttons = [];
         this.table.select('td.action').each(function(container){
-            var button = Trax.Widget.getButton("delete");
             var id = container.id;
-            button.observe("click", function(){
+            var options = {};
+            options.class = "delete";
+            options.text = "Delete";
+            options.action = function(){
                 self.delete(id);
-            });
-            container.insert(button);
+            };
+            var button = new Trax.Widget.Button(options);
+            container.insert(button.getElement());
             buttons[id] = button;
         });
         this.deleteButtons = buttons;
@@ -262,7 +286,9 @@ Trax.Widget.DataTable = Class.create({
         this.refreshTableData();
     }
 });
-
+/*********************************************
+ * MODAL WIDGET
+ *********************************************/
 Trax.Widget.Modal = Class.create({
     initialize: function(){
 
@@ -286,9 +312,10 @@ Trax.Widget.Modal = Class.create({
 });
 
 
+/*********************************************
+ * MODELS
+ *********************************************/
 Trax.Model = {};
-
-
 /*********************************************
  * USER MODEL
  *********************************************/
