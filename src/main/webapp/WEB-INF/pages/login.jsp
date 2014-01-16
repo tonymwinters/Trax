@@ -39,7 +39,7 @@
             <input type="text" name="username" id="username" class="form-control form_shadow_clear" placeholder="Email address" autofocus>
             <input type="password" name="password" id="password" class="form-control form_shadow_clear" placeholder="Password">
             <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
+                <input type="checkbox" value="remember-me" name="_spring_security_remember_me"> Remember me
             </label>
             <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
         </form:form>

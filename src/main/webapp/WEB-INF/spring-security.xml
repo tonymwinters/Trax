@@ -23,6 +23,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
         <logout logout-success-url="/login?logout" />
 
+        <remember-me user-service-ref="customUserDetailsService" key="1Swag4UAnd_me" token-validity-seconds="864000" />
+
     </http>
 
     <authentication-manager alias="authenticationManager">
