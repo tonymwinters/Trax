@@ -18,7 +18,7 @@
     <div id="top-bar">
         <div id="logo"><img src="<c:url value="/resources/images/logo-small.png" />" /></div>
         <div id="user-actions">
-            <c:url value="/logout" var="logoutUrl"/>
+            <c:url value="/j_spring_security_logout" var="logoutUrl"/>
             <form:form id="logout_form" name="f" action="${logoutUrl}" method="post">
                 <div class="form-actions">
                     <h3 id="logged-in-user"><%= (request.getUserPrincipal() != null) ? request.getUserPrincipal().getName() : "" %></h3>

@@ -20,7 +20,7 @@
 
     <div class="container">
 
-        <c:url value="/login" var="loginUrl"/>
+        <c:url value="/login_processing" var="loginUrl"/>
         <form:form name="f" action="${loginUrl}" method="post" cssClass="form-signin">
             <h2 class="form-signin-heading">Please sign in</h2>
 

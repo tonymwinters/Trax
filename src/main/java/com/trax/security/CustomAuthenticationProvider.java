@@ -1,4 +1,4 @@
-package com.trax.init;
+package com.trax.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    UserDetailsService userService;
+    UserDetailsService userDetailsService;
 
     ShaPasswordEncoder sha = new ShaPasswordEncoder(512);
 
@@ -25,7 +25,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = sha.encodePassword((String) authentication.getCredentials(), null);
 
-        User user = (User) userService.loadUserByUsername(username);
+        User user = (User) userDetailsService.loadUserByUsername(username);
 
         if (user == null) {
             throw new BadCredentialsException("Username not found.");
