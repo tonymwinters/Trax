@@ -14,7 +14,8 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
     <http use-expressions="true">
 
-        <intercept-url pattern="/" access="isAuthenticated()" />
+        <intercept-url pattern="/login" access="isAnonymous()" />
+        <intercept-url pattern="/**" access="isAuthenticated()" />
         <intercept-url pattern="/resources/**" access="permitAll()" />
 
         <form-login login-processing-url="/login_processing" login-page="/login"
