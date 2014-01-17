@@ -324,7 +324,7 @@ Trax.Widget.Modal = Class.create({
         var self = this;
 
         EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/user/edit.ejs'}).update(self.modalElement, self.getData());
+        new EJS({url: contextPath + '/resources/ui/templates/admin/'+this.options.dataType+'/edit.ejs'}).update(self.modalElement, self.getData());
 
     },
 
