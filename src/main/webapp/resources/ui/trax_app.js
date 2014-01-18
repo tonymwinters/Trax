@@ -315,6 +315,7 @@ Trax.Widget.Modal = Class.create({
         this.populateModal();
         this.afterLoad();
         this.initActions();
+        this.initGenericListeners();
     },
 
     createModal: function(){
@@ -379,6 +380,28 @@ Trax.Widget.Modal = Class.create({
         div.insert(jQuery('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>')[0]);
         this.dialogContent.insert(div);
         this.footer = div;
+    },
+
+    initGenericListeners: function(){
+        $$('.modal .rolesContainer ul li input:checkbox').each(function(box){
+
+            if(jQuery(box).prop('checked') == true){
+                jQuery(box).parent().addClass('checkbox_checked');
+            }
+
+            var row = jQuery(box).parent()[0];
+            if(row)
+            row.observe("click", function(ev){
+                var row = ev.target;
+                if(jQuery(row).hasClass('checkbox_checked')){
+                    jQuery(row).removeClass('checkbox_checked');
+                    jQuery(row).children(0).prop('checked', false);
+                }else{
+                    jQuery(row).addClass('checkbox_checked');
+                    jQuery(row).children(0).prop('checked', true);
+                }
+            });
+        });
     },
 
     populateModal: function(){

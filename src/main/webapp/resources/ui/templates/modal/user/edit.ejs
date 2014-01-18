@@ -10,15 +10,20 @@
         <li><label class="modalFieldName" for="lastName">Last Name</label> <input class="modalInput" type="text" name="lastName" value="<%= user.lastName %>"/></li>
         <li><label class="modalFieldName" for="name">Contact Name</label> <input class="modalInput" type="text" name="contact.name" value="<%= user.contact ? user.contact.name : "" %>"/></li>
         <li><label class="modalFieldName" for="phone">Phone</label> <input class="modalInput" type="text" name="contact.phoneNumber" value="<%= user.contact ? user.contact.phoneNumber : "" %>"/></li>
+
+        <hr>
+
         <li><label class="modalFieldName" for="roles">Roles</label>
-            <ul>
-                <li class = "hidden"><input type="checkbox" name="roles[]" value="" class="role" checked></li>
-                <% if(availableRoles){ %>
-                    <% for(var i = 0; i < availableRoles.length; ++i){ %>
-                        <li><input type="checkbox" id="id" value="<%= availableRoles[i].id %>" name="roles[]" class="role"><%= availableRoles[i].name %></input></li>
+            <div class="rolesContainer">
+                <ul>
+                    <li class = "hidden"><input type="checkbox" name="roles[]" value="" class="role" checked></li>
+                    <% if(availableRoles){ %>
+                        <% for(var i = 0; i < availableRoles.length; ++i){ %>
+                            <li><input type="checkbox" id="id" value="<%= availableRoles[i].id %>" name="roles[]" class="role"><%= availableRoles[i].name %></input></li>
+                        <% } %>
                     <% } %>
-                <% } %>
-            </ul>
+                </ul>
+            </div>
         </li>
     </ul>
 </form>
