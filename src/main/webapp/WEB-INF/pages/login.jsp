@@ -3,19 +3,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
         <title>Please Login</title>
-        <link rel="stylesheet" href="resources/reset.css" media="all" />
-        <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.css" media="all" />
-        <link rel="stylesheet" href="resources/style.css" media="all" />
-        <link rel="stylesheet" href="resources/bootstrap/css/signin.css" media="all" />
+        <link rel="stylesheet" href="<c:url value='/resources/reset.css' />" media="all" />
+        <link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/bootstrap.css' />" media="all" />
+        <link rel="stylesheet" href="<c:url value='/resources/style.css' />" media="all" />
+        <link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/signin.css' />" media="all" />
 
-        <script src="resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="<c:url value='/resources/bootstrap/js/bootstrap.min.js' />" type="text/javascript"></script>
     </head>
     <body>
 
     <div id="top-strip"></div>
 
 
-    <div id='logo-holder'><img src="resources/images/logo-large.png" /></div>
+    <div id='logo-holder'><img src="<c:url value='/resources/images/logo-large.png' />" /></div>
 
 
     <div class="container">

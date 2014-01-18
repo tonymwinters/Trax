@@ -11,12 +11,13 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
     <context:component-scan base-package='com.trax' />
 
 
-
+    <http pattern="/favicon.ico" security="none" />
     <http use-expressions="true">
 
+        <intercept-url pattern="/resources/**" access="permitAll()" />
         <intercept-url pattern="/login" access="isAnonymous()" />
         <intercept-url pattern="/**" access="isAuthenticated()" />
-        <intercept-url pattern="/resources/**" access="permitAll()" />
+
 
         <form-login login-processing-url="/login_processing" login-page="/login"
                     username-parameter="username" password-parameter="password"
