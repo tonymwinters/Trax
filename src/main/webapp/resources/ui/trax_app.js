@@ -931,7 +931,30 @@ Trax.Model.Session.Page = Class.create({
 
         // New Session Click Listener
         $$('div.new_session')[0].observe("click", function(){
-            self.createNewSessionTemplate(venue);
+            var self = this;
+            var options = {};
+            options.dataType = "session";
+            options.title = "New Session";
+            options.save = function(){
+                var response = Trax.postResource('/resources/'+this.dataType+'/save', Trax.formToObject('edit'+this.dataType));
+                if(response.success){
+                }
+            };
+            options.afterLoad = function(){
+                jQuery("#startDate").pickadate();
+                jQuery("#startTime").pickatime();
+                jQuery("#endDate").pickadate();
+                jQuery("#endTime").pickatime();
+            };
+            options.getData = function(){
+                var data = {};
+                data.type = this.dataType;
+                data.session = Trax.getResource(contextPath + "/resources/session/object");
+                data.venue = venue;
+                return data;
+            };
+            var modal = new Trax.Widget.Modal(options);
+            modal.show();
         });
 
         jQuery('.edit').editable(contextPath + '/resources/session/save', {
