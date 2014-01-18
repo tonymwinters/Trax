@@ -41,11 +41,11 @@ public class Venue {
     private Owner owner;
 
     @Expose
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue", cascade = CascadeType.REMOVE)
     private Set<Room> rooms = new HashSet<Room>();
 
     @Expose
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue", cascade = CascadeType.REMOVE)
     private Set<Session> sessions = new HashSet<Session>();
 
     @Expose

@@ -1,0 +1,13 @@
+<form id="edit<%= type %>" action="#" method="post">
+    <input type="text" class="hidden" name="id" value="<%= session.id %>" />
+    <input type="text" class="hidden" name="venue.id" value="<%= venue ? venue.id : "" %>" />
+    <ul>
+        <li><label>name</label> <input type="text" name="name" value="<%= session.name %>" /></li>
+        <li><label>description</label> <input type="text" name="description" value="<%= session.description %>"/></li>
+        <li><label>start time</label> <input id="startDate" type="text" name="startTime" value="<%= session.startTime %>"/><input id="startTime" type="text" name="startTime" value="<%= session.startTime %>"/></li>
+        <li><label>end time</label> <input id="endDate" type="text" name="endTime" value="<%= session.endTime %>"/><input id="endTime" type="text" name="endTime" value="<%= session.endTime %>"/></li>
+        <li><label>capacity</label> <input type="number" name="capacity" value="<%= session.capacity %>"/></li>
+        <li><label>room num</label> <input type="number" name="room.id" value="<%= session.room ? session.room.id : "" %>" /></li>
+
+    </ul>
+</form>

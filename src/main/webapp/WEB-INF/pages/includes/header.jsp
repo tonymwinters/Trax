@@ -5,6 +5,9 @@
     <link rel="stylesheet" type="text/css" href='<c:url value="/resources/reset.css" />' media="all" />
     <link rel="stylesheet" type="text/css" href='<c:url value="/resources/bootstrap/css/bootstrap.css" />' media="all" />
     <link rel="stylesheet" type="text/css" href='<c:url value="/resources/style.css" />' media="all" />
+    <link rel="stylesheet" href='<c:url value="/resources/datepicker/themes/classic.css" />' id="theme_base">
+    <link rel="stylesheet" href='<c:url value="/resources/datepicker/themes/classic.date.css" />' id="theme_date">
+    <link rel="stylesheet" href='<c:url value="/resources/datepicker/themes/classic.time.css" />' id="theme_time">
     <script type="text/javascript">var contextPath = "<%= request.getContextPath() %>";</script>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
