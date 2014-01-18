@@ -341,6 +341,7 @@ Trax.Widget.Modal = Class.create({
     initDialog: function(){
         var div = new Element('div');
         jQuery(div).addClass("modal-dialog");
+        jQuery(div).addClass("trax-modal-dialog");
         this.container.update(div);
         this.dialog = div;
     },
@@ -348,6 +349,7 @@ Trax.Widget.Modal = Class.create({
     initContent: function(){
         var div = new Element('div');
         jQuery(div).addClass("modal-content");
+        jQuery(div).addClass("trax-modal-content");
         this.dialog.insert(div);
         this.dialogContent = div;
     },
@@ -355,6 +357,7 @@ Trax.Widget.Modal = Class.create({
     initHeader: function(){
         var div = new Element('div');
         jQuery(div).addClass("modal-header");
+        jQuery(div).addClass("trax-modal-header");
         div.insert(jQuery('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>')[0]);
         div.insert(jQuery('<h4 class="modal-title">'+this.options.title+'</h4>')[0]);
         this.dialogContent.insert(div);
@@ -364,6 +367,7 @@ Trax.Widget.Modal = Class.create({
     initBody: function(){
         var div = new Element('div');
         jQuery(div).addClass("modal-body");
+        jQuery(div).addClass("trax-modal-body");
         this.dialogContent.insert(div);
         this.body = div;
     },
@@ -371,6 +375,7 @@ Trax.Widget.Modal = Class.create({
     initFooter: function(){
         var div = new Element('div');
         jQuery(div).addClass("modal-footer");
+        jQuery(div).addClass("trax-modal-footer");
         div.insert(jQuery('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>')[0]);
         this.dialogContent.insert(div);
         this.footer = div;
