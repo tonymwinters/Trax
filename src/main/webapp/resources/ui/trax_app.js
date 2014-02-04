@@ -78,8 +78,8 @@ function setAttr(obj, keys, element){
             newItem[element.id] = element.value;
             obj[attr].push(newItem);
         }else{
-            var value = element.value ;
-            obj[attr] = (value == "" ? null : value);
+            var value = element.value;
+            obj[attr] = value;
         }
     }
 }
@@ -100,30 +100,112 @@ Trax.formToObject = function(formId) {
  * WIDGETS
  *********************************************/
 Trax.Widget = {};
+
 /*********************************************
  * BUTTON WIDGET
  *********************************************/
 Trax.Widget.Button = Class.create({
 
     initialize: function(options){
-        this.options = options;
-        var button = new Element('a');
-        button.href = "#";
-        button.update(this.options.text);
-        var classes = this.options.classes;
+        if(options != null){
+            this.text = options.text;
+            this.classes = options.classes;
+            this.action = options.action;
+            this.create();
+        }
+    },
+
+    create: function(){
+        var button = new Element('button');
+        button.update(this.text);
+        var classes = this.classes;
         for(var i = 0; i < classes.length; i++){
             jQuery(button).addClass(classes[i]);
         }
         jQuery(button).addClass("button");
-        button.stopObserving("click");
-        button.observe("click", this.options.action);
+        jQuery(button).addClass('btn');
+        if(this.action != null){
+            //add click css
+            jQuery(button).addClass('clickable');
+            button.stopObserving('click');
+            button.observe('click', this.action);
+        }
         this.button = button;
+        return this;
     },
 
     getElement: function(){
+        if(this.button == null){
+            this.create();
+        }
         return this.button;
     }
 
+});
+
+/*********************************************
+ * Trigger WIDGET
+ *********************************************/
+Trax.Widget.Trigger = Class.create({
+
+    initialize: function(event, action){
+        this.event = event;
+        this.action = action;
+    },
+
+    getRowClasses: function() {
+        if(this.rowClasses != null){
+            return this.rowClasses;
+        }
+        return [];
+    },
+
+    create: function(){
+        return new Trax.Widget.Trigger(this.event, this.action);
+    }
+});
+
+/*********************************************
+ * INPUT WIDGET
+ *********************************************/
+Trax.Widget.Input = Class.create({
+    initialize: function(options){
+        if(options != null){
+        }
+    }
+});
+
+/*********************************************
+ * WRAPPER WIDGET
+ *********************************************/
+Trax.Widget.Wrapper = Class.create({
+    initialize: function(title, containerId, contents){
+        this.title = title;
+        this.container = $(containerId);
+        jQuery(this.container).addClass("widget_wrapper");
+        this.setTitle(title);
+        this.addContents(contents)
+    },
+
+    setTitle: function(title){
+        var el = new Element('h1');
+        jQuery(el).addClass("wrapper_title_h1");
+        el.innerHTML = title;
+        this.container.insert(el);
+    },
+
+    addContents: function(contents){
+        var self = this;
+        if(contents != null){
+            contents.each(function(item){
+                self.container.insert(item);
+            });
+        }
+    },
+
+    getElement: function(){
+        return this.container;
+    }
 });
 
 /*********************************************
@@ -131,60 +213,48 @@ Trax.Widget.Button = Class.create({
  *********************************************/
 Trax.Widget.Datasource = Class.create({
 
-    initialize: function(options){
-        this.dataType = options.dataType;
-        this.getData = options.getData;
+    initialize: function(){
+    },
+
+    refreshData: function(){
+        if(this.fetchData != null){
+            this.data = this.fetchData();
+            return this.data;
+        }
+        return {};
     },
 
     getData: function(){
-        return {};
+        if(this.data == null){
+            this.data = this.refreshData();
+        }
+        return this.data;
     }
-
 });
+
 /*********************************************
- * DATA TABLE WIDGET
+ * DATATABLE WIDGET
  *********************************************/
 Trax.Widget.DataTable = Class.create({
-
-    initialize: function(options){
-        this.options = options;
-        this.initContainer();
-        this.initTitle();
-        this.initTableControls();
+    initialize: function(template, datasource){
+        this.template = template
+        this.datasource = datasource;
         this.initTable();
-        this.refreshData();
-        this.refreshTableData();
+        this.refreshTable();
 
-        jQuery(this.tableConatiner).addClass("table_wrapper");
     },
 
-    getData: function(){
-        return {};
-    },
-
-    initContainer: function(){
-        var container = $(this.options.containerId);
-        container.innerHTML = "";
-        this.tableConatiner = container
-    },
-
-    initTitle: function(){
-        if(this.options.title != null){
-            var title = new Element('h1');
-            jQuery(title).addClass("table_title_h1");
-            title.innerHTML = this.options.title;
-            this.tableConatiner.insert(title);
-            this.tableTitle = title;
+    refreshTable: function(){
+        if(this.table == null){
+            this.initTable();
         }
-    },
+        var table = this.table;
+        table.innerHTML = "";
 
-    initTableControls: function(){
-        if(this.options.create){
-            this.initCreate();
-        }
-        if(this.options.search){
-            this.initSearch();
-        }
+        EJS.config({cache: false});
+        new EJS({url: contextPath + this.template}).update(table, this.datasource.getData());
+        this.initRowActions(this.rowActions);
+        this.initRowTriggers(this.rowTriggers);
     },
 
     initTable: function(){
@@ -192,129 +262,77 @@ Trax.Widget.DataTable = Class.create({
         jQuery(table).addClass("table");
         jQuery(table).addClass("trax_table");
         jQuery(table).addClass("table-hover");
-        this.tableConatiner.insert(table);
         this.table = table;
     },
 
-    refreshTableData: function(){
-        EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/'+this.options.dataType.toString().toLowerCase()+'/table.ejs'}).update(this.table, this.data);
-
-        var actions = this.options.actions;
-        if(actions != null && actions.length > 0){
-            this.initActions();
-        }
-    },
-
-    refreshData: function(){
-        this.data = this.getData();
-        this.refreshTableData();
-    },
-
-    initSearch: function(){
-        var search = new Element('input');
-        search.type = "text";
-        jQuery(search).addClass("table-search")
-        search.setAttribute("placeholder", "Search " + toTitleCase(this.options.dataType.toString()) + "s");
-        this.tableConatiner.insert(search);
-        this.searchBox = search;
-    },
-
-    initCreate: function(){
-        var self = this;
-        var options = {};
-        options.classes = ["add"];
-        options.text = "New " + toTitleCase(self.options.dataType.toString());
-        options.action = function(){
-            self.create();
-        };
-        var button = new Trax.Widget.Button(options);
-
-
-        this.tableConatiner.insert(button.getElement());
-        this.addButton = button;
-    },
-
-    create: function(){
-
-    },
-
-    initActions: function(){
+    initRowActions: function(actions){
+        if(actions == null || actions.size() < 1){return;}
+        this.rowActions = actions;
+        //create extra column
         var actionColumnHeader = new Element('th');
         actionColumnHeader.innerHTML = "Actions";
         this.table.down('thead').down('tr').insert(actionColumnHeader);
+
+        //add buttons
         var rows = this.table.down('tbody').rows;
         for(var i = 0; i < rows.length; i++){
             var row = rows[i];
             var actionColumn = new Element('td');
             actionColumn.id = row.id;
             jQuery(actionColumn).addClass("action");
+
+            //add action buttons
+            actions.each(function(action){
+
+                var a = action.create();
+                var el = a.getElement();
+                el.id = row.id;
+                actionColumn.insert(el);
+            });
             row.insert(actionColumn);
-        }
-        if(arrayContains(this.options.actions, "edit")){
-            this.initEdit();
-        }
-        if(arrayContains(this.options.actions, "delete")){
-            this.initDelete();
-        }
+
+        };
+        this.rowActions = actions;
     },
 
-    initEdit: function(){
-        var self = this;
-        var buttons = [];
-        this.table.select('td.action').each(function(container){
-            var id = container.id;
-            var options = {};
-            options.classes = ["edit"];
-            options.text = "Edit";
-            options.action = function(){
-                self.edit(id);
-            };
-            var button = new Trax.Widget.Button(options);
-            container.insert(button.getElement());
-            buttons[id] = button;
-        });
-        this.editButtons = buttons;
+    initRowTriggers: function(triggers){
+        if(triggers == null || triggers < 1){return;}
+
+        //get rows
+        var rows = this.table.down('tbody').rows;
+        for(var i = 0; i < rows.length; i++){
+            var row = rows[i];
+            triggers.each(function(trigger){
+                //add click css
+                if(trigger.event = 'click'){
+                    jQuery(row).addClass('clickable');
+                }
+                //create new trigger and add to row event
+                var t = trigger.create();
+                t.id = row.id;
+                row.stopObserving(t.event);
+                row.observe(t.event, t.action);
+            });
+        };
+        this.rowTriggers = triggers;
     },
 
-    edit: function(id){
-        console.log("default " + id);
-    },
-
-    initDelete: function(){
-        var self = this;
-        var buttons = [];
-        this.table.select('td.action').each(function(container){
-            var id = container.id;
-            var options = {};
-            options.classes = ["delete"];
-            options.text = "Delete";
-            options.action = function(){
-                self.delete(id);
-            };
-            var button = new Trax.Widget.Button(options);
-            container.insert(button.getElement());
-            buttons[id] = button;
-        });
-        this.deleteButtons = buttons;
-    },
-
-    delete: function(id){
-        Trax.getResource("resources/" + this.options.dataType.toString() + "/delete/" + id);
-        this.refreshData();
-        this.refreshTableData();
+    getElement: function(){
+        return this.table;
     }
+
 });
+
 /*********************************************
  * MODAL WIDGET
  *********************************************/
 Trax.Widget.Modal = Class.create({
-    initialize: function(options, parent){
-        this.options = options;
+    initialize: function(title, template, datasource){
+        this.title = title;
+        this.template = template
+        this.datasource = datasource;
         this.createModal();
         this.populateModal();
-        this.afterLoad();
-        this.initActions();
         this.initGenericListeners();
     },
 
@@ -328,14 +346,18 @@ Trax.Widget.Modal = Class.create({
     },
 
     initContainer: function(){
-        var type = this.options.dataType;
-        var id = "modal-"+type;
-        if($(id) == null && type != null){
-            var modal = jQuery('<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>')[0];
-            modal.id = id;
-            $(document.body).insert(modal)
+        var id;
+        var modal;
+        if(this.type != null){
+            id = "modal-"+this.type;
+        }else{
+            id = "modal-plane";
         }
+        modal = jQuery('<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>')[0];
+        modal.id = id;
+        $(document.body).insert(modal)
         this.container = $(id);
+
 
     },
 
@@ -360,7 +382,7 @@ Trax.Widget.Modal = Class.create({
         jQuery(div).addClass("modal-header");
         jQuery(div).addClass("trax-modal-header");
         div.insert(jQuery('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>')[0]);
-        div.insert(jQuery('<h4 class="modal-title">'+this.options.title+'</h4>')[0]);
+        div.insert(jQuery('<h4 class="modal-title">'+this.title+'</h4>')[0]);
         this.dialogContent.insert(div);
         this.header = div;
     },
@@ -374,12 +396,24 @@ Trax.Widget.Modal = Class.create({
     },
 
     initFooter: function(){
+        var self = this;
         var div = new Element('div');
         jQuery(div).addClass("modal-footer");
         jQuery(div).addClass("trax-modal-footer");
-        div.insert(jQuery('<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>')[0]);
+
+        div.insert(jQuery('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>')[0]);
         this.dialogContent.insert(div);
         this.footer = div;
+    },
+
+    initButtons: function(buttons){
+        var self = this;
+        if(buttons != null){
+            buttons.each(function(button){
+                var b = button.create();
+                self.footer.insert(b.getElement());
+            });
+        }
     },
 
     initGenericListeners: function(){
@@ -390,52 +424,25 @@ Trax.Widget.Modal = Class.create({
             }
 
             var row = jQuery(box).parent()[0];
-            if(row)
-            row.observe("click", function(ev){
-                var row = ev.target;
-                if(jQuery(row).hasClass('checkbox_checked')){
-                    jQuery(row).removeClass('checkbox_checked');
-                    jQuery(row).children(0).prop('checked', false);
-                }else{
-                    jQuery(row).addClass('checkbox_checked');
-                    jQuery(row).children(0).prop('checked', true);
-                }
-            });
+            if(row){
+                row.stopObserving("click");
+                row.observe("click", function(ev){
+                    var row = ev.target;
+                    if(jQuery(row).hasClass('checkbox_checked')){
+                        jQuery(row).removeClass('checkbox_checked');
+                        jQuery(row).children(0).prop('checked', false);
+                    }else{
+                        jQuery(row).addClass('checkbox_checked');
+                        jQuery(row).children(0).prop('checked', true);
+                    }
+                });
+            }
         });
     },
 
     populateModal: function(){
-        var self = this;
-
         EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/modal/'+this.options.dataType+'/edit.ejs'}).update(self.body, self.options.getData());
-
-    },
-
-    afterLoad: function(){
-        if(this.options.afterLoad != null){
-            this.options.afterLoad();
-        }
-    },
-
-    initActions: function(){
-        this.initSave();
-    },
-
-    initSave: function(){
-        var self = this;
-        var options = {};
-        options.classes = [this.options.dataType, "save", "button", "btn", "btn-primary"];
-        options.text = "Save";
-        options.action = function(){self.save()};
-        var button = new Trax.Widget.Button(options);
-
-        this.footer.insert(button.getElement());
-    },
-
-    save: function(){
-        this.hide();
-        return this.options.save();
+        new EJS({url: contextPath + this.template}).update(this.body, this.datasource.fetchData());
     },
 
     getElement: function(){
@@ -471,47 +478,6 @@ Trax.Model.User.Table = Class.create(Trax.Widget.DataTable, {
         var data = {};
         data.users = Trax.getResource("resources/user/list");
         return data;
-    },
-
-    edit: function($super, id){
-        var self = this;
-        var options = {};
-        options.dataType = "user";
-        options.userId = id;
-        options.title = "User Edit";
-        options.actions = ["save"];
-        options.save = function(){
-            var response = Trax.postResource('/resources/'+this.dataType+'/save', Trax.formToObject('edit'+this.dataType));
-            if(response.success){
-                self.refreshData();
-            }
-        };
-        options.afterLoad = function(){
-            var user = this.user;
-            if(user.roles != null){
-                user.roles.each(function(role){
-                    $$('.role').each(function(element){
-                        if(element.value == role.id){
-                            element.checked = true;
-                        }
-                    });
-                });
-            }
-        };
-        options.getData = function(){
-            var availableRoles = new Trax.Model.Role().getRoles();
-            var data = {};
-            data.type = this.dataType;
-            var id = this.userId;
-            if(id){
-                data.user = Trax.getResource(contextPath + "/resources/user/"+id);
-            }
-            data.availableRoles = availableRoles;
-            this.user = data.user;
-            return data;
-        };
-        var modal = new Trax.Widget.Modal(options);
-        modal.show();
     },
 
     create: function($super){
@@ -558,7 +524,7 @@ Trax.Model.Role.Table = Class.create(Trax.Widget.DataTable, {
 
     getData: function(){
         var data = {};
-        data.roles = Trax.getResource("resources/role/list");;
+        data.roles = Trax.getResource("resources/role/list");
         return data;
     },
 

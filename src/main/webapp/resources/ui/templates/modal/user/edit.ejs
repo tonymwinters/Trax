@@ -1,9 +1,11 @@
-<form id="edit<%= type %>" class="modalFormContainer" action="#" method="post">
+<form id="editUser" class="modalFormContainer" action="#" method="post">
     <input type="text" class="hidden" name="id" value="<%= user.id %>" />
     <input type="text" class="hidden" name="contact.id" value="<%= user.contact ? user.contact.id : "" %>" />
     <ul>
         <li><label class="modalFieldName" for="username">Username</label> <input class="modalInput" type="text" name="username" value="<%= user.username %>" /></li>
-        <li><label class="modalFieldName" for="password">Password</label> <input class="modalInput" type="text" name="password" /></li>
+        <%if(user.id == null){%>
+            <li><label class="modalFieldName" for="password">Password</label> <input class="modalInput" type="text" name="password" /></li>
+        <%}%>
         <li><label class="modalFieldName" for="email">Email</label> <input class="modalInput" type="text" name="contact.emailAddress" value="<%= user.contact ? user.contact.emailAddress : "" %>"/></li>
         <li><label class="modalFieldName" for="firstName">First Name</label> <input class="modalInput" type="text" name="firstName" value="<%= user.firstName %>"/></li>
         <li><label class="modalFieldName" for="middleName">Middle Name</label> <input class="modalInput" type="text" name="middleName" value="<%= user.middleName %>"/></li>

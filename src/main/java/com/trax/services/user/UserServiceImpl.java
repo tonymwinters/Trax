@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.HashSet;
@@ -71,6 +72,9 @@ public class UserServiceImpl implements UserService{
                     user.setRoles(roleService.getRoles(roles));
                 }
                 if (Alfred.notNull(contact)) {
+                    if(StringUtils.isEmpty(contact.getAsJsonObject().get("id").getAsJsonPrimitive().getAsString()))
+                        contact.getAsJsonObject().remove("id");
+
                     user.setContact(Alfred.gsonDeserializer.fromJson(contact, Contact.class));
                 }
 

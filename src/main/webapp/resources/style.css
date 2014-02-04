@@ -87,6 +87,10 @@ h2{
     color: #eee;
 }
 
+.clickable{
+    cursor: pointer;
+}
+
 #app_container{
     width: 960;
     margin: 0 auto;
@@ -146,12 +150,12 @@ h2{
 .app_add{
     background-position: -400px -200px;
 }
-.table_wrapper{
+.widget_wrapper {
     display: inline-table;
     background-color: #50585C;
 }
 
-.table_wrapper .add{
+.widget_wrapper .add{
     background-color: #12c2c0;
     width: 100px;
     float: right;
@@ -213,7 +217,7 @@ h2{
     background-color: #FF6969;
 }
 
-.table_title_h1{
+.wrapper_title_h1{
     display: inline-block;
     padding-left: 20px;
     font-weight: 200;
