@@ -183,6 +183,7 @@ Trax.Widget.Wrapper = Class.create({
         this.title = title;
         this.container = $(containerId);
         jQuery(this.container).addClass("widget_wrapper");
+        this.container.innerHTML = "";
         this.setTitle(title);
         this.addContents(contents)
     },
@@ -467,44 +468,6 @@ Trax.Model = {};
  * USER MODEL
  *********************************************/
 Trax.Model.User = {};
-Trax.Model.User.Table = Class.create(Trax.Widget.DataTable, {
-
-    initialize: function($super, options){
-        options.dataType = "user";
-        $super(options);
-    },
-
-    getData: function(){
-        var data = {};
-        data.users = Trax.getResource("resources/user/list");
-        return data;
-    },
-
-    create: function($super){
-        var self = this;
-        var options = {};
-        options.dataType = "user";
-        options.title = "New User";
-        options.save = function(){
-            var response = Trax.postResource('/resources/'+this.dataType+'/save', Trax.formToObject('edit'+this.dataType));
-            if(response.success){
-                self.refreshData();
-            }
-        };
-        options.getData = function(){
-            var availableRoles = new Trax.Model.Role().getRoles();
-            var data = {};
-            data.type = this.dataType;
-            data.user = Trax.getResource(contextPath + "/resources/user/object");
-            data.availableRoles = availableRoles;
-            this.user = data.user;
-            return data;
-        };
-        var modal = new Trax.Widget.Modal(options);
-        modal.show();
-    }
-
-});
 
 
 /*********************************************
@@ -514,79 +477,6 @@ Trax.Model.Role = Class.create({
     getRoles: function(){
         return Trax.getResource(contextPath + "/resources/role/list");
     }
-});
-Trax.Model.Role.Table = Class.create(Trax.Widget.DataTable, {
-
-    initialize: function($super, options){
-        options.dataType = "role";
-        $super(options);
-    },
-
-    getData: function(){
-        var data = {};
-        data.roles = Trax.getResource("resources/role/list");
-        return data;
-    },
-
-    edit: function(id){
-        new Trax.Model.Role.Edit(id);
-        this.refreshData();
-    }
-
-});
-Trax.Model.Role.Edit = Class.create({
-
-
-    initialize: function(id){
-        var role = {};
-
-        if(id){
-            role = Trax.getResource(contextPath + "/resources/role/"+id);
-        }else{
-            role = Trax.getResource(contextPath + "/resources/role/object");
-        }
-        this.populateModal(role);
-
-    },
-
-    populateModal: function(role){
-        var self = this;
-        var modalElement = new Trax.Widget.Modal().getModal("role");
-        var availablePermissions = new Trax.Model.Permission().getPermissions();
-        var data = {};
-        data.type = "Role";
-        data.role = role;
-        data.availablePermissions = availablePermissions;
-
-        EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/role/edit.ejs'}).update(modalElement, data);
-        if(role.permissions != null){
-            role.permissions.each(function(permission){
-                $$('.permission').each(function(element){
-                    if(element.value == permission.id){
-                        element.checked = true;
-                    }
-                });
-            });
-        }
-
-        $$('.modal .role.save').each(function(button){
-            button.observe("click", function(){
-                var response = self.save();
-                if(response.success){
-                    jQuery(modalElement).modal("hide");
-                    new Trax.Model.Role.Table();
-                }
-            });
-        });
-
-        jQuery(modalElement).modal("show");
-    },
-
-    save: function(){
-        return Trax.postResource('/resources/role/save', Trax.formToObject('editRole'));
-    }
-
 });
 
 
@@ -604,25 +494,6 @@ Trax.Model.Permission = Class.create({
  * VENUE MODEL
  *********************************************/
 Trax.Model.Venue = {};
-Trax.Model.Venue.Table = Class.create(Trax.Widget.DataTable, {
-
-    initialize: function($super, options){
-        options.dataType = "venue";
-        $super(options);
-    },
-
-    getData: function(){
-        var data = {};
-        data.venues = Trax.getResource("resources/venue/list");
-        return data;
-    },
-
-    edit: function(id){
-        new Trax.Model.Venue.Edit(id);
-        this.refreshData();
-    }
-
-});
 Trax.Model.Venue.Edit = Class.create({
 
 
