@@ -132,13 +132,13 @@ $("usersTab").observe("click", function(){
             return data;
         };
 
-        var modal = new Trax.Widget.Modal(title,'/resources/ui/templates/modal/'+type+'/edit.ejs', modalDatasource);
+        var modal = new Trax.Widget.Modal("Edit User",'/resources/ui/templates/modal/'+type+'/edit.ejs', modalDatasource);
 
         var saveButton = new Trax.Widget.Button();
         saveButton.text = "Save";
         saveButton.classes = ["save"];
         saveButton.action = function (){
-            var response = Trax.postResource('/resources/'+type+'/save', Trax.formToObject(formId));
+            var response = Trax.postResource('/resources/'+type+'/save', Trax.formToObject('editUser'));
             if(response.success){
                 table.datasource.refreshData();
                 table.refreshTable();
