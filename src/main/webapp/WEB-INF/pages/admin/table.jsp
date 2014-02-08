@@ -21,5 +21,5 @@
 
 </div>
 
-<script src="<c:url value='/resources/ui/admin/admin.js'/>" type="text/javascript"></script>
+<script src="<c:url value='/resources/ui/pages/admin/admin.js'/>" type="text/javascript"></script>
 <jsp:include page="../includes/footer.jsp" />
