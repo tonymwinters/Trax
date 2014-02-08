@@ -19,7 +19,7 @@
 <body>
     <div id="top-strip"></div>
     <div id="top-bar">
-        <div id="logo"><img src="<c:url value="/resources/images/logo-small.png" />" /></div>
+        <a href="${pageContext.request.contextPath}/"><div id="logo"><img src="<c:url value="/resources/images/logo-small.png" />" /></div></a>
         <div id="user-actions">
             <c:url value="/j_spring_security_logout" var="logoutUrl"/>
             <form:form id="logout_form" name="f" action="${logoutUrl}" method="post">
