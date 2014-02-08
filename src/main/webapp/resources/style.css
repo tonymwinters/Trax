@@ -260,6 +260,12 @@ h2{
     margin-top: -1px;
 }
 
+.modal .save:hover{
+    text-decoration: none;
+    color: white !important;
+    background-color: #5da170 !important;
+}
+
 .modal .edit{
     background-color: #12c2c0;
 }
@@ -569,6 +575,9 @@ h2{
 
 .trax-modal-content{
     background-color: #f9f9f9;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    border-radius: 0px;
 }
 
 .trax-modal-body{
@@ -577,6 +586,10 @@ h2{
 }
 
 .trax-modal-footer{
+
+}
+
+.trax-modal-dialog{
 
 }
 
