@@ -2013,7 +2013,6 @@ textarea.input-lg {
 
 .btn:hover,
 .btn:focus {
-  color: #333333;
   text-decoration: none;
 }
 
@@ -5596,7 +5595,6 @@ button.close {
 body.modal-open,
 .modal-open .navbar-fixed-top,
 .modal-open .navbar-fixed-bottom {
-  margin-right: 15px;
 }
 
 .modal {
@@ -5663,7 +5661,7 @@ body.modal-open,
 }
 
 .modal-backdrop.in {
-  opacity: 0.5;
+  opacity: 0.3;
   filter: alpha(opacity=50);
 }
 
