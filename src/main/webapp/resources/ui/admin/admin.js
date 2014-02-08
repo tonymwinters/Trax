@@ -237,6 +237,7 @@ $('venuesTab').observe("click", function(){
         editButton.text = "Edit";
         editButton.classes = ["edit"];
         editButton.action = function (){
+            var self = this;
             var roomDatasource = new Trax.Widget.Datasource();
             roomDatasource.fetchData = function(){
                 var data = {};
