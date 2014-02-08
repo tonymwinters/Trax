@@ -4,6 +4,7 @@
  */
 
 document.observe("dom:loaded", function() {
+    console.log("bitches and hoes");
 });
 
 
@@ -185,7 +186,7 @@ $('venuesTab').observe("click", function(){
         return data;
     };
 
-    var table = new Trax.Widget.DataTable('/resources/ui/templates/admin/'+type+'/adminTable.ejs', userTableDatasource);
+    var table = new Trax.Widget.DataTable('/resources/ui/templates/table/'+type+'/adminTable.ejs', userTableDatasource);
 
     var deleteButton = new Trax.Widget.Button();
     deleteButton.text = "Delete";
@@ -204,7 +205,7 @@ $('venuesTab').observe("click", function(){
         var modalDatasource = new Trax.Widget.Datasource();
         modalDatasource.fetchData = function(){
             var data = {};
-            data.venue = Trax.getResource("/resources/user/"+self.id);
+            data.venue = Trax.getResource("/resources/"+type+"/"+self.id);
             return data;
         };
 
@@ -221,6 +222,50 @@ $('venuesTab').observe("click", function(){
                 modal.hide();
             }
         };
+
+        var roomsTable = new Trax.Widget.DataTable('/resources/ui/templates/table/room/adminTable.ejs', modalDatasource);
+        var deleteButton = new Trax.Widget.Button();
+        deleteButton.text = "Delete";
+        deleteButton.classes = ["delete"];
+        deleteButton.action = function (){
+            Trax.getResource("resources/room/delete/" + this.id);
+            roomsTable.datasource.refreshData();
+            roomsTable.refreshTable();
+        };
+
+        var editButton = new Trax.Widget.Button();
+        editButton.text = "Edit";
+        editButton.classes = ["edit"];
+        editButton.action = function (){
+            var roomDatasource = new Trax.Widget.Datasource();
+            roomDatasource.fetchData = function(){
+                var data = {};
+                data.room = Trax.getResource("/resources/room/"+self.id);
+                return data;
+            };
+
+            var modal = new Trax.Widget.Modal("Edit Room",'/resources/ui/templates/modal/room/adminModal.ejs', roomDatasource);
+
+            var saveButton = new Trax.Widget.Button();
+            saveButton.text = "Save";
+            saveButton.classes = ["save"];
+            saveButton.action = function (){
+                var response = Trax.postResource('/resources/room/save', Trax.formToObject("editRoom"));
+                if(response.success){
+                    roomsTable.datasource.refreshData();
+                    roomsTable.refreshTable();
+                    modal.hide();
+                }
+            };
+
+            modal.initButtons([saveButton]);
+
+            modal.show();
+
+        };
+
+        roomsTable.initRowActions([editButton, deleteButton]);
+        var widgetWrapper = new Trax.Widget.Wrapper("Rooms",'rooms-table', [roomsTable.getElement()]);
 
         modal.initButtons([saveButton]);
 

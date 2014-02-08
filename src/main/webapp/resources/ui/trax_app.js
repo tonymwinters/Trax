@@ -268,11 +268,17 @@ Trax.Widget.DataTable = Class.create({
 
     initRowActions: function(actions){
         if(actions == null || actions.size() < 1){return;}
+
+        //only create new header if one is already there
+        var header = this.table.down('thead');
+        if(header != null){
+            //create extra column
+            var actionColumnHeader = new Element('th');
+            actionColumnHeader.innerHTML = "Actions";
+            this.table.down('thead').down('tr').insert(actionColumnHeader);
+        }
+
         this.rowActions = actions;
-        //create extra column
-        var actionColumnHeader = new Element('th');
-        actionColumnHeader.innerHTML = "Actions";
-        this.table.down('thead').down('tr').insert(actionColumnHeader);
 
         //add buttons
         var rows = this.table.down('tbody').rows;
