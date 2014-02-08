@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<script src="<c:url value='/resources/date.js'/>" type="text/javascript"></script>
+<script src="<c:url value='/resources/lib/date.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/ui/jeditable.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/ui/trax_app.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/ui/session/session.js'/>" type="text/javascript"></script>

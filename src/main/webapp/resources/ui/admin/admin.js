@@ -15,7 +15,7 @@ function initTable(type, title, editaction){
         return data;
     };
 
-    var table = new Trax.Widget.DataTable('/resources/ui/templates/admin/'+type+'/table.ejs', userTableDatasource);
+    var table = new Trax.Widget.DataTable('/resources/ui/templates/admin/'+type+'/adminTable.ejs', userTableDatasource);
 
     var deleteButton = new Trax.Widget.Button();
     deleteButton.text = "Delete";
@@ -78,7 +78,7 @@ function initModal(type, title, formId, fetchData){
         };
     }
 
-    var modal = new Trax.Widget.Modal(title,'/resources/ui/templates/modal/'+type+'/edit.ejs', modalDatasource);
+    var modal = new Trax.Widget.Modal(title,'/resources/ui/templates/modal/'+type+'/adminModal.ejs', modalDatasource);
 
     var saveButton = new Trax.Widget.Button();
     saveButton.text = "Save";
@@ -108,7 +108,7 @@ $("usersTab").observe("click", function(){
         return data;
     };
 
-    var table = new Trax.Widget.DataTable('/resources/ui/templates/admin/'+type+'/table.ejs', userTableDatasource);
+    var table = new Trax.Widget.DataTable('/resources/ui/templates/table/'+type+'/adminTable.ejs', userTableDatasource);
 
     var deleteButton = new Trax.Widget.Button();
     deleteButton.text = "Delete";
@@ -132,7 +132,7 @@ $("usersTab").observe("click", function(){
             return data;
         };
 
-        var modal = new Trax.Widget.Modal("Edit User",'/resources/ui/templates/modal/'+type+'/edit.ejs', modalDatasource);
+        var modal = new Trax.Widget.Modal("Edit User",'/resources/ui/templates/modal/'+type+'/adminModal.ejs', modalDatasource);
 
         var saveButton = new Trax.Widget.Button();
         saveButton.text = "Save";
@@ -185,7 +185,7 @@ $('venuesTab').observe("click", function(){
         return data;
     };
 
-    var table = new Trax.Widget.DataTable('/resources/ui/templates/admin/'+type+'/table.ejs', userTableDatasource);
+    var table = new Trax.Widget.DataTable('/resources/ui/templates/admin/'+type+'/adminTable.ejs', userTableDatasource);
 
     var deleteButton = new Trax.Widget.Button();
     deleteButton.text = "Delete";
@@ -208,13 +208,13 @@ $('venuesTab').observe("click", function(){
             return data;
         };
 
-        var modal = new Trax.Widget.Modal(title,'/resources/ui/templates/modal/'+type+'/edit.ejs', modalDatasource);
+        var modal = new Trax.Widget.Modal("Edit Venue",'/resources/ui/templates/modal/'+type+'/adminModal.ejs', modalDatasource);
 
         var saveButton = new Trax.Widget.Button();
         saveButton.text = "Save";
         saveButton.classes = ["save"];
         saveButton.action = function (){
-            var response = Trax.postResource('/resources/'+type+'/save', Trax.formToObject(formId));
+            var response = Trax.postResource('/resources/'+type+'/save', Trax.formToObject("editVenue"));
             if(response.success){
                 table.datasource.refreshData();
                 table.refreshTable();
@@ -251,7 +251,7 @@ $('rolesTab').observe("click", function(){
         return data;
     };
 
-    var table = new Trax.Widget.DataTable('/resources/ui/templates/admin/'+type+'/table.ejs', userTableDatasource);
+    var table = new Trax.Widget.DataTable('/resources/ui/templates/admin/'+type+'/adminTable.ejs', userTableDatasource);
 
     var deleteButton = new Trax.Widget.Button();
     deleteButton.text = "Delete";
@@ -274,7 +274,7 @@ $('rolesTab').observe("click", function(){
             return data;
         };
 
-        var modal = new Trax.Widget.Modal(title,'/resources/ui/templates/modal/'+type+'/edit.ejs', modalDatasource);
+        var modal = new Trax.Widget.Modal(title,'/resources/ui/templates/modal/'+type+'/adminModal.ejs', modalDatasource);
 
         var saveButton = new Trax.Widget.Button();
         saveButton.text = "Save";

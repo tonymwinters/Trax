@@ -515,7 +515,7 @@ Trax.Model.Venue.Edit = Class.create({
         data.type = "Venue";
         data.venue = venue;
         EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/edit.ejs'}).update(modalElement, data);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/venue/adminModal.ejs'}).update(modalElement, data);
 
 
         var options = {};
@@ -667,7 +667,7 @@ Trax.Model.Room.Edit = Class.create({
         data.type = "Room";
         data.room = room;
         EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/room/edit.ejs'}).update(modal, data);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/room/adminModal.ejs'}).update(modal, data);
     },
 
     delete: function(id){
@@ -738,7 +738,7 @@ Trax.Model.Room.Add = Class.create({
         data.type = "Room";
         data.room = room;
         EJS.config({cache: false});
-        new EJS({url: contextPath + '/resources/ui/templates/admin/room/edit.ejs'}).update(modal, data);
+        new EJS({url: contextPath + '/resources/ui/templates/admin/room/adminModal.ejs'}).update(modal, data);
     },
 
     add: function(room){
