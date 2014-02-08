@@ -14,7 +14,12 @@ Trax.Widget.Button = Class.create({
 
     create: function(){
         var button = new Element('button');
-        button.update(this.text);
+        var icon = new Element('div');
+        jQuery(icon).addClass("glyphicon");
+        jQuery(icon).addClass("glyphicon-" + this.icon);
+        jQuery(icon).addClass("trax-button-icon");
+        button.update(icon);
+        button.insert(this.text);
         var classes = this.classes;
         for(var i = 0; i < classes.length; i++){
             jQuery(button).addClass(classes[i]);

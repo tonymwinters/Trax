@@ -20,6 +20,7 @@ function initTable(type, title, editaction){
 
     var deleteButton = new Trax.Widget.Button();
     deleteButton.text = "Delete";
+    deleteButton.icon = "remove";
     deleteButton.classes = ["delete"];
     deleteButton.action = function (){
         Trax.getResource("resources/"+type+"/delete/" + this.id);
@@ -29,6 +30,7 @@ function initTable(type, title, editaction){
 
     var editButton = new Trax.Widget.Button();
     editButton.text = "Edit";
+    editButton.icon = "pencil";
     editButton.classes = ["edit"];
     editButton.action = function(){
         var modal = initModal("user", "Edit User", "editUser", function(){
@@ -113,6 +115,7 @@ $("usersTab").observe("click", function(){
 
     var deleteButton = new Trax.Widget.Button();
     deleteButton.text = "Delete";
+    deleteButton.icon = "remove"
     deleteButton.classes = ["delete"];
     deleteButton.action = function (){
         Trax.getResource("resources/"+type+"/delete/" + this.id);
@@ -122,6 +125,7 @@ $("usersTab").observe("click", function(){
 
     var editButton = new Trax.Widget.Button();
     editButton.text = "Edit";
+    editButton.icon = "pencil";
     editButton.classes = ["edit"];
     editButton.action = function(){
         var self = this;
