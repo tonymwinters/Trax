@@ -1,0 +1,16 @@
+<project name="proj-name" basedir="." default="build">
+    <property name="build.dir" value="BUILD"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="build" depends="clean">
+        <mkdir dir="${build.dir}"/>
+
+        <delete dir="./src/main/webapp/resources/ui/" includes="trax_app.js" />
+        <concat destfile="./src/main/webapp/resources/ui/trax_app.js" fixlastline="true">
+            <fileset dir="./src/main/webapp/resources/ui/" includes="**/*.js" excludes="**/pages/**" />
+        </concat>
+    </target>
+</project>
