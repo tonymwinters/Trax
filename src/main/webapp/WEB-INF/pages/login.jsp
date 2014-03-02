@@ -4,11 +4,11 @@
     <head>
         <title>Please Login</title>
         <link rel="stylesheet" href="<c:url value='/resources/reset.css' />" media="all" />
-        <link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/bootstrap.css' />" media="all" />
+        <link rel="stylesheet" href="<c:url value='/resources/lib/bootstrap/css/bootstrap.css' />" media="all" />
         <link rel="stylesheet" href="<c:url value='/resources/style.css' />" media="all" />
-        <link rel="stylesheet" href="<c:url value='/resources/bootstrap/css/signin.css' />" media="all" />
+        <link rel="stylesheet" href="<c:url value='/resources/lib/bootstrap/css/signin.css' />" media="all" />
 
-        <script src="<c:url value='/resources/bootstrap/js/bootstrap.min.js' />" type="text/javascript"></script>
+        <script src="<c:url value='/resources/lib/bootstrap/js/bootstrap.min.js' />" type="text/javascript"></script>
     </head>
     <body>
 
