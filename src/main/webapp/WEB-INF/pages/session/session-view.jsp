@@ -58,6 +58,7 @@
     </div>
 </div>
 
+<script src="<c:url value='/resources/lib/jeditable.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/lib/date.js'/>" type="text/javascript"></script>
 <script src="<c:url value='/resources/ui/pages/session/session.js'/>" type="text/javascript"></script>
 <jsp:include page="../includes/footer.jsp" />
